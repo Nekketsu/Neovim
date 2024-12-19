@@ -1,18 +1,18 @@
 return {
     'nvim-orgmode/orgmode',
     config = function()
-        -- Load custom tree-sitter grammar for org filetype
-        require('orgmode').setup_ts_grammar()
-
-        -- Tree-sitter configuration
-        require'nvim-treesitter.configs'.setup {
-            -- If TS highlights are not enabled at all, or disabled via `disable` prop, highlighting will fallback to default Vim syntax highlighting
-            highlight = {
-                enable = true,
-                additional_vim_regex_highlighting = { 'org' }, -- Required since TS highlighter doesn't support all syntax features (conceal)
-            },
-            ensure_installed = {'org'}, -- Or run :TSUpdate org
-        }
+        -- -- Load custom tree-sitter grammar for org filetype
+        -- require('orgmode').setup_ts_grammar()
+        --
+        -- -- Tree-sitter configuration
+        -- require'nvim-treesitter.configs'.setup {
+        --     -- If TS highlights are not enabled at all, or disabled via `disable` prop, highlighting will fallback to default Vim syntax highlighting
+        --     highlight = {
+        --         enable = true,
+        --         additional_vim_regex_highlighting = { 'org' }, -- Required since TS highlighter doesn't support all syntax features (conceal)
+        --     },
+        --     ensure_installed = {'org'}, -- Or run :TSUpdate org
+        -- }
 
         require('orgmode').setup({
             org_agenda_files = '~/org/**/*',
@@ -26,7 +26,7 @@ return {
                 j = {
                     description = 'Journal',
                     template = '\n*** %<%Y-%m-%d> %<%A>\n**** %U\n\n%?',
-                    target = '~/org/journal.org'
+                    -- target = '~/org/journal.org'
                 },
                 J = {
                     description = 'Journal',
@@ -79,7 +79,7 @@ return {
     end,
     dependencies = {
         'joaomsa/telescope-orgmode.nvim',
-        { 'nvim-treesitter/nvim-treesitter', lazy = true },
+        -- { 'nvim-treesitter/nvim-treesitter', lazy = true },
     },
     event = 'VeryLazy'
 }

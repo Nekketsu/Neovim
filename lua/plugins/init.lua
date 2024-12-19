@@ -52,6 +52,7 @@ return {
         "bluz71/vim-moonfly-colors",
         name = "moonfly"
     },
+    "techtuner/aura-neovim",
 
     -- {
     --     'norcalli/nvim-colorizer.lua',
@@ -88,9 +89,10 @@ return {
             vim.g.rainbow_delimiters = { highlight = highlight }
             require("ibl").setup {
                 indent = {
-                    highlight = highlight
+                    highlight = highlight,
+                    char = '▏'
                 },
-                exclude = { filetypes = { "dashboard" } }
+                exclude = { filetypes = { "dashboard" } },
             }
 
             local hooks = require "ibl.hooks"
@@ -101,14 +103,17 @@ return {
         }
     },
 
-    {
-        "luckasRanarison/clear-action.nvim",
-        opts = {
-            signs = {
-                show_label = true
-            }
-        }
-    },
+    -- {
+    --     "luckasRanarison/clear-action.nvim",
+    --     config = function()
+    --         require("clear-action").setup()
+    --     end
+    --     -- opts = {
+    --     --     signs = {
+    --     --         show_label = true
+    --     --     }
+    --     -- }
+    -- },
 
     {
         "anuvyklack/windows.nvim",
@@ -138,49 +143,68 @@ return {
     {
         "folke/which-key.nvim",
         event = "VeryLazy",
-        config = true
+        opts = {
+            -- your configuration comes here
+            -- or leave it empty to use the default settings
+            -- refer to the configuration section below
+        },
+        keys = {
+            {
+                "<leader>?",
+                function()
+                    require("which-key").show({ global = false })
+                end,
+                desc = "Buffer Local Keymaps (which-key)",
+            },
+        },
     },
 
     {
         'folke/zen-mode.nvim',
-        config = function()
-            require("zen-mode").setup({
-                window = {
-                    options = {
-                        signcolumn = "no", -- disable signcolumn
-                        number = false, -- disable number column
-                        -- relativenumber = false, -- disable relative numbers
-                        -- cursorline = false, -- disable cursorline
-                        -- cursorcolumn = false, -- disable cursor column
-                        foldcolumn = "0", -- disable fold column
-                        -- list = false, -- disable whitespace characters
-                    }
+        opts = {
+            window = {
+                options = {
+                    signcolumn = "no", -- disable signcolumn
+                    number = false, -- disable number column
+                    -- relativenumber = false, -- disable relative numbers
+                    -- cursorline = false, -- disable cursorline
+                    -- cursorcolumn = false, -- disable cursor column
+                    foldcolumn = "0", -- disable fold column
+                    -- list = false, -- disable whitespace characters
+                }
+            },
+            plugins = {
+                options = {
+                    enabled = true,
+                    ruler = false, -- disables the ruler text in the cmd line area
+                    showcmd = false, -- disables the command in the last line of the screen
+                    -- you may turn on/off statusline in zen mode by setting 'laststatus' 
+                    -- statusline will be shown only if 'laststatus' == 3
+                    laststatus = 0, -- turn off the statusline in zen mode
                 },
-                plugins = {
-                    options = {
-                        enabled = true,
-                        ruler = false, -- disables the ruler text in the cmd line area
-                        showcmd = false, -- disables the command in the last line of the screen
-                        -- you may turn on/off statusline in zen mode by setting 'laststatus' 
-                        -- statusline will be shown only if 'laststatus' == 3
-                        laststatus = 0, -- turn off the statusline in zen mode
-                    },
-                },
-                on_open = function()
-                    vim.cmd("IBLDisable")
-                    vim.cmd("SatelliteDisable")
-                end,
-                on_close = function()
-                    vim.cmd("SatelliteEnable")
-                    vim.cmd("IBLEnable")
-                end,
-            })
-
-            vim.keymap.set("n", "<leader>zz", "<Cmd>lua require('zen-mode').toggle()<CR>", { desc = "Zen Mode" })
-        end
+            },
+            on_open = function()
+                vim.cmd("IBLDisable")
+                vim.cmd("SatelliteDisable")
+            end,
+            on_close = function()
+                vim.cmd("SatelliteEnable")
+                vim.cmd("IBLEnable")
+            end,
+        },
+        keys = {
+            {"<leader>zz", function() require('zen-mode').toggle() end, desc = "Zen Mode" }
+        }
     },
 
     "stevearc/dressing.nvim",
+
+    {
+        "grapp-dev/nui-components.nvim",
+        dependencies = {
+            "MunifTanjim/nui.nvim"
+        }
+    },
 
     {
         "smjonas/live-command.nvim",
@@ -199,16 +223,18 @@ return {
     {
         "mbbill/undotree",
         config = function()
-            vim.keymap.set('n', '<leader><F5>', vim.cmd.UndotreeToggle)
-        end
+        end,
+        keys = {
+            {'<leader><F5>', vim.cmd.UndotreeToggle}
+        }
     },
 
-    {
-        "folke/neodev.nvim",
-        opts = {
-            library = { plugins = { "neotest", "nvim-dap-ui" }, types = true }
-        },
-    },
+    -- {
+    --     "folke/neodev.nvim",
+    --     opts = {
+    --         library = { plugins = { "neotest", "nvim-dap-ui" }, types = true }
+    --     },
+    -- },
 
     -- LSP and completion
     {
@@ -232,15 +258,17 @@ return {
         "https://git.sr.ht/~whynothugo/lsp_lines.nvim",
         config = function()
             require("lsp_lines").setup()
-            vim.diagnostic.config({ virtual_lines = false, virtual_text = true })
+            vim.diagnostic.config({ virtual_lines = false, virtual_text = { severity = { min = vim.diagnostic.severity.WARN }}})
         end,
         keys = {
             {
                 "yoe",
                 function ()
-                    vim.diagnostic.config({
-                        virtual_text = not require('lsp_lines').toggle()
-                    })
+                    if require('lsp_lines').toggle() then
+                        vim.diagnostic.config({ virtual_lines = true, virtual_text = false })
+                    else
+                        vim.diagnostic.config({ virtual_lines = false, virtual_text = { severity = { min = vim.diagnostic.severity.WARN }}})
+                    end
                 end,
                 desc = "Toggle lsp_lines" },
             { "[oe",
@@ -251,7 +279,7 @@ return {
             {
                 "]oe",
                 function ()
-                    vim.diagnostic.config({ virtual_lines = false, virtual_text = false })
+                    vim.diagnostic.config({ virtual_lines = false, virtual_text = { severity = { min = vim.diagnostic.severity.WARN }}})
                 end,
                 desc = "Disable lsp_lines" },
         },
@@ -319,44 +347,36 @@ return {
 
     {
         'simrat39/symbols-outline.nvim',
-        config = function()
-            require("symbols-outline").setup()
-            vim.keymap.set('n', '<Leader>so', '<cmd>SymbolsOutline<CR>')
-        end
+        config = true,
+        keys = {
+            {'<Leader>so', '<cmd>SymbolsOutline<CR>', desc = "Symbols outline"}
+        }
     },
 
     {
         'stevearc/aerial.nvim',
         opts = {
+            on_attach = function(bufnr)
+                -- Jump forwards/backwards with '{' and '}'
+                local ts_repeat_move = require "nvim-treesitter.textobjects.repeatable_move"
+                local next_symbol_repeat, previous_symbol_repeat = ts_repeat_move.make_repeatable_move_pair(function() vim.cmd("AerialNext") end, function() vim.cmd("AerialPrev") end)
+                vim.keymap.set('n', ']<C-s>', next_symbol_repeat, {buffer = bufnr})
+                vim.keymap.set('n', '[<C-s>', previous_symbol_repeat, {buffer = bufnr})
+
+                -- vim.keymap.set('n', '{', '<cmd>AerialPrev<CR>', {buffer = bufnr})
+                -- vim.keymap.set('n', '}', '<cmd>AerialNext<CR>', {buffer = bufnr})
+            end,
             backends = { "lsp", "treesitter", "markdown", "man" },
             filter_kind = false,
+            preview = true
         },
         -- Optional dependencies
         dependencies = {
             "nvim-treesitter/nvim-treesitter",
             "nvim-tree/nvim-web-devicons",
-            {
-                "stevearc/stickybuf.nvim",
-                opts = { }
-            }
         },
-        -- config = function()
-        --     require('aerial').setup({
-        --         -- optionally use on_attach to set keymaps when aerial has attached to a buffer
-        --         -- on_attach = function(bufnr)
-        --         --     -- Jump forwards/backwards with '{' and '}'
-        --         --     vim.keymap.set('n', '{', '<cmd>AerialPrev<CR>', {buffer = bufnr})
-        --         --     vim.keymap.set('n', '}', '<cmd>AerialNext<CR>', {buffer = bufnr})
-        --         -- end,
-        --         backends = { "lsp", "treesitter", "markdown", "man" },
-        --         filter_kind = false,
-        --         preview = true
-        --     })
-        --     -- You probably also want to set a keymap to toggle aerial
-        --     -- vim.keymap.set('n', '<leader>a', '<cmd>AerialToggle!<CR>')
-        -- end,
         keys = {
-            { "<leader>a", "<cmd>AerialToggle<cr>", desc = "Aerial (Symbols)" },
+            { "<leader>a", "<cmd>AerialToggle!<CR>", desc = "Aerial (Symbols)" },
         },
     },
 
@@ -366,10 +386,10 @@ return {
     -- Fugitive for Git
     {
         'tpope/vim-fugitive',
-        config = function()
-            vim.keymap.set('n', '<Leader>gs', '<cmd>Git<CR>', { noremap = true, silent = true })   -- Git status
-            vim.keymap.set('n', '<Leader>gl', '<cmd>Gclog<CR>', { noremap = true, silent = true }) -- Git log
-        end
+        keys = {
+            {'<Leader>gs', '<cmd>Git<CR>', desc = "Git status"},
+            {'<Leader>gl', '<cmd>Gclog<CR>', desc = "git log"}
+        }
     },
     'tpope/vim-rhubarb',
 
@@ -385,9 +405,9 @@ return {
     {
         'sindrets/diffview.nvim',
         dependencies = 'nvim-lua/plenary.nvim',
-        config = function()
-            vim.keymap.set('n', '<leader>gd', '<cmd>DiffviewOpen<CR>', { noremap = true, silent = true })
-        end
+        keys = {
+            {'<leader>gd', '<cmd>DiffviewOpen<CR>', desc = "Git diffview"}
+        }
     },
     -- { 'f-person/git-blame.nvim' },
 
@@ -399,16 +419,16 @@ return {
     'tpope/vim-characterize',
     'tpope/vim-rsi',
 
-    {
-        'numToStr/Comment.nvim',
-        lazy = false,
-        config = function()
-            require('Comment').setup {
-                pre_hook = require('ts_context_commentstring.integrations.comment_nvim').create_pre_hook(),
-            }
-        end,
-        dependencies = "JoosepAlviste/nvim-ts-context-commentstring"
-    },
+    -- {
+    --     'numToStr/Comment.nvim',
+    --     lazy = false,
+    --     config = function()
+    --         require('Comment').setup {
+    --             pre_hook = require('ts_context_commentstring.integrations.comment_nvim').create_pre_hook(),
+    --         }
+    --     end,
+    --     dependencies = "JoosepAlviste/nvim-ts-context-commentstring"
+    -- },
 
     {
         "kylechui/nvim-surround",
@@ -442,53 +462,42 @@ return {
         end,
     },
 
-    -- {
-    --     "kndndrj/nvim-dbee",
-    --     dependencies = {
-    --         "MunifTanjim/nui.nvim",
-    --     },
-    --     build = function()
-    --         -- Install tries to automatically detect the install method.
-    --         -- if it fails, try calling it with one of these parameters:
-    --         --    "curl", "wget", "bitsadmin", "go"
-    --         require("dbee").install("go")
-    --     end,
-    --     config = function()
-    --         require("dbee").setup({
-    --             sources = {
-    --                 name = "Chinook",
-    --                 type = "sqlite",
-    --                 url = "D:\\Users\\Nekketsu\\Downloads\\chinook\\chinook.db"
-    --             }
-    --         })
-    --     end,
-    -- },
-    -- {
-    --     'liangxianzhe/nap.nvim',
-    --     config = function()
-    --         local nap = require("nap")
-    --         nap.setup({
-    --             next_prefix = "]",
-    --             prev_prefix = "[",
-    --             next_repeat = "<c-n>",
-    --             prev_repeat = "<c-p>",
-    --             -- next_repeat = ";",
-    --             -- prev_repeat = ",",
-    --         })
-    --         --
-    --         -- local ts_repeat_move = require "nvim-treesitter.textobjects.repeatable_move"
-    --         -- local next_hunk_repeat, prev_hunk_repeat = ts_repeat_move.make_repeatable_move_pair(nap.repeat_last_next, nap.repeat_last_prev)
-    --         --
-    --         -- vim.keymap.set({ "n", "x", "o" }, "<c-n>", next_hunk_repeat)
-    --         -- vim.keymap.set({ "n", "x", "o" }, "<c-p>", prev_hunk_repeat)
-    --     end,
-    --     dependencies = {
-    --         'tpope/vim-unimpaired',
-    --     }
-    -- },
 
-    'tommcdo/vim-exchange',
+    -- 'tommcdo/vim-exchange',
     'tommcdo/vim-lion',
+
+    {
+        'junegunn/vim-easy-align',
+        init = function()
+            vim.cmd[[
+            " Start interactive EasyAlign in visual mode (e.g. vipga)
+            xmap ga <Plug>(EasyAlign)
+
+            " Start interactive EasyAlign for a motion/text object (e.g. gaip)
+            nmap ga <Plug>(EasyAlign)
+            ]]
+        end
+    },
+
+    {
+        "gbprod/substitute.nvim",
+        opts = {
+            -- your configuration comes here
+            -- or leave it empty to use the default settings
+            -- refer to the configuration section below
+        },
+        keys = {
+          {"cx", function() require("substitute.exchange").operator() end, desc = "Substitute operator"},
+          {"cxx", function() require("substitute.exchange").line() end, desc = "Substitute line"},
+          {"X", function() require("substitute.exchange").visual() end, mode = "x", desc = "Substitute visual"},
+          {"cxc", function() require("substitute.exchange").cancel() end, desc = "Substitute cancel"},
+
+          {"<leader>cx", function() require("substitute").operator() end, desc = "Substitute operator"},
+          {"<leader>cxx", function() require("substitute").line() end, desc = "Substitute line"},
+          {"<leader>cX", function() require("substitute").cancel() end, desc = "Substitute cancel"},
+          {"<leader>X", function() require("substitute").visual() end, mode = "x", desc = "Substitute visual"},
+        }
+    },
 
     {
         "chrisgrieser/nvim-various-textobjs",
@@ -497,20 +506,7 @@ return {
         config = function()
             require("various-textobjs").setup({
                 useDefaultKeymaps = true,
-                disabledKeymaps = { "gc" },
             })
-            vim.keymap.set(
-                { "o", "x" },
-                "ic",
-                "<cmd>lua require('various-textobjs').multiCommentedLines()<CR>",
-                { desc = "multiCommentedLines textObj" }
-            )
-            vim.keymap.set(
-                { "o", "x" },
-                "ac",
-                "<cmd>lua require('various-textobjs').multiCommentedLines()<CR>",
-                { desc = "multiCommentedLines textObj" }
-            )
         end
     },
 
@@ -531,10 +527,6 @@ return {
     },
 
     {
-        "jcdickinson/wpm.nvim",
-        config = true
-    },
-    {
         "windwp/nvim-autopairs",
         config = true
     },
@@ -543,29 +535,32 @@ return {
         config = true
     },
 
-
-    -- {
-    --     "karb94/neoscroll.nvim",
-    --     config = true
-    -- },
-
     {
         'akinsho/toggleterm.nvim',
         version = "*",
         config = function()
-            local powershell_options = {
-                shell = vim.fn.executable "pwsh" == 1 and "pwsh" or "powershell",
-                shellcmdflag =
-                "-NoLogo -NoProfile -ExecutionPolicy RemoteSigned -Command [Console]::InputEncoding=[Console]::OutputEncoding=[System.Text.Encoding]::UTF8;",
-                shellredir = "-RedirectStandardOutput %s -NoNewWindow -Wait",
-                shellpipe = "2>&1 | Out-File -Encoding UTF8 %s; exit $LastExitCode",
-                shellquote = "",
-                shellxquote = "",
-            }
+            -- local powershell_options = {
+            --     shell = vim.fn.executable "pwsh" == 1 and "pwsh" or "powershell",
+            --     shellcmdflag =
+            --     "-NoLogo -NoProfile -ExecutionPolicy RemoteSigned -Command [Console]::InputEncoding=[Console]::OutputEncoding=[System.Text.Encoding]::UTF8;",
+            --     shellredir = "-RedirectStandardOutput %s -NoNewWindow -Wait",
+            --     shellpipe = "2>&1 | Out-File -Encoding UTF8 %s; exit $LastExitCode",
+            --     shellquote = "",
+            --     shellxquote = "",
+            -- }
+            --
+            -- for option, value in pairs(powershell_options) do
+            --     vim.opt[option] = value
+            -- end
 
-            for option, value in pairs(powershell_options) do
-                vim.opt[option] = value
-            end
+            vim.cmd [[
+                let &shell = executable('pwsh') ? 'pwsh' : 'powershell'
+                "let &shellcmdflag = '-NoLogo -ExecutionPolicy RemoteSigned -Command [Console]::InputEncoding=[Console]::OutputEncoding=[System.Text.UTF8Encoding]::new();$PSDefaultParameterValues[''Out-File:Encoding'']=''utf8'';Remove-Alias -Force -ErrorAction SilentlyContinue tee;'
+                let &shellcmdflag = '-NoLogo -ExecutionPolicy RemoteSigned -Command [Console]::InputEncoding=[Console]::OutputEncoding=[System.Text.UTF8Encoding]::new();$PSDefaultParameterValues[''Out-File:Encoding'']=''utf8'';'
+                let &shellredir = '2>&1 | %%{ "$_" } | Out-File %s; exit $LastExitCode'
+                let &shellpipe  = '2>&1 | %%{ "$_" } | tee %s; exit $LastExitCode'
+                set shellquote= shellxquote=
+            ]]
 
             require("toggleterm").setup {
                 open_mapping = [[<c-\>]],
@@ -573,6 +568,11 @@ return {
                 terminal_mappings = false,
             }
         end
+    },
+
+    {
+        'mcauley-penney/visual-whitespace.nvim',
+        config = true
     },
 
    {
@@ -586,8 +586,8 @@ return {
                 }
             }
         end
-    }
-    --
+    },
+
     -- {
     --     'glepnir/dashboard-nvim',
     --     event = 'VimEnter',
@@ -598,4 +598,51 @@ return {
     --     end,
     --     dependencies = { {'nvim-tree/nvim-web-devicons'}}
     -- }
+
+    {
+        "romainl/vim-cool"
+    },
+
+    {
+        'MoaidHathot/dotnet.nvim',
+        cmd = "DotnetUI",
+        opts = {},
+    },
+
+    {
+        "chentoast/marks.nvim",
+        config = true
+    },
+
+    {
+        "sphamba/smear-cursor.nvim",
+        opts = {},
+    },
+
+    {
+        "karb94/neoscroll.nvim",
+        config = function ()
+            local neoscroll = require('neoscroll')
+            neoscroll.setup({
+                -- Default easing function used in any animation where
+                -- the `easing` argument has not been explicitly supplied
+                easing = "quadratic"
+            })
+            local keymap = {
+                -- Use the "sine" easing function
+                ["<C-u>"] = function() neoscroll.ctrl_u({ duration = 100; easing = 'sine' }) end;
+                ["<C-d>"] = function() neoscroll.ctrl_d({ duration = 100; easing = 'sine' }) end;
+                -- Use the "circular" easing function
+                ["<C-b>"] = function() neoscroll.ctrl_b({ duration = 100; easing = 'circular' }) end;
+                ["<C-f>"] = function() neoscroll.ctrl_f({ duration = 100; easing = 'circular' }) end;
+                -- When no value is passed the `easing` option supplied in `setup()` is used
+                ["<C-y>"] = function() neoscroll.scroll(-0.1, { move_cursor=false; duration = 100 }) end;
+                ["<C-e>"] = function() neoscroll.scroll(0.1, { move_cursor=false; duration = 100 }) end;
+            }
+            local modes = { 'n', 'v', 'x' }
+            for key, func in pairs(keymap) do
+                vim.keymap.set(modes, key, func)
+            end
+        end
+    }
 }

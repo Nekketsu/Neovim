@@ -2,7 +2,7 @@ return {
     'nvim-treesitter/nvim-treesitter',
     dependencies = {
         'nvim-treesitter/nvim-treesitter-textobjects',
-        'JoosepAlviste/nvim-ts-context-commentstring',
+        -- 'JoosepAlviste/nvim-ts-context-commentstring',
         'liangxianzhe/nap.nvim',
     },
     build = ':TSUpdate',
@@ -19,9 +19,6 @@ return {
             indent = {
                 enable = true
             },
-            autotag = {
-                enable = true
-            },
             textobjects = {
                 select = {
                     enable = true,
@@ -33,6 +30,8 @@ return {
                         -- You can use the capture groups defined in textobjects.scm
                         ["af"] = "@function.outer",
                         ["if"] = "@function.inner",
+                        ["am"] = "@function.outer",
+                        ["im"] = "@function.inner",
                         ["ac"] = "@class.outer",
                         ["ic"] = "@class.inner",
                         -- ["as"] = { query = "@scope", query_group = "locals", desc = "Select language scope" },

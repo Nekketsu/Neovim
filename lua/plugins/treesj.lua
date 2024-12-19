@@ -2,12 +2,6 @@ return {
     'Wansmer/treesj',
     dependencies = { 'nvim-treesitter' },
     config = function()
-        local options = { noremap = true, silent = true }
-
-        vim.keymap.set('n', '<leader>jt', ':TSJToggle<CR>', options)
-        vim.keymap.set('n', '<leader>js', ':TSJSplit<CR>', options)
-        vim.keymap.set('n', '<leader>jj', ':TSJJoin<CR>', options)
-
         local tsj = require('treesj')
         local tsj_utils = require('treesj.langs.utils')
 
@@ -28,5 +22,10 @@ return {
             max_join_length = 4000,
             langs = langs
         })
-    end
+    end,
+    keys = {
+        {'<leader>jt', ':TSJToggle<CR>'},
+        {'<leader>js', ':TSJSplit<CR>'},
+        {'<leader>jj', ':TSJJoin<CR>'},
+    }
 }

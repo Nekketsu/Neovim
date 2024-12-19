@@ -43,7 +43,20 @@ return {
                 end,
             },
             "Trouble",
-            { ft = "qf", title = "QuickFix" },
+            {
+                ft = "qf",
+                title = "QuickFix",
+                filter = function(_, win)
+                    return vim.fn.getwininfo(win)[1]['loclist'] ~= 1
+                end
+            },
+            {
+                ft = "qf",
+                title = "LocList",
+                filter = function(_, win)
+                    return vim.fn.getwininfo(win)[1]['loclist'] == 1
+                end
+            },
             {
                 ft = "help",
                 size = { height = 20 },

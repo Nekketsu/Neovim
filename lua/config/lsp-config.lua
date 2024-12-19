@@ -1,8 +1,5 @@
 -- Global mappings.
 -- See `:help vim.diagnostic.*` for documentation on any of the below functions
-vim.keymap.set('n', '<space>e', vim.diagnostic.open_float)
--- vim.keymap.set('n', '[d', vim.diagnostic.goto_prev)
--- vim.keymap.set('n', ']d', vim.diagnostic.goto_next)
 vim.keymap.set('n', '<space>q', vim.diagnostic.setloclist)
 
 local capabilities = require('cmp_nvim_lsp').default_capabilities()
@@ -20,7 +17,7 @@ vim.api.nvim_create_autocmd('LspAttach', {
         local opts = { buffer = ev.buf }
         vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, opts)
         -- vim.keymap.set('n', 'gd', vim.lsp.buf.definition, opts)
-        vim.keymap.set('n', 'K', vim.lsp.buf.hover, opts)
+        -- vim.keymap.set('n', 'K', vim.lsp.buf.hover, opts)
         -- vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, bufopts)
         vim.keymap.set('n', '<C-k>', vim.lsp.buf.signature_help, opts)
         vim.keymap.set('n', '<space>wa', vim.lsp.buf.add_workspace_folder, opts)
@@ -39,18 +36,38 @@ vim.api.nvim_create_autocmd('LspAttach', {
 
         vim.lsp.codelens.refresh()
 
-        vim.cmd [[
-        augroup lsp_document_codelens
-        autocmd BufEnter,CursorHold,InsertLeave <buffer> lua vim.lsp.codelens.refresh()
-        augroup END
-        ]]
-
         local client = vim.lsp.get_client_by_id(ev.data.client_id)
+
+        -- if client == nil then
+        --     return
+        -- end
+        --
+        -- if client.supports_method("textDocument/codeLens", { bufnr = ev.buf }) then
+        --     vim.cmd [[
+        --     augroup lsp_document_codelens
+        --     autocmd BufEnter,CursorHold,InsertLeave <buffer> lua vim.lsp.codelens.refresh({ bufnr = ev.buf })
+        --     augroup END
+        --     ]]
+        -- end
+
+        -- if client.supports_method("textDocument/codeLens", { bufnr = ev.buf }) then
+        --     vim.api.nvim_create_autocmd("lsp_codelens_refresh", {
+        --         buffer = ev.buf,
+        --         events = { "BufEnter", "CursorHold", "InsertLeave" },
+        --         desc = "Refresh codelens",
+        --         callback = function()
+        --             if client.server_capabilities.codeLensProvider then
+        --                 vim.lsp.codelens.refresh({ bufnr = ev.buf })
+        --             end
+        --         end,
+        --     })
+        -- end
+
         if client.server_capabilities.inlayHintProvider then
-            vim.lsp.inlay_hint.enable(ev.buf, true);
-            vim.keymap.set("n", "[oy", function() vim.lsp.inlay_hint.enable(ev.buf, true); end, opts)
-            vim.keymap.set("n", "]oy", function() vim.lsp.inlay_hint.enable(ev.buf, false); end, opts)
-            vim.keymap.set("n", "yoy", function() vim.lsp.inlay_hint.enable(ev.buf, not vim.lsp.inlay_hint.is_enabled(buf)); end, opts)
+            vim.lsp.inlay_hint.enable( true);
+            vim.keymap.set("n", "[oy", function() vim.lsp.inlay_hint.enable(true); end, opts)
+            vim.keymap.set("n", "]oy", function() vim.lsp.inlay_hint.enable(false); end, opts)
+            vim.keymap.set("n", "yoy", function() vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled()); end, opts)
         end
     end,
 })

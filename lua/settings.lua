@@ -22,21 +22,6 @@ vim.wo.wrap = false
 
 vim.opt.conceallevel = 2
 
--- vim.opt.foldmethod = 'expr'
--- vim.opt.foldexpr = 'nvim_treesitter#foldexpr()'
-
--- Highlight on yank
--- vim.cmd [[au TextYankPost * lua vim.highlight.on_yank()]]
-vim.api.nvim_create_autocmd('TextYankPost', {
-  desc = 'Highlight when yanking (copying) text',
-  group = vim.api.nvim_create_augroup('kickstart-highlight-yank', { clear = true }),
-  callback = function()
-    vim.highlight.on_yank()
-  end,
-})
-
--- vim.opt.title = false
-
 vim.opt.termguicolors = true
 
 vim.opt.cursorlineopt = "both"
@@ -46,3 +31,17 @@ vim.opt.virtualedit = "block"
 vim.opt.inccommand = "split"
 
 vim.o.mousemoveevent = true
+
+vim.diagnostic.config({
+    virtual_text = { severity = { min = vim.diagnostic.severity.WARN} },
+    underline = true,
+    signs = false
+    -- signs = { severity = {vim.diagnostic.severity.ERROR, vim.diagnostic.severity.WARN, vim.diagnostic.severity.INFO, --[[ vim.diagnostic.severity.HINT ]]}}
+})
+
+
+vim.api.nvim_create_autocmd("FileType", {
+    callback = function()
+        vim.opt_local.formatoptions:remove({ 'r', 'o' })
+    end
+})

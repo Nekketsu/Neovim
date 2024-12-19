@@ -238,8 +238,11 @@ return {
         })
 
         -- vim.cmd([[nnoremap \ :Neotree reveal<cr>]])
-        vim.keymap.set("n", "\\", "<cmd>Neotree reveal<CR>")
+        -- vim.keymap.set("n", "\\", "<cmd>Neotree reveal<CR>")
     end,
+    keys = {
+        {"\\", "<cmd>Neotree reveal<CR>"}
+    },
     dependencies = {
         "nvim-lua/plenary.nvim",
         "nvim-tree/nvim-web-devicons", -- not strictly required, but recommended

@@ -105,34 +105,32 @@ return {
 
         dap.configurations.c = dap.configurations.cpp
         -- dap.configurations.rust = dap.configurations.cpp
-
-
-        local options = { noremap = true, silent = true }
-
-        vim.keymap.set('n', '<F5>', function() require('dap').continue() end, { desc = "Run / Continue" })
-        vim.keymap.set('n', '<S-F5>', function() require('dap').terminate() end, { desc = "Stop" })
-        vim.keymap.set('n', '<F10>', function() require('dap').step_over() end, { desc = "Step over" })
-        vim.keymap.set('n', '<F11>', function() require('dap').step_into() end, { desc = "Step into" })
-        vim.keymap.set('n', '<F12>', function() require('dap').step_out() end, { desc = "Step out" })
-        vim.keymap.set('n', '<F9>', function() require('dap').toggle_breakpoint() end, { desc = "Toggle breakpoint" })
-        vim.keymap.set('n', '<Leader>bp', function() require('dap').toggle_breakpoint() end, { desc = "Toggle breakpoint "})
-        vim.keymap.set('n', '<Leader>bc', function() require('dap').set_breakpoint(vim.fn.input('Breakpoint condition: ')) end, options)
-        vim.keymap.set('n', '<Leader>bL', function() require('dap').set_breakpoint(nil, nil, vim.fn.input('Log point message: ')) end, options)
-        vim.keymap.set('n', '<Leader>dr', function() require('dap').repl.open() end, options)
-        vim.keymap.set('n', '<Leader>dl', function() require('dap').run_last() end, options)
-        vim.keymap.set({'n', 'v'}, '<Leader>dh', function()
+    end,
+    keys = {
+        {'<F5>', function() require('dap').continue() end, { desc = "Run / Continue" }},
+        {'<S-F5>', function() require('dap').terminate() end, { desc = "Stop" }},
+        {'<F10>', function() require('dap').step_over() end, { desc = "Step over" }},
+        {'<F11>', function() require('dap').step_into() end, { desc = "Step into" }},
+        {'<F12>', function() require('dap').step_out() end, { desc = "Step out" }},
+        {'<F9>', function() require('dap').toggle_breakpoint() end, { desc = "Toggle breakpoint" }},
+        {'<Leader>bp', function() require('dap').toggle_breakpoint() end, { desc = "Toggle breakpoint "}},
+        {'<Leader>bc', function() require('dap').set_breakpoint(vim.fn.input('Breakpoint condition: ')) end},
+        {'<Leader>bL', function() require('dap').set_breakpoint(nil, nil, vim.fn.input('Log point message: ')) end},
+        {'<Leader>dr', function() require('dap').repl.open() end},
+        {'<Leader>dl', function() require('dap').run_last() end},
+        { '<Leader>dh', function()
             require('dap.ui.widgets').hover()
-        end)
-        vim.keymap.set({'n', 'v'}, '<Leader>dp', function()
+        end, mode = {'n', 'v'}},
+        {'<Leader>dp', function()
             require('dap.ui.widgets').preview()
-        end)
-        vim.keymap.set('n', '<Leader>df', function()
+        end, mode = {'n', 'v'}},
+        {'<Leader>df', function()
             local widgets = require('dap.ui.widgets')
             widgets.centered_float(widgets.frames)
-        end)
-        vim.keymap.set('n', '<Leader>ds', function()
-            local widgets = require('dap.ui.widgets')
-            widgets.centered_float(widgets.scopes)
-        end)
-    end
+        end},
+        -- {'<Leader>ds', function()
+        --     local widgets = require('dap.ui.widgets')
+        --     widgets.centered_float(widgets.scopes)
+        -- end}
+    }
 }

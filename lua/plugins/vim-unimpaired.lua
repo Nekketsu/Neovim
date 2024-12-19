@@ -51,9 +51,5 @@ return {
         local next_diagnostic_error, previous_diagnostic_error = ts_repeat_move.make_repeatable_move_pair(function () vim.diagnostic.goto_next({ severity = vim.diagnostic.severity.ERROR }) end, function() vim.diagnostic.goto_prev({ severity = vim.diagnostic.severity.ERROR }) end)
         vim.keymap.set("n", "]D", next_diagnostic_error, { desc = "Next error"})
         vim.keymap.set("n", "[D", previous_diagnostic_error, { desc = "Previous error"})
-
-        local next_todo_comment_repeat, previous_todo_comment_repeat = ts_repeat_move.make_repeatable_move_pair(function () require("todo-comments").jump_next() end, function() require("todo-comments").jump_prev() end)
-        vim.keymap.set("n", "]t", next_todo_comment_repeat, { desc = "Next todo comment"})
-        vim.keymap.set("n", "[t", previous_todo_comment_repeat, { desc = "Previous todo comment"})
     end
 }

@@ -57,7 +57,6 @@ return {
             }) ,
             sources = cmp.config.sources({
                 { name = 'nvim_lsp' },
-                { name = 'nvim_lsp_signature_help' },
                 { name = 'nvim_lua' },
                 -- { name = 'vsnip' }, -- For vsnip users.
                 { name = 'luasnip' }, -- For luasnip users.
@@ -66,8 +65,8 @@ return {
                 { name = 'orgmode'},
                 { name = 'crates' },
             }, {
-                { name = 'buffer' },
-            }),
+                    { name = 'buffer' },
+                }),
             formatting = {
                 format = lspkind.cmp_format({
                     mode = 'symbol', -- show only symbol annotations
@@ -76,21 +75,21 @@ return {
                     -- The function below will be called before any actual modifications from lspkind
                     -- so that you can provide more controls on popup customization. (See [#30](https://github.com/onsails/lspkind-nvim/pull/30))
                     -- before = function (entry, vim_item)
-                        --     ...
-                        --     return vim_item
-                        -- end
-                    })
-                }
-            })
+                    --     ...
+                    --     return vim_item
+                    -- end
+                })
+            }
+        })
 
-            -- Set configuration for specific filetype.
-            cmp.setup.filetype('gitcommit', {
-                sources = cmp.config.sources({
-                    { name = 'cmp_git' }, -- You can specify the `cmp_git` source if you were installed it. 
-                }, {
+        -- Set configuration for specific filetype.
+        cmp.setup.filetype('gitcommit', {
+            sources = cmp.config.sources({
+                { name = 'cmp_git' }, -- You can specify the `cmp_git` source if you were installed it. 
+            }, {
                     { name = 'buffer' },
                 })
-            })
+        })
 
         -- Use buffer source for `/` and `?` (if you enabled `native_menu`, this won't work anymore).
         cmp.setup.cmdline({ '/', '?' }, {
@@ -115,7 +114,6 @@ return {
         'hrsh7th/cmp-buffer',
         'hrsh7th/cmp-path',
         'hrsh7th/cmp-cmdline',
-        'hrsh7th/cmp-nvim-lsp-signature-help',
         'hrsh7th/cmp-nvim-lua',
         -- 'hrsh7th/cmp-vsnip',
         -- 'hrsh7th/vim-vsnip',
