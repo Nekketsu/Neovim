@@ -2,7 +2,7 @@
 -- See `:help vim.diagnostic.*` for documentation on any of the below functions
 vim.keymap.set('n', '<space>q', vim.diagnostic.setloclist)
 
-local capabilities = require('cmp_nvim_lsp').default_capabilities()
+-- local capabilities = require('cmp_nvim_lsp').default_capabilities()
 
 -- Use LspAttach autocommand to only map the following keys
 -- after the language server attaches to the current buffer
@@ -81,7 +81,7 @@ local handlers = {
     function(server_name) -- default handler (optional)
         lspconfig[server_name].setup {
             -- on_attach = on_attach,
-            capabilities = capabilities
+            -- capabilities = capabilities
         }
     end,
     -- Next, you can provide targeted overrides for specific servers.
@@ -112,7 +112,12 @@ local handlers = {
     end
 }
 
-require("mason").setup()
+require("mason").setup({
+    registries = {
+        "github:mason-org/mason-registry",
+        "github:Crashdummyy/mason-registry"
+    }
+})
 require("mason-lspconfig").setup {
     handlers = handlers
 }
