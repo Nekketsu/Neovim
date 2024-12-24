@@ -100,14 +100,14 @@ local handlers = {
             },
         }
     end,
-    ["omnisharp"] = function()
-        lspconfig.omnisharp.setup({
-            enable_roslyn_analyzers = true,
-            handlers = {
-                ["textDocument/definition"] = require("omnisharp_extended").handler
-            }
-        })
-    end,
+    -- ["omnisharp"] = function()
+    --     lspconfig.omnisharp.setup({
+    --         enable_roslyn_analyzers = true,
+    --         handlers = {
+    --             ["textDocument/definition"] = require("omnisharp_extended").handler
+    --         }
+    --     })
+    -- end,
     ["rust_analyzer"] = function()
     end
 }

@@ -2,14 +2,14 @@ return {
     'mfussenegger/nvim-dap',
     config = function()
 
-        local dap = require('dap')
-        local bin_dir = vim.fn.stdpath('data') .. '\\mason\\bin\\'
+        local dap = require("dap")
+        local packages_dir = vim.fs.joinpath(vim.fn.stdpath("data"), "mason", "packages")
 
         dap.adapters.coreclr = {
             type = 'executable',
             -- command = bin_dir .. 'netcoredbg.cmd',
-            command = "C:\\Users\\Nekketsu\\AppData\\Local\\nvim-data\\mason\\packages\\netcoredbg\\netcoredbg\\netcoredbg.exe",
-            args = {'--interpreter=vscode'}
+            command = vim.fs.joinpath(packages_dir, "netcoredbg", "netcoredbg", "netcoredbg.exe"),
+            args = {"--interpreter=vscode"}
         }
 
         dap.adapters.codelldb = {
@@ -18,7 +18,7 @@ return {
             executable = {
                 -- CHANGE THIS to your path!
                 -- command = bin_dir .. 'codelldb.cmd',
-                command = "C:\\Users\\Nekketsu\\AppData\\Local\\nvim-data\\mason\\packages\\codelldb\\extension\\adapter\\codelldb.exe",
+                command = vim.fs.joinpath(packages_dir, "codelldb", "extension", "adapter", "codelldb.exe"),
                 args = {"--port", "${port}"},
 
                 -- On windows you may have to uncomment this:
@@ -81,7 +81,9 @@ return {
                     if vim.fn.confirm('Should I recompile first?', '&yes\n&no', 2) == 1 then
                         vim.g.dotnet_build_project()
                     end
-                    return vim.g.dotnet_get_dll_path()
+                    local result = vim.g.dotnet_get_dll_path()
+                    print("compile: " .. result)
+                    return result
                 end,
             },
         }

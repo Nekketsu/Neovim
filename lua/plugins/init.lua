@@ -252,7 +252,7 @@ return {
     -- },
 
 
-    "Hoffs/omnisharp-extended-lsp.nvim",
+    -- "Hoffs/omnisharp-extended-lsp.nvim",
 
     {
         "https://git.sr.ht/~whynothugo/lsp_lines.nvim",
@@ -346,11 +346,15 @@ return {
     'onsails/lspkind-nvim',
 
     {
-        'simrat39/symbols-outline.nvim',
-        config = true,
-        keys = {
-            {'<Leader>so', '<cmd>SymbolsOutline<CR>', desc = "Symbols outline"}
-        }
+        "hedyhli/outline.nvim",
+        lazy = true,
+        cmd = { "Outline", "OutlineOpen" },
+        keys = { -- Example mapping to toggle outline
+            { "<leader>so", "<cmd>Outline<CR>", desc = "Toggle outline" },
+        },
+        opts = {
+            -- Your setup opts here
+        },
     },
 
     {
@@ -368,7 +372,8 @@ return {
             end,
             backends = { "lsp", "treesitter", "markdown", "man" },
             filter_kind = false,
-            preview = true
+            preview = true,
+            show_guides = true
         },
         -- Optional dependencies
         dependencies = {
@@ -532,41 +537,6 @@ return {
     {
         "windwp/nvim-ts-autotag",
         config = true
-    },
-
-    {
-        'akinsho/toggleterm.nvim',
-        version = "*",
-        config = function()
-            -- local powershell_options = {
-            --     shell = vim.fn.executable "pwsh" == 1 and "pwsh" or "powershell",
-            --     shellcmdflag =
-            --     "-NoLogo -NoProfile -ExecutionPolicy RemoteSigned -Command [Console]::InputEncoding=[Console]::OutputEncoding=[System.Text.Encoding]::UTF8;",
-            --     shellredir = "-RedirectStandardOutput %s -NoNewWindow -Wait",
-            --     shellpipe = "2>&1 | Out-File -Encoding UTF8 %s; exit $LastExitCode",
-            --     shellquote = "",
-            --     shellxquote = "",
-            -- }
-            --
-            -- for option, value in pairs(powershell_options) do
-            --     vim.opt[option] = value
-            -- end
-
-            vim.cmd [[
-                let &shell = executable('pwsh') ? 'pwsh' : 'powershell'
-                "let &shellcmdflag = '-NoLogo -ExecutionPolicy RemoteSigned -Command [Console]::InputEncoding=[Console]::OutputEncoding=[System.Text.UTF8Encoding]::new();$PSDefaultParameterValues[''Out-File:Encoding'']=''utf8'';Remove-Alias -Force -ErrorAction SilentlyContinue tee;'
-                let &shellcmdflag = '-NoLogo -ExecutionPolicy RemoteSigned -Command [Console]::InputEncoding=[Console]::OutputEncoding=[System.Text.UTF8Encoding]::new();$PSDefaultParameterValues[''Out-File:Encoding'']=''utf8'';'
-                let &shellredir = '2>&1 | %%{ "$_" } | Out-File %s; exit $LastExitCode'
-                let &shellpipe  = '2>&1 | %%{ "$_" } | tee %s; exit $LastExitCode'
-                set shellquote= shellxquote=
-            ]]
-
-            require("toggleterm").setup {
-                open_mapping = [[<c-\>]],
-                insert_mappings = false,
-                terminal_mappings = false,
-            }
-        end
     },
 
     {

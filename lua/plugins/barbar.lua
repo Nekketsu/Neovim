@@ -43,7 +43,7 @@ return {
         {'<Space><C-p>', '<Cmd>BufferPick<CR>' },
         -- Sort automatically by...
         {'<Space>bb', '<Cmd>BufferOrderByBufferNumber<CR>' },
-        {'<Space>bd', '<Cmd>BufferOrderByDirectory<CR>' },
+        -- {'<Space>bd', '<Cmd>BufferOrderByDirectory<CR>' },
         {'<Space>bl', '<Cmd>BufferOrderByLanguage<CR>' },
         {'<Space>bw', '<Cmd>BufferOrderByWindowNumber<CR>' },
 

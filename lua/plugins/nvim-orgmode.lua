@@ -68,18 +68,6 @@ return {
                 }
             }
         })
-
-        vim.api.nvim_create_autocmd('FileType', {
-            pattern = 'org',
-            group = vim.api.nvim_create_augroup('orgmode_telescope_nvim', { clear = true }),
-            callback = function()
-                vim.keymap.set('n', '<leader>or', '<cmd>Telescope orgmode refile_heading<CR>')
-            end,
-        })
     end,
-    dependencies = {
-        'joaomsa/telescope-orgmode.nvim',
-        -- { 'nvim-treesitter/nvim-treesitter', lazy = true },
-    },
     event = 'VeryLazy'
 }
