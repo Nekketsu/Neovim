@@ -3,6 +3,7 @@ return {
     "nvim-telescope/telescope.nvim",
     dependencies = {
         "nvim-lua/plenary.nvim",
+        { 'nvim-telescope/telescope-fzf-native.nvim', build = 'cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release' },
         "nvim-telescope/telescope-ui-select.nvim",
         "debugloop/telescope-undo.nvim",
         "polirritmico/telescope-lazy-plugins.nvim"
@@ -12,16 +13,35 @@ return {
         local telescope = require('telescope')
 
         telescope.setup {
-            defaults = {
+            -- pickers = {
+            --     find_files = {
+            --         theme = "ivy"
+            --     }
+            -- },
+            defaults = require("telescope.themes").get_ivy({
                 mappings = {
                     i = { ['<c-t>'] = trouble.open },
                     n = { ['<c-t>'] = trouble.open },
                 },
-            },
+            }),
+            -- defaults = {
+            --     mappings = {
+            --         i = { ['<c-t>'] = trouble.open },
+            --         n = { ['<c-t>'] = trouble.open },
+            --     },
+            -- },
             extensions = {
+                -- fzf = {
+                --     fuzzy = true,                    -- false will only do exact matching
+                --     override_generic_sorter = true,  -- override the generic sorter
+                --     override_file_sorter = true,     -- override the file sorter
+                --     case_mode = "smart_case",        -- or "ignore_case" or "respect_case"
+                --     -- the default case_mode is "smart_case"
+                -- },
                 ["ui-select"] = {
-                    require("telescope.themes").get_dropdown {
-                    },
+                    -- require("telescope.themes").get_dropdown {
+                    -- },
+                    -- require("telescope.themes").get_ivy({})
                 },
                 undo = {
                     -- telescope-undo.nvim config, see below
@@ -37,10 +57,13 @@ return {
             }
         }
 
+        -- telescope.load_extension("fzf")
         telescope.load_extension("ui-select")
         telescope.load_extension("undo")
         telescope.load_extension("aerial")
         telescope.load_extension("dap")
+
+        require("config/telescope/multigrep").setup()
     end,
     keys = {
         {'<leader>ff', require("telescope.builtin").find_files, { desc = "Find files" }},
@@ -63,8 +86,8 @@ return {
         {'gd', require("telescope.builtin").lsp_definitions, { desc = "LSP definitions" }},
         -- {'gd', '<cmd>lua require("omnisharp_extended").telescope_lsp_definitions()<CR>', options},
         {'<Leader>D', require("telescope.builtin").lsp_type_definitions, { desc = "LSP type definitions" }},
-        {'gi', require("telescope.builtin").lsp_implementations, { desc = "LSP implementations" }},
-        {'gr', require("telescope.builtin").lsp_references, { desc = "LSP references" }},
+        {'gri', require("telescope.builtin").lsp_implementations, { desc = "LSP implementations" }},
+        {'grr', require("telescope.builtin").lsp_references, { desc = "LSP references" }},
         {'<Leader>ds', require("telescope.builtin").lsp_document_symbols, { desc = "LSP document symbols" }},
         -- {'<Leader>ws', require("telescope.builtin").lsp_workspace_symbols, { desc = "LSP workspace symbols" }},
         {'<Leader>ws', require("telescope.builtin").lsp_dynamic_workspace_symbols, { desc = "LSP workspace symbols" }},

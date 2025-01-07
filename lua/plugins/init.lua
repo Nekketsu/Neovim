@@ -61,6 +61,7 @@ return {
 
     {
         "NvChad/nvim-colorizer.lua",
+        event = "BufReadPre",
         opts = {
             -- user_default_options = {
             --     mode = "virtualtext"
@@ -521,13 +522,23 @@ return {
         }
     },
 
-    'terryma/vim-expand-region',
+    -- 'terryma/vim-expand-region',
 
-    'bronson/vim-visual-star-search',
+    -- 'bronson/vim-visual-star-search',
 
     {
         'nvim-treesitter/nvim-treesitter-context',
-        opts = { enable = true }
+        opts = { enable = true },
+        -- keys = {
+        --     { 'yoc', '<Cmd>TSContextToggle<CR>', desc = "Toggle TSContext" },
+        --     { '[oc', '<Cmd>TSContextEnable<CR>', desc = "Enable TSContext" },
+        --     { ']oc', '<Cmd>TSContextDisable<CR>', desc = "Disable TSContext" },
+        -- }
+        config = function()
+            vim.keymap.set("n", 'yoc', '<Cmd>TSContextToggle<CR>', { desc = "Toggle TSContext" })
+            vim.keymap.set("n", '[oc', '<Cmd>TSContextEnable<CR>', { desc = "Enable TSContext" })
+            vim.keymap.set("n", ']oc', '<Cmd>TSContextDisable<CR>', { desc = "Disable TSContext" })
+        end
     },
 
     {
