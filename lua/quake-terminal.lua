@@ -3,7 +3,7 @@ local Terminal = nil
 -- Define a Quake-style terminal
 local quake_terminal_id = -1
 local quake_terminal = nil
-local current_term = nil
+local current_term_id = quake_terminal_id
 
 local function get_or_create_quake_terminal()
     if not quake_terminal then
@@ -49,19 +49,14 @@ local function GetMotion(type)
         lines[1] = string.sub(lines[1], start_pos[3], end_pos[3])
     end
 
-    local motion_text = table.concat(lines, "\n") -- Concatenate lines if it's multiline
-
-    return motion_text
+    return lines
 end
 
 local function GetFile()
     -- Get all lines of the current buffer (file)
     local lines = vim.api.nvim_buf_get_lines(0, 0, -1, false) -- 0 = current buffer, range from line 0 to the end
 
-    -- Concatenate all lines into a single string with newlines
-    local file_content = table.concat(lines, "\n")
-
-    return file_content
+    return lines
 end
 
 local function GetVisual()
@@ -86,10 +81,7 @@ local function GetVisual()
         end
     end
 
-    -- Concatenate all lines into a single string with newlines
-    local selection_text = table.concat(lines, "\n")
-
-    return selection_text
+    return lines
 end
 
 local function get_or_create_terminal(id)
@@ -102,20 +94,30 @@ local function get_or_create_terminal(id)
     return term
 end
 
-local function send_motion_to_terminal(id)
-    if id == quake_terminal_id then
-        current_term = get_or_create_quake_terminal()
+local function send(term_id, commands)
+    local term
+    if term_id == quake_terminal_id then
+        term = get_or_create_quake_terminal()
     else
-        current_term = get_or_create_terminal(id)
+        term = get_or_create_terminal(term_id)
     end
+
+    for _, command in ipairs(commands) do
+        term:send(command .. "\n")
+    end
+end
+
+local function send_motion_to_quake_terminal(id)
+    current_term_id = id
+    vim.go.operatorfunc = "v:lua.require'quake-terminal'.send_motion_to_quake_terminal"
+end
+
+local function send_motion_to_terminal(id)
+    current_term_id = id
     vim.go.operatorfunc = "v:lua.require'quake-terminal'.send_motion_to_terminal"
 end
 
-
-
-local M = {}
-
-M.setup = function()
+function setup()
     vim.cmd [[
             let &shell = executable('pwsh') ? 'pwsh' : 'powershell'
             let &shellcmdflag = '-NoLogo -ExecutionPolicy RemoteSigned -Command [Console]::InputEncoding=[Console]::OutputEncoding=[System.Text.UTF8Encoding]::new();$PSDefaultParameterValues[''Out-File:Encoding'']=''utf8'';'
@@ -133,62 +135,72 @@ M.setup = function()
     Terminal = require('toggleterm.terminal').Terminal
 
 
-    vim.keymap.set("n", "º", quake_toggle)
+    vim.keymap.set("n", "º", quake_toggle, { desc = "Open Quake terminal" })
 
     -- Quake terminal
     -- Send visual selection
     vim.keymap.set("v", [[<leader>º]], function()
         local visual = GetVisual()
-        get_or_create_quake_terminal():send(visual .. "\n", false)
-    end)
+        send(quake_terminal_id, visual)
+    end, { desc = "Send to Quake terminal" })
     -- Send motion
     vim.keymap.set("n", [[<leader>º]], function()
-        send_motion_to_terminal(quake_terminal_id)
+        send_motion_to_quake_terminal(quake_terminal_id)
         return "g@"
-    end, { expr = true })
+    end, { expr = true, desc = "Send to Quake terminal..." })
     -- Send current line
     vim.keymap.set("n", [[<leader>ºº]], function()
-        send_motion_to_terminal(quake_terminal_id)
+        send_motion_to_quake_terminal(quake_terminal_id)
         return "g@_"
-    end, { expr = true })
+    end, { expr = true, desc = "Send line to Quake terminal" })
     -- Send whole file
     vim.keymap.set("n", [[<leader><leader>º]], function()
         local file = GetFile()
-        get_or_create_quake_terminal():send(file .. "\n", false)
-    end)
+        send(quake_terminal_id, file)
+    end, { desc = "Send buffer to Quake terminal" })
 
     -- Terminal
     -- Send visual selection
     vim.keymap.set("v", [[<leader><c-\>]], function()
-        local visual = GetVisual()
         local id = tonumber(vim.v.count) or 1
-        get_or_create_terminal(id):send(visual .. "\n", false)
-    end)
+        -- local visual = GetVisual()
+        -- send(id, visual);
+        send_motion_to_terminal(id)
+        return "g@"
+    end, { expr = true, desc = "Send to terminal" })
     -- Send motion
     vim.keymap.set("n", [[<leader><c-\>]], function()
         local id = tonumber(vim.v.count) or 1
-        send_motion_to_terminal(get_or_create_terminal(id))
+        send_motion_to_terminal(id)
         return "g@"
-    end, { expr = true })
+    end, { expr = true, desc = "Send to terminal..." })
     -- Send current line
     vim.keymap.set("n", [[<leader><c-\><c-\>]], function()
-        local line = vim.api.nvim_get_current_line()
         local id = tonumber(vim.v.count) or 1
-        get_or_create_terminal(id):send(line .. "\n", false)
+        send_motion_to_terminal(id)
         return "g@_"
-    end, { expr = true })
+    end, { expr = true, desc = "Send line to terminal" })
     -- Send whole file
     vim.keymap.set("n", [[<leader><leader><c-\>]], function()
-        local file = GetFile()
         local id = tonumber(vim.v.count) or 1
-        get_or_create_terminal(id):send(file .. "\n", false)
-    end)
+        send_motion_to_terminal(id)
+        return "ggg@G''"
+    end,  { expr = true, desc = "Send buffer to terminal" })
 end
 
-M.send_motion_to_terminal = function(type)
-    print("SEND MOTION")
+function _send_motion_to_quake_terminal(type)
     local motion = GetMotion(type)
-    current_term:send(motion .. "\n", false)
+    send(current_term_id, motion)
 end
+
+function _send_motion_to_terminal(type)
+    require("toggleterm").send_lines_to_terminal(type, false, { args = current_term_id })
+end
+
+local M = {
+    setup = setup,
+    send_motion_to_quake_terminal = _send_motion_to_quake_terminal,
+    send_motion_to_terminal = _send_motion_to_terminal
+}
 
 return M

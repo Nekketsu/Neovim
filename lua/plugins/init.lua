@@ -594,11 +594,11 @@ return {
         config = true
     },
 
-    -- {
-    --     "sphamba/smear-cursor.nvim",
-    --     opts = {},
-    -- },
-    --
+    {
+        "sphamba/smear-cursor.nvim",
+        opts = {},
+    },
+
     -- {
     --     "karb94/neoscroll.nvim",
     --     config = function ()
@@ -624,7 +624,7 @@ return {
     --             vim.keymap.set(modes, key, func)
     --         end
     --     end
-    -- }
+    -- },
 
     {
         "seblj/roslyn.nvim",
