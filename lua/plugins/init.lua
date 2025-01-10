@@ -690,10 +690,10 @@ return {
             -- add any custom options here
         },
         keys = {
-            { "<leader>qs", function() require("persistence").load() end, { desc = "Persistence load"} },
-            { "<leader>qS", function() require("persistence").select() end, { desc = "Persistence select"} },
-            { "<leader>ql", function() require("persistence").load({ last = true }) end, { desc = "Persistence load last"} },
-            { "<leader>qd", function() require("persistence").stop() end, { desc = "Persistence stop"} }
+            { "<leader>qs", function() require("persistence").load() end, desc = "Persistence load" },
+            { "<leader>qS", function() require("persistence").select() end, desc = "Persistence select" },
+            { "<leader>ql", function() require("persistence").load({ last = true }) end, desc = "Persistence load last" },
+            { "<leader>qd", function() require("persistence").stop() end, desc = "Persistence stop" }
         }
     },
 }
