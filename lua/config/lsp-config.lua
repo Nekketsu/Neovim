@@ -1,6 +1,6 @@
 -- Global mappings.
 -- See `:help vim.diagnostic.*` for documentation on any of the below functions
-vim.keymap.set('n', '<space>q', vim.diagnostic.setloclist)
+-- vim.keymap.set('n', '<space>q', vim.diagnostic.setloclist)
 
 -- local capabilities = require('cmp_nvim_lsp').default_capabilities()
 

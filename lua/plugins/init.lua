@@ -78,30 +78,62 @@ return {
         'bekaboo/dropbar.nvim',
     },
 
-    'hiphish/rainbow-delimiters.nvim',
     {
-        'lukas-reineke/indent-blankline.nvim',
+        'hiphish/rainbow-delimiters.nvim',
         config = function()
-            local highlight = {
-                'RainbowDelimiterBlue',
-                'RainbowDelimiterViolet',
-                'RainbowDelimiterYellow',
-            }
-            vim.g.rainbow_delimiters = { highlight = highlight }
-            require("ibl").setup {
-                indent = {
-                    highlight = highlight,
-                    char = '▏'
-                },
-                exclude = { filetypes = { "dashboard" } },
-            }
+            require("rainbow-delimiters.setup").setup({
+                highlight = {
+                    "RainbowDelimiterBlue",
+                    "RainbowDelimiterViolet",
+                    "RainbowDelimiterYellow"
+                }
+            })
+        end
+    },
 
-            local hooks = require "ibl.hooks"
-            hooks.register(hooks.type.SCOPE_HIGHLIGHT, hooks.builtin.scope_highlight_from_extmark)
-        end,
-        dependencies = {
-            'hiphish/rainbow-delimiters.nvim',
-        }
+    -- {
+    --     'lukas-reineke/indent-blankline.nvim',
+    --     config = function()
+    --         local highlight = {
+    --             'RainbowDelimiterBlue',
+    --             'RainbowDelimiterViolet',
+    --             'RainbowDelimiterYellow',
+    --         }
+    --         vim.g.rainbow_delimiters = { highlight = highlight }
+    --         require("ibl").setup {
+    --             indent = {
+    --                 highlight = highlight,
+    --                 char = '▏'
+    --             },
+    --             exclude = { filetypes = { "dashboard" } },
+    --         }
+    --
+    --         local hooks = require "ibl.hooks"
+    --         hooks.register(hooks.type.SCOPE_HIGHLIGHT, hooks.builtin.scope_highlight_from_extmark)
+    --     end,
+    --     dependencies = {
+    --         'hiphish/rainbow-delimiters.nvim',
+    --     }
+    -- },
+
+    {
+        "shellRaining/hlchunk.nvim",
+        event = { "BufReadPre", "BufNewFile" },
+        config = function()
+            require("hlchunk").setup({
+                chunk = {
+                    enable = true
+                },
+                indent = {
+                    enable = true,
+                    style = {
+                        "#" .. string.format("%x", vim.api.nvim_get_hl(0, {name = "RainbowDelimiterBlue"}).fg),
+                        "#" .. string.format("%x", vim.api.nvim_get_hl(0, {name = "RainbowDelimiterViolet"}).fg),
+                        "#" .. string.format("%x", vim.api.nvim_get_hl(0, {name = "RainbowDelimiterYellow"}).fg)
+                    }
+                }
+            })
+        end
     },
 
     -- {
@@ -115,6 +147,19 @@ return {
     --     --     }
     --     -- }
     -- },
+    
+    {
+        'Chaitanyabsprip/fastaction.nvim',
+        ---@type FastActionConfig
+        opts = {},
+        keys = {
+            {
+                "<leader>ca",
+                function() require("fastaction").code_action() end,
+                desc = "Fast action",
+            },
+        },
+    },
 
     {
         "anuvyklack/windows.nvim",
@@ -387,7 +432,23 @@ return {
     },
 
 
-    { 'kevinhwang91/nvim-bqf' },
+    -- { 'kevinhwang91/nvim-bqf' },
+
+    {
+        'stevearc/quicker.nvim',
+        event = "FileType qf",
+        ---@module "quicker"
+        ---@type quicker.SetupOptions
+        opts = {
+            keys = {
+                { ">", "<cmd>lua require('quicker').expand()<CR>", desc = "Expand quickfix content" },
+                { "<", "<cmd>lua require('quicker').collapse()<CR>", desc = "Collapse quickfix content" },
+            },
+            highlight = {
+                load_buffers = false
+            }
+        },
+    },
 
     -- Fugitive for Git
     {
@@ -541,6 +602,8 @@ return {
         end
     },
 
+"andersevenrud/nvim_context_vt",
+
     {
         "windwp/nvim-autopairs",
         config = true
@@ -640,5 +703,47 @@ return {
         config = function()
             require("easy-dotnet").setup({})
         end
-    }
+    },
+
+    {
+        "OXY2DEV/markview.nvim",
+        lazy = false,      -- Recommended
+        -- ft = "markdown" -- If you decide to lazy-load anyway
+
+        dependencies = {
+            "nvim-treesitter/nvim-treesitter",
+            "nvim-tree/nvim-web-devicons"
+        }
+    },
+
+    {
+        "iamcco/markdown-preview.nvim",
+        cmd = { "MarkdownPreviewToggle", "MarkdownPreview", "MarkdownPreviewStop" },
+        ft = { "markdown" },
+        build = function() vim.fn["mkdp#util#install"]() end,
+    },
+
+    {
+        'MeanderingProgrammer/render-markdown.nvim',
+        -- dependencies = { 'nvim-treesitter/nvim-treesitter', 'echasnovski/mini.nvim' }, -- if you use the mini.nvim suite
+        -- dependencies = { 'nvim-treesitter/nvim-treesitter', 'echasnovski/mini.icons' }, -- if you use standalone mini plugins
+        dependencies = { 'nvim-treesitter/nvim-treesitter', 'nvim-tree/nvim-web-devicons' }, -- if you prefer nvim-web-devicons
+        ---@module 'render-markdown'
+        ---@type render.md.UserConfig
+        opts = {},
+    },
+
+    {
+        "folke/persistence.nvim",
+        event = "BufReadPre", -- this will only start session saving when an actual file was opened
+        opts = {
+            -- add any custom options here
+        },
+        keys = {
+            { "<leader>qs", function() require("persistence").load() end },
+            { "<leader>qS", function() require("persistence").select() end },
+            { "<leader>ql", function() require("persistence").load({ last = true }) end },
+            { "<leader>qd", function() require("persistence").stop() end }
+        }
+    },
 }

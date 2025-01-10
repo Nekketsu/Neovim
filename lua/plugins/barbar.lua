@@ -31,6 +31,7 @@ return {
         -- Close buffer
         {'<A-c>', '<Cmd>BufferClose<CR>'},
         {'<A-S-c>', '<Cmd>BufferCloseAllButCurrent<CR>'},
+        {'<leader>bD', '<Cmd>BufferCloseAllButCurrent<CR>'},
         -- Wipeout buffer
         --                 :BufferWipeout
         -- Close commands
