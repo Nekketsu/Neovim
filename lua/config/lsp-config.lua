@@ -34,7 +34,7 @@ vim.api.nvim_create_autocmd('LspAttach', {
         vim.keymap.set('n', '<space>ll', vim.lsp.codelens.refresh, opts)
         vim.keymap.set('n', '<space>lr', vim.lsp.codelens.run, opts)
 
-        vim.lsp.codelens.refresh()
+        -- vim.lsp.codelens.refresh()
 
         local client = vim.lsp.get_client_by_id(ev.data.client_id)
 

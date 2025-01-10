@@ -44,11 +44,11 @@ return {
         vim.keymap.set("n", "]<C-T>", next_pt_repeat, { desc = "Next tag (preview)"})
         vim.keymap.set("n", "[<C-T>", previous_pt_repeat, { desc = "Previous tag (preview)"})
 
-        local next_diagnostic_repeat, previous_diagnostic_repeat = ts_repeat_move.make_repeatable_move_pair(function () vim.diagnostic.goto_next() end, function() vim.diagnostic.goto_prev() end)
+        local next_diagnostic_repeat, previous_diagnostic_repeat = ts_repeat_move.make_repeatable_move_pair(function () vim.diagnostic.jump({ count = 1 }) end, function() vim.diagnostic.jump({ count = -1 }) end)
         vim.keymap.set("n", "]d", next_diagnostic_repeat, { desc = "Next diagnostic"})
         vim.keymap.set("n", "[d", previous_diagnostic_repeat, { desc = "Previous diagnostic"})
 
-        local next_diagnostic_error, previous_diagnostic_error = ts_repeat_move.make_repeatable_move_pair(function () vim.diagnostic.goto_next({ severity = vim.diagnostic.severity.ERROR }) end, function() vim.diagnostic.goto_prev({ severity = vim.diagnostic.severity.ERROR }) end)
+        local next_diagnostic_error, previous_diagnostic_error = ts_repeat_move.make_repeatable_move_pair(function () vim.diagnostic.jump({ count = 1 }) end, function() vim.diagnostic.jump({ count = 1, severity = vim.diagnostic.severity.ERROR }) end)
         vim.keymap.set("n", "]D", next_diagnostic_error, { desc = "Next error"})
         vim.keymap.set("n", "[D", previous_diagnostic_error, { desc = "Previous error"})
     end

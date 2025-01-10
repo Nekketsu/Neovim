@@ -14,25 +14,7 @@ return {
                 functions = "NONE",
                 variables = "NONE",
             },
-            -- on_highlights = function(highlights, colors)
-            --     highlights.CursorLineNr = {
-            --         -- fg = "#af00af"
-            --         -- fg = colors.fg,
-            --         -- fg = colors.black,
-            --         -- bg = colors.blue
-            --         fg = colors.white
-            --         -- fg = "#b1a6f7"
-            --     }
-            --     highlights.LineNr = {
-            --         -- fg = "#b1a6f7"
-            --         fg =  colors.blue
-            --         -- fg = colors.fg
-            --     }
-            -- end,
         },
-        -- config = function()
-        --     vim.cmd [[colorscheme tokyonight-night]]
-        -- end
     },
     'mofiqul/vscode.nvim',
     'rebelot/kanagawa.nvim',
@@ -91,31 +73,6 @@ return {
         end
     },
 
-    -- {
-    --     'lukas-reineke/indent-blankline.nvim',
-    --     config = function()
-    --         local highlight = {
-    --             'RainbowDelimiterBlue',
-    --             'RainbowDelimiterViolet',
-    --             'RainbowDelimiterYellow',
-    --         }
-    --         vim.g.rainbow_delimiters = { highlight = highlight }
-    --         require("ibl").setup {
-    --             indent = {
-    --                 highlight = highlight,
-    --                 char = '▏'
-    --             },
-    --             exclude = { filetypes = { "dashboard" } },
-    --         }
-    --
-    --         local hooks = require "ibl.hooks"
-    --         hooks.register(hooks.type.SCOPE_HIGHLIGHT, hooks.builtin.scope_highlight_from_extmark)
-    --     end,
-    --     dependencies = {
-    --         'hiphish/rainbow-delimiters.nvim',
-    --     }
-    -- },
-
     {
         "shellRaining/hlchunk.nvim",
         event = { "BufReadPre", "BufNewFile" },
@@ -135,18 +92,6 @@ return {
             })
         end
     },
-
-    -- {
-    --     "luckasRanarison/clear-action.nvim",
-    --     config = function()
-    --         require("clear-action").setup()
-    --     end
-    --     -- opts = {
-    --     --     signs = {
-    --     --         show_label = true
-    --     --     }
-    --     -- }
-    -- },
     
     {
         'Chaitanyabsprip/fastaction.nvim',
@@ -230,12 +175,14 @@ return {
                 },
             },
             on_open = function()
-                vim.cmd("IBLDisable")
+                vim.cmd("DisableHLChunk")
+                vim.cmd("DisableHLIndent")
                 vim.cmd("SatelliteDisable")
             end,
             on_close = function()
                 vim.cmd("SatelliteEnable")
-                vim.cmd("IBLEnable")
+                vim.cmd("EnableHLChunk")
+                vim.cmd("EnableHLIndent")
             end,
         },
         keys = {
@@ -275,13 +222,6 @@ return {
         }
     },
 
-    -- {
-    --     "folke/neodev.nvim",
-    --     opts = {
-    --         library = { plugins = { "neotest", "nvim-dap-ui" }, types = true }
-    --     },
-    -- },
-
     -- LSP and completion
     {
         "williamboman/mason.nvim",
@@ -289,16 +229,87 @@ return {
         "neovim/nvim-lspconfig"
     },
 
-    -- {
-    --     'Wansmer/symbol-usage.nvim',
-    --     event = 'LspAttach', -- need run before LspAttach if you use nvim 0.9. On 0.10 use 'LspAttach'
-    --     config = function()
-    --         require('symbol-usage').setup()
-    --     end
-    -- },
+    {
+        'Wansmer/symbol-usage.nvim',
+        event = 'BufReadPre', -- need run before LspAttach if you use nvim 0.9. On 0.10 use 'LspAttach'
+        opts = {
+            references = { enabled = true, include_declaration = true },
+            definition = { enabled = true },
+            implementation = { enabled = true },
+            vt_position = "end_of_line"
+        },
+        config = function()
+            local function h(name) return vim.api.nvim_get_hl(0, { name = name }) end
 
+            -- hl-groups can have any name
+            vim.api.nvim_set_hl(0, 'SymbolUsageRounding', { fg = h('CursorLine').bg, italic = true })
+            vim.api.nvim_set_hl(0, 'SymbolUsageContent', { bg = h('CursorLine').bg, fg = h('Comment').fg, italic = true })
+            vim.api.nvim_set_hl(0, 'SymbolUsageRef', { fg = h('Function').fg, bg = h('CursorLine').bg, italic = true })
+            vim.api.nvim_set_hl(0, 'SymbolUsageDef', { fg = h('Type').fg, bg = h('CursorLine').bg, italic = true })
+            vim.api.nvim_set_hl(0, 'SymbolUsageImpl', { fg = h('@keyword').fg, bg = h('CursorLine').bg, italic = true })
 
-    -- "Hoffs/omnisharp-extended-lsp.nvim",
+            local function text_format(symbol)
+                local res = {}
+
+                local round_start = { '', 'SymbolUsageRounding' }
+                local round_end = { '', 'SymbolUsageRounding' }
+
+                -- Indicator that shows if there are any other symbols in the same line
+                local stacked_functions_content = symbol.stacked_count > 0
+                and ("+%s"):format(symbol.stacked_count)
+                or ''
+
+                if symbol.references then
+                    local usage = symbol.references <= 1 and 'usage' or 'usages'
+                    local num = symbol.references == 0 and 'no' or symbol.references
+                    table.insert(res, round_start)
+                    table.insert(res, { '󰌹 ', 'SymbolUsageRef' })
+                    table.insert(res, { ('%s %s'):format(num, usage), 'SymbolUsageContent' })
+                    table.insert(res, round_end)
+                end
+
+                if symbol.definition then
+                    if #res > 0 then
+                        table.insert(res, { ' ', 'NonText' })
+                    end
+                    table.insert(res, round_start)
+                    table.insert(res, { '󰳽 ', 'SymbolUsageDef' })
+                    table.insert(res, { symbol.definition .. ' defs', 'SymbolUsageContent' })
+                    table.insert(res, round_end)
+                end
+
+                if symbol.implementation then
+                    if #res > 0 then
+                        table.insert(res, { ' ', 'NonText' })
+                    end
+                    table.insert(res, round_start)
+                    table.insert(res, { '󰡱 ', 'SymbolUsageImpl' })
+                    table.insert(res, { symbol.implementation .. ' impls', 'SymbolUsageContent' })
+                    table.insert(res, round_end)
+                end
+
+                if stacked_functions_content ~= '' then
+                    if #res > 0 then
+                        table.insert(res, { ' ', 'NonText' })
+                    end
+                    table.insert(res, round_start)
+                    table.insert(res, { ' ', 'SymbolUsageImpl' })
+                    table.insert(res, { stacked_functions_content, 'SymbolUsageContent' })
+                    table.insert(res, round_end)
+                end
+
+                return res
+            end
+
+            require('symbol-usage').setup({
+                vt_position = "end_of_line",
+                references = { enabled = true, include_declaration = true },
+                definition = { enabled = true },
+                implementation = { enabled = true },
+                text_format = text_format,
+            })
+        end
+    },
 
     {
         "https://git.sr.ht/~whynothugo/lsp_lines.nvim",
@@ -361,27 +372,11 @@ return {
             "nvim-treesitter/nvim-treesitter"
         }
     },
-    -- {
-    --     'Pocco81/dap-buddy.nvim',
-    --     config = function()
-    --         require('telescope').load_extension('dap')
-    --     end
-    -- },
 
     {
         'leoluz/nvim-dap-go',
         config = true
     },
-
-    -- 'vim-test/vim-test',
-
-    -- use({
-    --     "andythigpen/nvim-coverage",
-    --     dependencies = "nvim-lua/plenary.nvim",
-    --     config = function()
-    --         require("user.coverage")
-    --     end,
-    -- })
 
     'rafamadriz/friendly-snippets',
 
@@ -476,11 +471,8 @@ return {
             {'<leader>gd', '<cmd>DiffviewOpen<CR>', desc = "Git diffview"}
         }
     },
-    -- { 'f-person/git-blame.nvim' },
 
     'tpope/vim-abolish',
-    -- 'tpope/vim-surround',
-    -- use 'tpope/vim-commentary'
     -- 'tpope/vim-unimpaired',
     'tpope/vim-repeat',
     'tpope/vim-characterize',
@@ -583,10 +575,6 @@ return {
         }
     },
 
-    -- 'terryma/vim-expand-region',
-
-    -- 'bronson/vim-visual-star-search',
-
     {
         'nvim-treesitter/nvim-treesitter-context',
         opts = { enable = true },
@@ -631,17 +619,6 @@ return {
         end
     },
 
-    -- {
-    --     'glepnir/dashboard-nvim',
-    --     event = 'VimEnter',
-    --     config = function()
-    --         require('dashboard').setup {
-    --             theme = "hyper"
-    --         }
-    --     end,
-    --     dependencies = { {'nvim-tree/nvim-web-devicons'}}
-    -- }
-
     {
         "romainl/vim-cool"
     },
@@ -661,33 +638,6 @@ return {
         "sphamba/smear-cursor.nvim",
         opts = {},
     },
-
-    -- {
-    --     "karb94/neoscroll.nvim",
-    --     config = function ()
-    --         local neoscroll = require('neoscroll')
-    --         neoscroll.setup({
-    --             -- Default easing function used in any animation where
-    --             -- the `easing` argument has not been explicitly supplied
-    --             easing = "quadratic"
-    --         })
-    --         local keymap = {
-    --             -- Use the "sine" easing function
-    --             ["<C-u>"] = function() neoscroll.ctrl_u({ duration = 100; easing = 'sine' }) end;
-    --             ["<C-d>"] = function() neoscroll.ctrl_d({ duration = 100; easing = 'sine' }) end;
-    --             -- Use the "circular" easing function
-    --             ["<C-b>"] = function() neoscroll.ctrl_b({ duration = 100; easing = 'circular' }) end;
-    --             ["<C-f>"] = function() neoscroll.ctrl_f({ duration = 100; easing = 'circular' }) end;
-    --             -- When no value is passed the `easing` option supplied in `setup()` is used
-    --             ["<C-y>"] = function() neoscroll.scroll(-0.1, { move_cursor=false; duration = 100 }) end;
-    --             ["<C-e>"] = function() neoscroll.scroll(0.1, { move_cursor=false; duration = 100 }) end;
-    --         }
-    --         local modes = { 'n', 'v', 'x' }
-    --         for key, func in pairs(keymap) do
-    --             vim.keymap.set(modes, key, func)
-    --         end
-    --     end
-    -- },
 
     {
         "seblj/roslyn.nvim",
