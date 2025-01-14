@@ -92,7 +92,7 @@ return {
             })
         end
     },
-    
+
     {
         'Chaitanyabsprip/fastaction.nvim',
         ---@type FastActionConfig
@@ -301,6 +301,7 @@ return {
                 return res
             end
 
+---@diagnostic disable-next-line: missing-fields
             require('symbol-usage').setup({
                 vt_position = "end_of_line",
                 references = { enabled = true, include_declaration = true },
@@ -427,7 +428,32 @@ return {
     },
 
 
-    -- { 'kevinhwang91/nvim-bqf' },
+    {
+        'kevinhwang91/nvim-bqf',
+        dependencies = {
+                "junegunn/fzf",
+                build = function() vim.fn["fzf#install"]() end,
+        },
+        opts = {
+            func_map = {
+                prevhist = "g<",
+                nexthist = "g>"
+            }
+        },
+        -- config = function()
+        --     local function configureWindow()
+        --         --- other settings
+        --         vim.keymap.set({'n'}, 'zf', require('telescope.builtin').quickfix, {buffer = true})
+        --     end
+        --
+        --     local augroup = vim.api.nvim_create_augroup ('BqfMappings', {clear = true })
+        --     vim.api.nvim_create_autocmd ('FileType', {
+        --         group = augroup,
+        --         pattern = 'qf',
+        --         callback = configureWindow,
+        --     })
+        -- end
+    },
 
     {
         'stevearc/quicker.nvim',
@@ -470,6 +496,22 @@ return {
         keys = {
             {'<leader>gd', '<cmd>DiffviewOpen<CR>', desc = "Git diffview"}
         }
+    },
+
+    {
+        "refractalize/oil-git-status.nvim",
+
+        dependencies = {
+            "stevearc/oil.nvim",
+        },
+
+        config = true,
+    },
+
+    {
+        "JezerM/oil-lsp-diagnostics.nvim",
+        dependencies = { "stevearc/oil.nvim" },
+        opts = {}
     },
 
     'tpope/vim-abolish',
@@ -561,9 +603,9 @@ return {
     {
         "chrisgrieser/nvim-various-textobjs",
         event = "VeryLazy",
-        opts = { 
+        opts = {
             keymaps = {
-                useDefaults = true 
+                useDefaults = true
             }
         },
     },
@@ -619,9 +661,7 @@ return {
         end
     },
 
-    {
-        "romainl/vim-cool"
-    },
+    "romainl/vim-cool",
 
     {
         'MoaidHathot/dotnet.nvim',
@@ -696,4 +736,38 @@ return {
             { "<leader>qd", function() require("persistence").stop() end, desc = "Persistence stop" }
         }
     },
+
+    {
+        "nvzone/menu",
+        lazy = true,
+        dependencies = { "nvzone/volt" , lazy = true },
+        keys = {
+            { "<C-T>", function() require("menu").open("default") end },
+            { "<RightMouse>",
+                function()
+                    require("menu.utils").delete_old_menus()
+
+                    vim.cmd.exec '"normal! \\<RightMouse>"'
+
+                    local buf = vim.api.nvim_win_get_buf(vim.fn.getmousepos().winid)
+                    local options = vim.bo[buf].ft == "NvimTree" and "nvimtree" or "default"
+                    if vim.bo[buf].ft == "NvimTree" then
+                        options = "nvimtree"
+                    -- elseif vim.bo[buf].ft == "neo-tree" then
+                    --     options = "neotree"
+                    -- else
+                        -- options = "default"
+                    end
+                        
+
+                    require("menu").open(options, { mouse = true })
+                end,
+                mode = { "n", "v" } }
+        }
+    },
+    {
+        "nvzone/minty",
+        cmd = { "Shades", "Huefy" },
+        dependencies = { "nvzone/volt", lazy = true }
+    }
 }

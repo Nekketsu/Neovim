@@ -22,7 +22,7 @@ return {
         { "<C-h>", "<cmd>Treewalker Left<cr>",                      mode = { "n", "v" } },
         { "<A-j>", '<cmd>Treewalker SwapDown<cr>' },
         { "<A-k>", '<cmd>Treewalker SwapUp<cr>' },
-        { "<A-l>", ":TSTextobjectSwapNext @parameter.inner<CR>" },
-        { "<A-h>", ":TSTextobjectSwapPrevious @parameter.inner<CR>" },
+        { "<A-l>", "<cmd>TSTextobjectSwapNext @parameter.inner<CR>" },
+        { "<A-h>", "<cmd>TSTextobjectSwapPrevious @parameter.inner<CR>" },
     }
 }

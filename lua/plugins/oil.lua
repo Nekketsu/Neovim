@@ -7,6 +7,9 @@ return {
                 ["."] = "actions.open_cmdline",
                 -- ["<Esc>"] = "actions.close",
                 ["gq"] = "actions.close"
+            },
+            win_options = {
+                signcolumn = "yes:2"
             }
         })
 
