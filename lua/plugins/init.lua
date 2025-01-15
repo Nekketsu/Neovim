@@ -692,6 +692,7 @@ return {
         dependencies = { "nvim-lua/plenary.nvim", 'nvim-telescope/telescope.nvim', },
         config = function()
             require("easy-dotnet").setup({})
+            require("dotnet-dap").register_net_dap()
         end
     },
 

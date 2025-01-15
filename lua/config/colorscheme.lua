@@ -18,5 +18,5 @@ for key, hl_group in pairs(hl_groups) do
 end
 
 vim.api.nvim_set_hl(0, "DiagnosticUnderlineInfo", { underdotted = true, sp = "#ffcc66" })
--- vim.api.nvim_set_hl(0, "DiagnosticUnderlineHint", { underdotted = true, sp = "#4bc1fe" })
-vim.api.nvim_set_hl(0, "DiagnosticUnderlineHint", {})
+vim.api.nvim_set_hl(0, "DiagnosticUnderlineHint", { underdotted = true, sp = "#4bc1fe" })
+-- vim.api.nvim_set_hl(0, "DiagnosticUnderlineHint", {})

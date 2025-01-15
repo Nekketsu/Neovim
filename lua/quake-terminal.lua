@@ -188,12 +188,12 @@ function setup()
     end,  { expr = true, desc = "Send buffer to terminal" })
 end
 
-function _send_motion_to_quake_terminal(type)
+local function _send_motion_to_quake_terminal(type)
     local motion = GetMotion(type)
     send(current_term_id, motion)
 end
 
-function _send_motion_to_terminal(type)
+local function _send_motion_to_terminal(type)
     require("toggleterm").send_lines_to_terminal(type, false, { args = current_term_id })
 end
 
