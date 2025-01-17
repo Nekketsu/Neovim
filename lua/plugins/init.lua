@@ -688,15 +688,6 @@ return {
     },
 
     {
-        "GustavEikaas/easy-dotnet.nvim",
-        dependencies = { "nvim-lua/plenary.nvim", 'nvim-telescope/telescope.nvim', },
-        config = function()
-            require("easy-dotnet").setup({})
-            require("dotnet-dap").register_net_dap()
-        end
-    },
-
-    {
         "OXY2DEV/markview.nvim",
         lazy = false,      -- Recommended
         -- ft = "markdown" -- If you decide to lazy-load anyway
@@ -770,5 +761,19 @@ return {
         "nvzone/minty",
         cmd = { "Shades", "Huefy" },
         dependencies = { "nvzone/volt", lazy = true }
+    },
+
+    {
+        'stevearc/overseer.nvim',
+        -- opts = {
+        --     templates = {
+        --         { "builtin", "user.net_build" }
+        --     }
+        -- },
+        config = function()
+            require("overseer").setup({
+                templates = { "builtin", "user.net_build" },
+            })
+        end
     }
 }

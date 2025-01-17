@@ -54,6 +54,7 @@ return {
                         cond = require("noice").api.status.search.has,
                         color = { fg = "#ff9e64" },
                     },
+                    "overseer",
                     'encoding', 'fileformat', 'filetype'
                 },
                 lualine_y = {'progress'},
