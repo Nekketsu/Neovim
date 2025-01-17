@@ -71,10 +71,14 @@ return {
             send_payload(self.client, response)
         end
 
+        local extensions_path = vim.fs.joinpath(vim.env.USERPROFILE, ".vscode\\extensions")
+        local pattern = "ms-dotnettools.csharp-*"
+        local vsdbg_path = vim.fn.glob(vim.fs.joinpath(extensions_path, pattern), true, true)[1]
+
         dap.adapters.coreclr = {
             id='coreclr',
             type='executable',
-            command=vim.fs.joinpath(vim.env.USERPROFILE, '.vscode\\extensions\\ms-dotnettools.csharp-2.61.28-win32-x64\\.debugger\\x86_64\\vsdbg-ui.exe'),
+            command=vim.fs.joinpath(vsdbg_path, ".debugger", "x86_64", "vsdbg-ui.exe"),
             args={ '--interpreter=vscode' },
             options={
                 externalTerminal = true,
