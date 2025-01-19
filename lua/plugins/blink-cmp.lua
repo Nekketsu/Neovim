@@ -33,7 +33,7 @@ return {
         -- default list of enabled providers defined so that you can extend it
         -- elsewhere in your config, without redefining it, via `opts_extend`
         sources = {
-            default = { "lazydev", 'lsp', 'path', 'snippets', 'buffer' },
+            default = { "lazydev", 'lsp', 'path', 'snippets', 'buffer', 'dadbod' },
             -- optionally disable cmdline completions
             -- cmdline = {},
             providers = {
@@ -48,6 +48,7 @@ return {
                     module = 'render-markdown.integ.blink',
                     fallbacks = { 'lsp' },
                 },
+                dadbod = { name = "Dadbod", module = "vim_dadbod_completion.blink" }
             },
         },
 

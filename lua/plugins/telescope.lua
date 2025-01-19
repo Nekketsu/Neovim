@@ -6,7 +6,8 @@ return {
         { 'nvim-telescope/telescope-fzf-native.nvim', build = 'cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release' },
         "nvim-telescope/telescope-ui-select.nvim",
         "debugloop/telescope-undo.nvim",
-        "polirritmico/telescope-lazy-plugins.nvim"
+        "polirritmico/telescope-lazy-plugins.nvim",
+        "milanglacier/yarepl.nvim"
     },
     config = function()
         local trouble = require('trouble.sources.telescope')
@@ -62,6 +63,7 @@ return {
         telescope.load_extension("undo")
         telescope.load_extension("aerial")
         telescope.load_extension("dap")
+        telescope.load_extension("REPLShow")
 
         require("config/telescope/multigrep").setup()
     end,
@@ -95,5 +97,7 @@ return {
         -- {'<Leader>ts', '<cmd>Telescope treesitter<CR>', ptions},
 
         {"<leader>U", "<cmd>Telescope undo<cr>", { desc = "Telescope undo" }},
+
+        {"<leader>rv", "<cmd>Telescope REPLShow<cr>", { desc = "Telescope REPLShow"}}
     }
 }

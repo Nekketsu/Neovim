@@ -226,7 +226,18 @@ return {
     {
         "williamboman/mason.nvim",
         "williamboman/mason-lspconfig.nvim",
-        "neovim/nvim-lspconfig"
+        "neovim/nvim-lspconfig",
+        config = function()
+            require("mason").setup()
+---@diagnostic disable-next-line: missing-fields
+            require("mason-lspconfig").setup({
+                ensure_installed = {
+                    "asm_lsp", "clangd", "codelldb", "cpptools", "css-lsp", "debugpy", "gopls",
+                    "html-lsp", "json-lsp", "lua-language-server", "netcoredbg", "pyright",
+                    "roslyn", "rust-analyzer", "rzls", "typescript-language-server"
+                }
+            })
+        end
     },
 
     {
@@ -563,6 +574,13 @@ return {
         end,
     },
 
+    {
+        'davesavic/dadbod-ui-yank',
+        dependencies = { 'kristijanhusak/vim-dadbod-ui' },
+        config = function()
+            require('dadbod-ui-yank').setup()
+        end,
+    },
 
     -- 'tommcdo/vim-exchange',
     'tommcdo/vim-lion',
