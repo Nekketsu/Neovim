@@ -232,7 +232,7 @@ return {
 ---@diagnostic disable-next-line: missing-fields
             require("mason-lspconfig").setup({
                 ensure_installed = {
-                    "asm_lsp", "clangd", "codelldb", "cpptools", "css-lsp", "debugpy", "gopls",
+                    "asm_lsp", "clangd", "codelldb", "cpptools", "css-lsp", "csharpier", "debugpy", "gopls",
                     "html-lsp", "json-lsp", "lua-language-server", "netcoredbg", "pyright",
                     "roslyn", "rust-analyzer", "rzls", "typescript-language-server"
                 }
