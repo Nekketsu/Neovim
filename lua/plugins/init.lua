@@ -504,6 +504,13 @@ return {
     {
         'sindrets/diffview.nvim',
         dependencies = 'nvim-lua/plenary.nvim',
+        opts = {
+            keymaps = {
+                file_panel = {
+                    ["q"] = "<cmd>DiffviewClose<cr>"
+                }
+            }
+        },
         keys = {
             {'<leader>gd', '<cmd>DiffviewOpen<CR>', desc = "Git diffview"}
         }
