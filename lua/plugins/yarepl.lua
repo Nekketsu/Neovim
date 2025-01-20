@@ -27,6 +27,7 @@ return {
                 R = { cmd = 'R', formatter = yarepl.formatter.trim_empty_lines },
                 bash = { cmd = 'bash', formatter = yarepl.formatter.trim_empty_lines },
                 zsh = { cmd = 'zsh', formatter = yarepl.formatter.bracketed_pasting },
+                csharp = { cmd = 'csharprepl', formatter = yarepl.formatter.bracketed_pasting },
             },
             -- when a REPL process exits, should the window associated with those REPLs closed?
             close_on_exit = true,
