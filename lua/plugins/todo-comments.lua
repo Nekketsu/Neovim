@@ -18,6 +18,7 @@ return {
         vim.keymap.set("n", "[t", previous_todo_comment_repeat, { desc = "Previous todo comment"})
     end,
     keys = {
-        {"<leader>T", "<cmd>TodoTrouble<cr>", desc = "TODO" }
+        {"<leader>T", "<cmd>TodoTrouble<cr>", desc = "TODO Troube"},
+        {"<leader>ft", "<cmd>TodoTelescope<cr>", desc = "TODO Telescope"}
     }
 }
