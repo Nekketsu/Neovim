@@ -324,37 +324,6 @@ return {
     },
 
     {
-        "https://git.sr.ht/~whynothugo/lsp_lines.nvim",
-        config = function()
-            require("lsp_lines").setup()
-            vim.diagnostic.config({ virtual_lines = false, virtual_text = { severity = { min = vim.diagnostic.severity.WARN }}})
-        end,
-        keys = {
-            {
-                "yoe",
-                function ()
-                    if require('lsp_lines').toggle() then
-                        vim.diagnostic.config({ virtual_lines = true, virtual_text = false })
-                    else
-                        vim.diagnostic.config({ virtual_lines = false, virtual_text = { severity = { min = vim.diagnostic.severity.WARN }}})
-                    end
-                end,
-                desc = "Toggle lsp_lines" },
-            { "[oe",
-                function ()
-                    vim.diagnostic.config({ virtual_lines = true, virtual_text = false })
-                end,
-                desc = "Enable lsp_lines" },
-            {
-                "]oe",
-                function ()
-                    vim.diagnostic.config({ virtual_lines = false, virtual_text = { severity = { min = vim.diagnostic.severity.WARN }}})
-                end,
-                desc = "Disable lsp_lines" },
-        },
-    },
-
-    {
         "soulis-1256/eagle.nvim",
         config = function()
             require("eagle").setup({})
@@ -776,8 +745,8 @@ return {
                     -- else
                         -- options = "default"
                     end
-                        
 
+                        
                     require("menu").open(options, { mouse = true })
                 end,
                 mode = { "n", "v" } }
