@@ -6,10 +6,10 @@ vim.keymap.set('n', '<space>Y', function() require("pickers.spectre").toggle() e
 
 vim.keymap.set("n", "yoe", function()
     if vim.diagnostic.config().virtual_lines then
-        vim.diagnostic.config({ virtual_lines = false, virtual_text = true, severity = { min = vim.diagnostic.severity.WARN} })
+        vim.diagnostic.config({ virtual_lines = false, virtual_text = { severity = { min = vim.diagnostic.severity.WARN }}, signs = false})
     else
-        vim.diagnostic.config({ virtual_lines = true, virtual_text = false, severity = { min = vim.diagnostic.severity.WARN} })
+        vim.diagnostic.config({ virtual_lines = { severity = { min = vim.diagnostic.severity.WARN }}, virtual_text = false, severity = { min = vim.diagnostic.severity.WARN, signs = false }})
     end
 end)
-vim.keymap.set("n", "[oe", function() vim.diagnostic.config({ virtual_lines = true, virtual_text = false }) end)
-vim.keymap.set("n", "]oe", function() vim.diagnostic.config({ virtual_lines = false, virtual_text = true }) end)
+vim.keymap.set("n", "[oe", function() vim.diagnostic.config({ virtual_lines = { severity = { min = vim.diagnostic.severity.WARN }}, virtual_text = false, severity = { min = vim.diagnostic.severity.WARN}, signs = false }) end)
+vim.keymap.set("n", "]oe", function() vim.diagnostic.config({ virtual_lines = false, virtual_text = { severity = { min = vim.diagnostic.severity.WARN }}, severity = { min = vim.diagnostic.severity.WARN}, signs = false }) end)

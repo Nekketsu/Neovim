@@ -33,8 +33,9 @@ vim.opt.inccommand = "split"
 vim.o.mousemoveevent = true
 
 vim.diagnostic.config({
-    virtual_text = { virtual_lines = false, virtual_text = true, severity = { min = vim.diagnostic.severity.WARN} },
-    underline = true,
+    virtual_lines = false,
+    virtual_text = { severity = { min = vim.diagnostic.severity.WARN }},
+    -- underline = true,
     signs = false
     -- signs = { severity = {vim.diagnostic.severity.ERROR, vim.diagnostic.severity.WARN, vim.diagnostic.severity.INFO, --[[ vim.diagnostic.severity.HINT ]]}}
 })
