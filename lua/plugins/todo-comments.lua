@@ -18,7 +18,9 @@ return {
         vim.keymap.set("n", "[t", previous_todo_comment_repeat, { desc = "Previous todo comment"})
     end,
     keys = {
-        {"<leader>T", "<cmd>TodoTrouble<cr>", desc = "TODO Troube"},
-        {"<leader>ft", "<cmd>TodoTelescope<cr>", desc = "TODO Telescope"}
+        -- {"<leader>T", "<cmd>TodoTrouble<cr>", desc = "TODO Troube"},
+        -- {"<leader>ft", "<cmd>TodoTelescope<cr>", desc = "TODO Telescope"}
+        { "<leader>st", function() Snacks.picker.todo_comments() end, desc = "Todo" },
+        { "<leader>sT", function () Snacks.picker.todo_comments({ keywords = { "TODO", "FIX", "FIXME" } }) end, desc = "Todo/Fix/Fixme" },
     }
 }
