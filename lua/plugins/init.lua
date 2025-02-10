@@ -10,10 +10,8 @@ return {
             styles = {
                 -- Style to be applied to different syntax groups
                 -- Value is any valid attr-list value `:help attr-list`
-                comments = "NONE",
-                keywords = "NONE",
-                functions = "NONE",
-                variables = "NONE",
+                comments = { italic = false },
+                keywords = { italic = false },
             },
         },
     },
@@ -457,7 +455,7 @@ return {
         'tpope/vim-fugitive',
         keys = {
             {'<Leader>gs', '<cmd>Git<CR>', desc = "Git status"},
-            {'<Leader>gl', '<cmd>Gclog<CR>', desc = "git log"}
+            -- {'<Leader>gl', '<cmd>Gclog<CR>', desc = "git log"}
         }
     },
     'tpope/vim-rhubarb',
@@ -507,6 +505,27 @@ return {
     'tpope/vim-repeat',
     'tpope/vim-characterize',
     'tpope/vim-rsi',
+
+    -- {
+    --     'assistcontrol/readline.nvim',
+    --     keys = {
+    --         { '<C-k>', function() require("readline").kill_line() end, mode = "!", desc = "Kill line" },
+    --         { '<C-u>', function() require("readline").backward_kill_line() end, mode = "!", desc = "Backdward kill line" },
+    --         { '<M-d>', function() require("readline").kill_word() end, mode = "!", desc = "Kill word" },
+    --         { '<M-BS>', function() require("readline").backward_kill_word() end, mode = "!", desc = "Backward kill word" },
+    --         { '<C-w>', function() require("readline").unix_word_rubout() end, mode = "!", desc = "Unix word rubout" },
+    --         { '<C-d>', '<Delete>' , mode = "!", desc = "Delete char" },
+    --         { '<C-h>', '<BS>', mode = "!", desc = "Backward delete char" },
+    --         { '<C-a>', function() require("readline").beginning_of_line() end, mode = "!", desc = "Beginning of line" },
+    --         { '<C-e>', function() require("readline").end_of_line() end, mode = "!", desc = "End of line" },
+    --         { '<M-f>', function() require("readline").forward_word() end, mode = "!", desc = "Forward word" },
+    --         { '<M-b>', function() require("readline").backward_word() end, mode = "!", desc = "Backward word" },
+    --         { '<C-f>', '<Right>', mode = "!", desc = "Forward char" },
+    --         { '<C-b>', '<Left>', mode = "!", desc = "Backward char" },
+    --         { '<C-n>', '<Down>', mode = "!", desc = "Next line" },
+    --         { '<C-p>', '<Up>', mode = "!", desc = "Previous line" },
+    --     }
+    -- },
 
     -- {
     --     'numToStr/Comment.nvim',
@@ -685,6 +704,7 @@ return {
 
     {
         "OXY2DEV/markview.nvim",
+        branch = "dev",
         lazy = false,      -- Recommended
         -- ft = "markdown" -- If you decide to lazy-load anyway
 

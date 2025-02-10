@@ -52,6 +52,9 @@ return {
             -- elsewhere in your config, without redefining it, via `opts_extend`
             sources = {
                 default = { "lazydev", "lsp", "path", "snippets", "buffer", "dadbod", "dap" },
+                per_filetype = {
+                    org = {'orgmode'}
+                },
                 -- optionally disable cmdline completions
                 -- cmdline = {},
                 providers = {
@@ -65,6 +68,11 @@ return {
                         name = "RenderMarkdown",
                         module = "render-markdown.integ.blink",
                         fallbacks = { 'lsp' },
+                    },
+                    orgmode = {
+                        name = 'Orgmode',
+                        module = 'orgmode.org.autocompletion.blink',
+                        fallbacks = { 'buffer' },
                     },
                     dadbod = { name = "Dadbod", module = "vim_dadbod_completion.blink" },
                     dap = {

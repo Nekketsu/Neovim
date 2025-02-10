@@ -1,6 +1,6 @@
 return {
     "milanglacier/yarepl.nvim",
-    lazy = false,
+    event = "VeryLazy",
     config = function ()
         -- below is the default configuration, there's no need to copy paste them if
         -- you are satisfied with the default configuration, just calling
@@ -57,5 +57,6 @@ return {
         { "<leader>rc", "<Plug>(REPLSendVisual)", mode = "v", desc = "REPLSendVisual" },
         { "<leader>rq", "<Plug>(REPLClose)", desc = "REPLClose" },
         { "<leader>rx", "<Plug>(REPLExec)", desc = "REPLExec" },
+        { '<Leader>rv', function() require('yarepl.extensions.snacks').repl_show({ title = "Yarepl REPL"}) end, desc = "REPLShow" }
     }
 }

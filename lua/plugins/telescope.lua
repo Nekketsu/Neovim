@@ -63,7 +63,7 @@ return {
         telescope.load_extension("undo")
         telescope.load_extension("aerial")
         telescope.load_extension("dap")
-        telescope.load_extension("REPLShow")
+        -- telescope.load_extension("REPLShow")
 
         require("config/telescope/multigrep").setup()
     end,
@@ -95,6 +95,6 @@ return {
 
         {"<leader>U", "<cmd>Telescope undo<cr>", { desc = "Telescope undo" }},
 
-        {"<leader>rv", "<cmd>Telescope REPLShow<cr>", { desc = "Telescope REPLShow"}}
+        -- {"<leader>rv", "<cmd>Telescope REPLShow<cr>", { desc = "Telescope REPLShow"}}
     }
 }
