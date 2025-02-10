@@ -73,26 +73,6 @@ return {
     },
 
     {
-        "shellRaining/hlchunk.nvim",
-        event = { "BufReadPre", "BufNewFile" },
-        config = function()
-            require("hlchunk").setup({
-                chunk = {
-                    enable = true
-                },
-                indent = {
-                    enable = true,
-                    style = {
-                        "#" .. string.format("%x", vim.api.nvim_get_hl(0, {name = "RainbowDelimiterBlue"}).fg),
-                        "#" .. string.format("%x", vim.api.nvim_get_hl(0, {name = "RainbowDelimiterViolet"}).fg),
-                        "#" .. string.format("%x", vim.api.nvim_get_hl(0, {name = "RainbowDelimiterYellow"}).fg)
-                    }
-                }
-            })
-        end
-    },
-
-    {
         'Chaitanyabsprip/fastaction.nvim',
         ---@type FastActionConfig
         opts = {},
@@ -104,26 +84,6 @@ return {
             },
         },
     },
-
-    -- {
-    --     "anuvyklack/windows.nvim",
-    --     dependencies = {
-    --         "anuvyklack/middleclass",
-    --         -- "anuvyklack/animation.nvim"
-    --     },
-    --     config = function()
-    --         -- vim.o.winwidth = 10
-    --         -- vim.o.winminwidth = 10
-    --         -- vim.o.equalalways = false
-    --         require('windows').setup()
-    --     end,
-    --     keys = {
-    --         { '<C-w>z', '<Cmd>WindowsMaximize<CR>' },
-    --         { '<C-w>_', '<Cmd>WindowsMaximizeVertically<CR>' },
-    --         { '<C-w>|', '<Cmd>WindowsMaximizeHorizontally<CR>' },
-    --         { '<C-w>=', '<Cmd>WindowsEqualize<CR>' }
-    --     }
-    -- },
 
     {
         "folke/which-key.nvim",
@@ -143,51 +103,6 @@ return {
             },
         },
     },
-
-    -- {
-    --     'folke/twilight.nvim',
-    --     config = true
-    -- },
-    --
-    -- {
-    --     'folke/zen-mode.nvim',
-    --     opts = {
-    --         window = {
-    --             options = {
-    --                 signcolumn = "no", -- disable signcolumn
-    --                 number = false, -- disable number column
-    --                 -- relativenumber = false, -- disable relative numbers
-    --                 -- cursorline = false, -- disable cursorline
-    --                 -- cursorcolumn = false, -- disable cursor column
-    --                 foldcolumn = "0", -- disable fold column
-    --                 -- list = false, -- disable whitespace characters
-    --             }
-    --         },
-    --         plugins = {
-    --             options = {
-    --                 enabled = true,
-    --                 ruler = false, -- disables the ruler text in the cmd line area
-    --                 showcmd = false, -- disables the command in the last line of the screen
-    --                 -- you may turn on/off statusline in zen mode by setting 'laststatus' 
-    --                 -- statusline will be shown only if 'laststatus' == 3
-    --                 laststatus = 0, -- turn off the statusline in zen mode
-    --             },
-    --         },
-    --         on_open = function()
-    --             vim.cmd("DisableHLChunk")
-    --             vim.cmd("DisableHLIndent")
-    --             vim.cmd("SatelliteDisable")
-    --         end,
-    --         on_close = function()
-    --             vim.cmd("SatelliteEnable")
-    --             vim.cmd("EnableHLChunk")
-    --             vim.cmd("EnableHLIndent")
-    --         end,
-    --     },
-    --     keys = {
-    --         {"<leader>zZ", function() require('zen-mode').toggle() end, desc = "Zen Mode" }
-    --     }
-    -- },
 
     "stevearc/dressing.nvim",
 
@@ -419,19 +334,6 @@ return {
                 nexthist = "g>"
             }
         },
-        -- config = function()
-        --     local function configureWindow()
-        --         --- other settings
-        --         vim.keymap.set({'n'}, 'zf', require('telescope.builtin').quickfix, {buffer = true})
-        --     end
-        --
-        --     local augroup = vim.api.nvim_create_augroup ('BqfMappings', {clear = true })
-        --     vim.api.nvim_create_autocmd ('FileType', {
-        --         group = augroup,
-        --         pattern = 'qf',
-        --         callback = configureWindow,
-        --     })
-        -- end
     },
 
     {

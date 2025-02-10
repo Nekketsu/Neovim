@@ -82,7 +82,27 @@ return {
                 { section = "startup" },
             },
         },
-        indent = { enabled = false },
+        indent = {
+            hl = {
+                "RainbowDelimiterBlue",
+                "RainbowDelimiterViolet",
+                "RainbowDelimiterYellow"
+            },
+            indent = {
+                hl = {
+                    "RainbowDelimiterBlue",
+                    "RainbowDelimiterViolet",
+                    "RainbowDelimiterYellow"
+                },
+            },
+            chunk = {
+                enabled = true,
+                char = {
+                    corner_top = "╭",
+                    corner_bottom = "╰",
+                }
+            }
+        },
         input = { enabled = true },
         notifier = {
             enabled = true,
