@@ -47,6 +47,8 @@ return {
                     -- winblend = 1
                 },
                 mappings = {
+                    scrollB = '<C-b>',
+                    scrollF = '<C-f>',
                     scrollU = '<C-u>',
                     scrollD = '<C-d>',
                     jumpTop = '[',
@@ -72,12 +74,12 @@ return {
         -- Using ufo provider need remap `zR` and `zM`. If Neovim is 0.6.1, remap yourself
         {'zR', function() require('ufo').openAllFolds() end},
         {'zM', function() require('ufo').closeAllFolds() end},
-        {'K',
+        {'zK',
             function()
                 local winid = require('ufo').peekFoldedLinesUnderCursor()
-                if not winid then
-                    vim.lsp.buf.hover()
-                end
+                -- if not winid then
+                --     vim.lsp.buf.hover()
+                -- end
             end,
         }
 

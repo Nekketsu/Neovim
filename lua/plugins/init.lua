@@ -275,8 +275,6 @@ return {
 
     'rafamadriz/friendly-snippets',
 
-    'RRethy/vim-illuminate',
-
     -- use 'arkav/lualine-lsp-progress'
 
     'onsails/lspkind-nvim',
