@@ -147,6 +147,33 @@ return {
                 debug_dll = nil
             end
         end
+
+
+        -- Define VSCode-like icons for breakpoints
+        -- vim.fn.sign_define('DapBreakpoint', { text = '●', texthl = 'DapBreakpoint', linehl = '', numhl = '' }) -- Solid circle (red)
+        -- vim.fn.sign_define('DapBreakpointCondition', { text = '◆', texthl = 'DapBreakpointCondition', linehl = '', numhl = '' }) -- Diamond (yellow)
+        -- vim.fn.sign_define('DapLogPoint', { text = '◉', texthl = 'DapLogPoint', linehl = '', numhl = '' }) -- Hollow circle (blue)
+        -- vim.fn.sign_define('DapStopped', { text = '➔', texthl = 'DapStopped', linehl = 'Debug', numhl = '' }) -- Right arrow (blue)
+        -- vim.fn.sign_define('DapBreakpointRejected', { text = '✖', texthl = 'DapBreakpointRejected', linehl = '', numhl = '' }) -- Cross (gray)
+
+
+
+        -- Define signs with texthl pointing to the highlight groups
+        vim.fn.sign_define('DapBreakpoint', { text = '●', texthl = 'DapBreakpoint', linehl = '', numhl = '' })
+        vim.fn.sign_define('DapBreakpointCondition', { text = '◆', texthl = 'DapBreakpointCondition', linehl = '', numhl = '' })
+        vim.fn.sign_define('DapLogPoint', { text = '◌', texthl = 'DapLogPoint', linehl = '', numhl = '' })
+        vim.fn.sign_define('DapStopped', { text = '➔', texthl = 'DapStopped', linehl = 'DapStoppedLine', numhl = '' })
+        vim.fn.sign_define('DapBreakpointRejected', { text = '✖', texthl = 'DapBreakpointRejected', linehl = '', numhl = '' })
+
+        -- Apply VSCode-like highlight groups
+        vim.api.nvim_set_hl(0, "DapBreakpoint", { fg = "#E51400" })         -- Red
+        vim.api.nvim_set_hl(0, "DapBreakpointCondition", { fg = "#F7BA44" }) -- Orange
+        vim.api.nvim_set_hl(0, "DapLogPoint", { fg = "#3794FF" })           -- Blue
+        vim.api.nvim_set_hl(0, "DapStopped", { fg = "#16C60C" })            -- Green
+        vim.api.nvim_set_hl(0, "DapBreakpointRejected", { fg = "#848484" }) -- Gray
+
+        -- Optional: Highlight the current execution line
+        vim.api.nvim_set_hl(0, "DapStoppedLine", { bg = "#1E1E1E" }) -- Subtle line highlight
     end,
     keys = {
         { "<leader>d", "", desc = "+debug", mode = { "n", "v" } },

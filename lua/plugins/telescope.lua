@@ -76,14 +76,14 @@ return {
         -- {'<Leader>fr', require("telescope.builtin").resume, { desc = "Resume" }},
         -- {'<leader>fd', function() require("telescope.builtin").find_files({ cwd = vim.fn.stdpath("config"), prompt_title = "Find dotfiles" }) end, { desc = "Find dotfiles" }},
         -- {'<leader>fD', function() require("telescope.builtin").live_grep({ cwd = vim.fn.stdpath("config"), prompt_title = "Live grep dotfiles" }) end, { desc = "Live grep dotfiles" }},
-            {'<leader>fa', function() require('telescope').extensions.aerial.aerial() end, { desc = "Aerial" }},
+            -- {'<leader>fa', function() require('telescope').extensions.aerial.aerial() end, { desc = "Aerial" }},
         --
         --
         -- -- {'<Leader>fr', '<cmd>Telescope orgmode search_headings<CR>', { desc = "Search orgmode headings" }},
         -- -- {'<leader>fR', function() require("telescope.builtin").find_files({ cwd = "~/org" }) end, { desc = "Search orgmode files" }},
         -- {'<Leader>fc', function() require('telescope').extensions.lazy_plugins.lazy_plugins() end, { desc = "Plugins configurations" }},
-        {'<Leader>fp', function() require("telescope.builtin").find_files({ cwd = vim.fs.joinpath(vim.fn.stdpath("data"), "lazy"), prompt_title = "Find plugins source" }) end, { desc = "Find plugins source" }},
-        {'<Leader>fP', function() require("telescope.builtin").live_grep({ cwd = vim.fs.joinpath(vim.fn.stdpath("data"), "lazy"), prompt_title = "Live grep plugins source"  }) end, { desc = "Live grep plugins source" }},
+        -- {'<Leader>fp', function() require("telescope.builtin").find_files({ cwd = vim.fs.joinpath(vim.fn.stdpath("data"), "lazy"), prompt_title = "Find plugins source" }) end, { desc = "Find plugins source" }},
+        -- {'<Leader>fP', function() require("telescope.builtin").live_grep({ cwd = vim.fs.joinpath(vim.fn.stdpath("data"), "lazy"), prompt_title = "Live grep plugins source"  }) end, { desc = "Live grep plugins source" }},
         --
         -- {'gd', require("telescope.builtin").lsp_definitions, { desc = "LSP definitions" }},
         -- {'<Leader>D', require("telescope.builtin").lsp_type_definitions, { desc = "LSP type definitions" }},

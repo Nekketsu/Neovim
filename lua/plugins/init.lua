@@ -519,7 +519,10 @@ return {
         event = "VeryLazy",
         opts = {
             keymaps = {
-                useDefaults = true
+                useDefaults = true,
+                disabledDefaults = {
+                    "ai", "ii", "aI", "iI"
+                }
             }
         },
     },

@@ -82,6 +82,7 @@ return {
                 { section = "startup" },
             },
         },
+        explorer = { enabled = true },
         indent = {
             hl = {
                 "RainbowDelimiterBlue",
@@ -108,12 +109,16 @@ return {
             enabled = true,
             timeout = 3000,
         },
+        picker = {
+            layout = {
+                preset = "ivy"
+            }
+        },
         quickfile = { enabled = true },
+        scope = { enabled = true },
         scroll = { enabled = false },
         statuscolumn = { enabled = true },
-        words = {
-            enabled = true,
-        },
+        words = { enabled = true },
         styles = {
             notification = {
                 -- wo = { wrap = true } -- Wrap notifications
@@ -136,11 +141,6 @@ return {
             --     vim.cmd("EnableHLIndent")
             -- end,
         },
-        picker = {
-            layout = {
-                preset = "ivy"
-            }
-        }
     },
     keys = {
         { "<leader>z",  function() Snacks.zen() end, desc = "Toggle Zen Mode" },
@@ -194,6 +194,9 @@ return {
         { "<leader>fg", function() Snacks.picker.git_files() end, desc = "Find Git Files" },
         { "<leader>fp", function() Snacks.picker.projects() end, desc = "Projects" },
         { "<leader>fr", function() Snacks.picker.recent() end, desc = "Recent" },
+
+        { "<leader>fP", function() Snacks.picker.files({ cwd = vim.fs.joinpath(vim.fn.stdpath("data"), "lazy"), prompt = "Plugins source: "  }) end, desc = "Find plugins source" },
+        { "<Leader>gP", function() Snacks.picker.grep({ cwd = vim.fs.joinpath(vim.fn.stdpath("data"), "lazy"), prompt = "Plugins source: "  }) end, desc = "Grep plugins source" },
         -- git
         { "<leader>gb", function() Snacks.picker.git_branches() end, desc = "Git Branches" },
         { "<leader>gl", function() Snacks.picker.git_log() end, desc = "Git Log" },
