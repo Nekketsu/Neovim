@@ -240,6 +240,7 @@ return {
         { "gy", function() Snacks.picker.lsp_type_definitions() end, desc = "Goto T[y]pe Definition" },
         { "<leader>ss", function() Snacks.picker.lsp_symbols() end, desc = "LSP Symbols" },
         { "<leader>sS", function() Snacks.picker.lsp_workspace_symbols() end, desc = "LSP Workspace Symbols" },
+        { "<leader>SS", function() Snacks.picker.lsp_symbols({ layout = { preset = "vscode", preview = "main" }}) end, desc = "LSP Symbols" },
     },
     init = function()
         vim.api.nvim_create_autocmd("User", {
