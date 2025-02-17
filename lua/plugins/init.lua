@@ -104,8 +104,6 @@ return {
         },
     },
 
-    "stevearc/dressing.nvim",
-
     {
         "grapp-dev/nui-components.nvim",
         dependencies = {
@@ -382,6 +380,12 @@ return {
         keys = {
             {'<leader>gd', '<cmd>DiffviewOpen<CR>', desc = "Git diffview"}
         }
+    },
+    
+    {
+        "abccsss/nvim-gitstatus",
+        event = "VeryLazy",
+        config = true,
     },
 
     {

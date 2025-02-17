@@ -27,7 +27,36 @@ return {
             },
             sections = {
                 lualine_a = {'mode'},
-                lualine_b = {'branch', 'diff', 'diagnostics'},
+                lualine_b = {
+                    -- {'FugitiveHead', icon = ''},
+                    -- {'b:gitsigns_head', icon = ''},
+                    {
+                        "gitstatus",
+                        sections = {
+                            -- { "branch", format = " {}" },
+                            { "branch", format = " {}" },
+                            { "is_dirty", format = "*" },
+                        },
+                        sep = "",
+                    },
+                    {
+                        "gitstatus",
+                        sections = {
+                            { "ahead", format = "{}↑", hl = "SnacksPickerGitStatus" },
+                            { "behind", format = "{}↓", hl = "SnacksPickerGitStatus" },
+                            { "conflicted", format = "{}!", hl = "SnacksPickerGitStatusUnmerged" },
+                            { "staged", format = "{}=", hl = "SnacksPickerGitStatusStaged" },
+                            { "untracked", format = "{}+", hl = "SnacksPickerGitStatusUntracked" },
+                            { "modified", format = "{}*", hl = "SnacksPickerGitStatusModified" },
+                            { "renamed", format = "{}~", hl = "SnacksPickerGitStatusRenamed" },
+                            { "deleted", format = "{}-" , hl = "SnacksPickerGitStatusDeleted" },
+                        },
+                        sep = " ",
+                    },
+                    -- 'branch',
+                    'diff',
+                    'diagnostics'
+                },
                 lualine_c = {
                     { 'filename', path = 3 },
                     { symbols.get, cond = symbols.has }

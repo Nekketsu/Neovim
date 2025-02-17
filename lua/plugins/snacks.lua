@@ -3,6 +3,7 @@ return {
     priority = 1000,
     lazy = false,
     ---@type snacks.Config
+---@diagnostic disable-next-line: missing-fields
     opts = {
         bigfile = { enabled = true },
         dashboard = {
@@ -147,7 +148,6 @@ return {
         { "<leader>Z",  function() Snacks.zen.zoom() end, desc = "Toggle Zoom" },
         { "<leader>.",  function() Snacks.scratch() end, desc = "Toggle Scratch Buffer" },
         { "<leader>S",  function() Snacks.scratch.select() end, desc = "Select Scratch Buffer" },
-        -- { "<leader>fs", function() Snacks.scratch.select() end, desc = "Select Scratch Buffer" },
         { "<leader>n",  function() Snacks.notifier.show_history() end, desc = "Notification History" },
         { "<leader>bd", function() Snacks.bufdelete() end, desc = "Delete Buffer" },
         { "<leader>cR", function() Snacks.rename.rename_file() end, desc = "Rename File" },
@@ -196,7 +196,7 @@ return {
         { "<leader>fr", function() Snacks.picker.recent() end, desc = "Recent" },
 
         { "<leader>fP", function() Snacks.picker.files({ cwd = vim.fs.joinpath(vim.fn.stdpath("data"), "lazy"), prompt = "Plugins source: "  }) end, desc = "Find plugins source" },
-        { "<Leader>gP", function() Snacks.picker.grep({ cwd = vim.fs.joinpath(vim.fn.stdpath("data"), "lazy"), prompt = "Plugins source: "  }) end, desc = "Grep plugins source" },
+        { "<Leader>sP", function() Snacks.picker.grep({ cwd = vim.fs.joinpath(vim.fn.stdpath("data"), "lazy"), prompt = "Plugins source: "  }) end, desc = "Grep plugins source" },
         -- git
         { "<leader>gb", function() Snacks.picker.git_branches() end, desc = "Git Branches" },
         { "<leader>gl", function() Snacks.picker.git_log() end, desc = "Git Log" },
