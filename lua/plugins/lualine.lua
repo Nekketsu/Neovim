@@ -44,9 +44,15 @@ return {
                         sections = {
                             { "ahead", format = "{}↑", hl = "SnacksPickerGitStatus" },
                             { "behind", format = "{}↓", hl = "SnacksPickerGitStatus" },
+                        },
+                        sep = " ",
+                    },
+                    {
+                        "gitstatus",
+                        sections = {
                             { "conflicted", format = "{}!", hl = "SnacksPickerGitStatusUnmerged" },
                             { "staged", format = "{}=", hl = "SnacksPickerGitStatusStaged" },
-                            { "untracked", format = "{}+", hl = "SnacksPickerGitStatusUntracked" },
+                            { "untracked", format = "{}?", hl = "SnacksPickerGitStatusUntracked" },
                             { "modified", format = "{}*", hl = "SnacksPickerGitStatusModified" },
                             { "renamed", format = "{}~", hl = "SnacksPickerGitStatusRenamed" },
                             { "deleted", format = "{}-" , hl = "SnacksPickerGitStatusDeleted" },
