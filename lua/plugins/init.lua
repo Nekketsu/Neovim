@@ -356,6 +356,7 @@ return {
             -- {'<Leader>gl', '<cmd>Gclog<CR>', desc = "git log"}
         }
     },
+
     'tpope/vim-rhubarb',
 
     {
@@ -602,7 +603,7 @@ return {
     },
 
     {
-        "seblj/roslyn.nvim",
+        "seblyng/roslyn.nvim",
         ft = "cs",
         opts = {
             -- your configuration comes here; leave empty for default settings
@@ -691,6 +692,25 @@ return {
                 templates = { "builtin", "user.net_build" },
             })
         end
+    },
+
+    {
+        'MagicDuck/grug-far.nvim',
+        config = function()
+            require('grug-far').setup({
+                -- options, see Configuration section below
+                -- there are no required options atm
+                -- engine = 'ripgrep' is default, but 'astgrep' can be specified
+            });
+        end,
+        keys = {
+            {
+                "<leader>sr",
+                function() require("grug-far").open() end,
+                mode = { "n", "v" },
+                desc = "Search and Replace",
+            },
+        },
     },
 
     {

@@ -42,8 +42,10 @@ return {
         --                 :BufferCloseBuffersRight
         -- Magic buffer-picking mode
         {'<Space><C-p>', '<Cmd>BufferPick<CR>' },
+        -- {'<Space><C-S-p>', '<Cmd>BufferPickDelete<CR>' },
         -- Sort automatically by...
         {'<Space>bb', '<Cmd>BufferOrderByBufferNumber<CR>' },
+        {'<Space>bn', '<Cmd>BufferOrderByName<CR>' },
         -- {'<Space>bd', '<Cmd>BufferOrderByDirectory<CR>' },
         {'<Space>bl', '<Cmd>BufferOrderByLanguage<CR>' },
         {'<Space>bw', '<Cmd>BufferOrderByWindowNumber<CR>' },

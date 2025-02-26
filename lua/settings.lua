@@ -20,7 +20,7 @@ vim.opt.mouse = 'a'
 
 vim.wo.wrap = false
 
-vim.opt.conceallevel = 2
+-- vim.opt.conceallevel = 2
 
 vim.opt.termguicolors = true
 

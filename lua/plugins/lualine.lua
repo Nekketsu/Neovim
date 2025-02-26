@@ -13,6 +13,7 @@ return {
             hl_group = "lualine_c_normal",
         })
 
+
         require('lualine').setup {
             options = {
                 icons_enabled = true,
@@ -26,7 +27,9 @@ return {
                 globalstatus = true
             },
             sections = {
-                lualine_a = {'mode'},
+                lualine_a = {
+                    { 'mode' }
+                },
                 lualine_b = {
                     -- {'FugitiveHead', icon = ''},
                     -- {'b:gitsigns_head', icon = ''},
@@ -35,29 +38,32 @@ return {
                         sections = {
                             -- { "branch", format = " {}" },
                             { "branch", format = " {}" },
-                            { "is_dirty", format = "*" },
-                        },
-                        sep = "",
-                    },
-                    {
-                        "gitstatus",
-                        sections = {
-                            { "ahead", format = "{}↑", hl = "SnacksPickerGitStatus" },
-                            { "behind", format = "{}↓", hl = "SnacksPickerGitStatus" },
-                        },
-                        sep = " ",
-                    },
-                    {
-                        "gitstatus",
-                        sections = {
-                            { "conflicted", format = "{}!", hl = "SnacksPickerGitStatusUnmerged" },
-                            { "staged", format = "{}=", hl = "SnacksPickerGitStatusStaged" },
-                            { "untracked", format = "{}?", hl = "SnacksPickerGitStatusUntracked" },
-                            { "modified", format = "{}*", hl = "SnacksPickerGitStatusModified" },
-                            { "renamed", format = "{}~", hl = "SnacksPickerGitStatusRenamed" },
-                            { "deleted", format = "{}-" , hl = "SnacksPickerGitStatusDeleted" },
-                        },
-                        sep = " ",
+                            -- { "is_dirty", format = "*" },
+                            { "up_to_date", format = "≡" },
+                            { "ahead", format = "↑{}", hl = "SnacksPickerGitStatus" },
+                            { "behind", format = "↓{}", hl = "SnacksPickerGitStatus" },
+                            { "is_dirty", format = "" },
+                            { "conflicted", format = "!{}", hl = "GitSignsAdd" },
+                            { "untracked", format = "?{}", hl = "GitSignsAdd" },
+                            { "modified", format = "~{}", hl = "GitSignsChange" },
+                            { "deleted", format = "-{}" , hl = "GitSignsDelete" },
+                            -- { "conflicted", format = "!{}", hl = "SnacksPickerGitStatusUnmerged" },
+                            -- { "untracked", format = "?{}", hl = "SnacksPickerGitStatusUntracked" },
+                            -- { "modified", format = "~{}", hl = "SnacksPickerGitStatusModified" },
+                            -- { "deleted", format = "-{}" , hl = "SnacksPickerGitStatusDeleted" },
+                            { "is_dirty_and_has_staged", format = "|" },
+                            { "has_staged", format = "" },
+                            { "staged_added", format = "+{}", hl = "GitSignsAdd" },
+                            { "staged_modified_and_renamed", format = "~{}", hl = "GitSignsChange" },
+                            { "staged_deleted", format = "-{}", hl = "GitSignsDelete" },
+                            { "staged_renamed", format = "*{}", hl = "GitSignsChange" },
+                            -- { "staged_added", format = "+{}", hl = "SnacksPickerGitStatusAdded" },
+                            -- -- { "staged_modified", format = "~{}", hl = "SnacksPickerGitStatusModified" },
+                            -- { "staged_modified_and_renamed", format = "~{}", hl = "SnacksPickerGitStatusModified" },
+                            -- { "staged_deleted", format = "-{}", hl = "SnacksPickerGitStatusDeleted" },
+                            -- { "staged_renamed", format = "*{}", hl = "SnacksPickerGitStatusRenamed" },
+                            -- { "renamed", format = "*{}", hl = "SnacksPickerGitStatusRenamed" },
+                        }
                     },
                     -- 'branch',
                     'diff',
