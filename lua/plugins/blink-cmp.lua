@@ -14,7 +14,7 @@ return {
         -- optional: provides snippets for the snippet source
         dependencies = {
             "rafamadriz/friendly-snippets",
-            "rcarriga/cmp-dap"
+            -- "rcarriga/cmp-dap"
         },
 
         -- use a release tag to download pre-built binaries
@@ -35,7 +35,7 @@ return {
             keymap = { preset = "super-tab" },
             enabled = function()
                 return vim.api.nvim_buf_get_option(0, "buftype") ~= "prompt"
-                    or require("cmp_dap").is_dap_buffer()
+                    -- or require("cmp_dap").is_dap_buffer()
             end,
 
             appearance = {
@@ -51,7 +51,8 @@ return {
             -- default list of enabled providers defined so that you can extend it
             -- elsewhere in your config, without redefining it, via `opts_extend`
             sources = {
-                default = { "lazydev", "lsp", "path", "snippets", "buffer", "dadbod", "dap" },
+                -- default = { "lazydev", "lsp", "path", "snippets", "buffer", "dadbod", "dap" },
+                default = { "lazydev", "lsp", "path", "snippets", "buffer", "dadbod" },
                 per_filetype = {
                     org = {'orgmode'}
                 },

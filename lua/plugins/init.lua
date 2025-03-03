@@ -604,9 +604,35 @@ return {
 
     {
         "seblyng/roslyn.nvim",
-        ft = "cs",
-        opts = {
-            -- your configuration comes here; leave empty for default settings
+        ft = { "cs", "razor" },
+        -- opts = {
+        --     -- your configuration comes here; leave empty for default settings
+        --     config = {
+        --         handlers = require("rzls.roslyn_handlers")
+        --     }
+        -- },
+        config = function ()
+            require("roslyn").setup({
+                ---@diagnostic disable-next-line: missing-fields
+                config = {
+                    handlers = require("rzls.roslyn_handlers")
+                }
+            })
+        end,
+        init = function()
+            vim.filetype.add({
+                extension = {
+                    razor = "razor",
+                    cshtml = "razor"
+                }
+            })
+        end,
+        dependencies = {
+            "tris203/rzls.nvim",
+            config = function()
+                ---@diagnostic disable-next-line: missing-parameter
+                require("rzls").setup({})
+            end
         }
     },
 
