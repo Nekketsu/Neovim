@@ -1,16 +1,6 @@
-return {
-    {
-        'saghen/blink.compat',
-        -- use the latest release, via version = '*', if you also use the latest release for blink.cmp
-        version = '*',
-        -- lazy.nvim will automatically load the plugin when it's required by blink.cmp
-        lazy = true,
-        -- make sure to set opts so that lazy.nvim calls blink.compat's setup
-        opts = {},
-    },
+return 
     {
         "saghen/blink.cmp",
-        enabled = true,
         -- optional: provides snippets for the snippet source
         dependencies = {
             "rafamadriz/friendly-snippets",
@@ -30,13 +20,14 @@ return {
             -- 'default' for mappings similar to built-in completion
             -- 'super-tab' for mappings similar to vscode (tab to accept, arrow keys to navigate)
             -- 'enter' for mappings similar to 'super-tab' but with 'enter' to accept
-            -- see the "default configuration" section below for full documentation on how to define
-            -- your own keymap.
+            --
+            -- All presets have the following mappings:
+            -- C-space: Open menu or open docs if already open
+            -- C-e: Hide menu
+            -- C-k: Toggle signature help
+            --
+            -- See the full "keymap" documentation for information on defining your own keymap.
             keymap = { preset = "super-tab" },
-            enabled = function()
-                return vim.api.nvim_buf_get_option(0, "buftype") ~= "prompt"
-                    -- or require("cmp_dap").is_dap_buffer()
-            end,
 
             appearance = {
                 -- Sets the fallback highlight groups to nvim-cmp's highlight groups
@@ -48,13 +39,14 @@ return {
                 nerd_font_variant = "mono"
             },
 
-            -- default list of enabled providers defined so that you can extend it
+            -- Default list of enabled providers defined so that you can extend it
             -- elsewhere in your config, without redefining it, via `opts_extend`
             sources = {
                 -- default = { "lazydev", "lsp", "path", "snippets", "buffer", "dadbod", "dap" },
-                default = { "lazydev", "lsp", "path", "snippets", "buffer", "dadbod" },
+                default = { "lazydev", "lsp", "path", "snippets", "buffer", "markdown" },
                 per_filetype = {
-                    org = {'orgmode'}
+                    org = { 'orgmode' },
+                    sql = { 'snippets', 'dadbod', 'buffer' },
                 },
                 -- optionally disable cmdline completions
                 -- cmdline = {},
@@ -76,19 +68,22 @@ return {
                         fallbacks = { 'buffer' },
                     },
                     dadbod = { name = "Dadbod", module = "vim_dadbod_completion.blink" },
-                    dap = {
-                        name = "dap",
-                        module = "blink.compat.source",
-                        -- enabled = function() return vim.api.nvim_buf_get_option(0, "buftype") ~= "prompt" end
-                    }
+                    -- dap = {
+                    --     name = "dap",
+                    --     module = "blink.compat.source",
+                    --     -- enabled = function() return vim.api.nvim_buf_get_option(0, "buftype") ~= "prompt" end
+                    -- }
                 },
             },
 
-            -- experimental signature help support
-            -- signature = { enabled = true }
+            -- signature = { enabled = true },
+
+            -- Blink.cmp uses a Rust fuzzy matcher by default for typo resistance and significantly better performance
+            -- You may use a lua implementation instead by using `implementation = "lua"` or fallback to the lua implementation,
+            -- when the Rust fuzzy matcher is not available, by using `implementation = "prefer_rust"`
+            --
+            -- See the fuzzy documentation for more information
+            fuzzy = { implementation = "prefer_rust_with_warning" }
         },
-        -- allows extending the providers array elsewhere in your config
-        -- without having to redefine it
         opts_extend = { "sources.default" }
     }
-}
