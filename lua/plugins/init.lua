@@ -382,7 +382,7 @@ return {
             {'<leader>gd', '<cmd>DiffviewOpen<CR>', desc = "Git diffview"}
         }
     },
-    
+
     {
         "abccsss/nvim-gitstatus",
         event = "VeryLazy",
@@ -457,7 +457,7 @@ return {
     {
         'kristijanhusak/vim-dadbod-ui',
         dependencies = {
-            { 'tpope/vim-dadbod',                     lazy = true },
+            { 'tpope/vim-dadbod', lazy = true },
             { 'kristijanhusak/vim-dadbod-completion', ft = { 'sql', 'mysql', 'plsql' }, lazy = true },
         },
         cmd = {
@@ -469,9 +469,6 @@ return {
         init = function()
             -- Your DBUI configuration
             vim.g.db_ui_use_nerd_fonts = 1
-            vim.cmd [[
-                autocmd FileType sql,mysql,plsql lua require('cmp').setup.buffer({ sources = {{ name = 'vim-dadbod-completion' }} })
-                ]]
         end,
     },
 
@@ -630,7 +627,7 @@ return {
         dependencies = {
             "tris203/rzls.nvim",
             config = function()
-                ---@diagnostic disable-next-line: missing-parameter
+---@diagnostic disable-next-line: missing-fields
                 require("rzls").setup({})
             end
         }
@@ -694,7 +691,7 @@ return {
                         -- options = "default"
                     end
 
-                        
+
                     require("menu").open(options, { mouse = true })
                 end,
                 mode = { "n", "v" } }
