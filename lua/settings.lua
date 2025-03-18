@@ -20,7 +20,7 @@ vim.opt.mouse = 'a'
 
 vim.wo.wrap = false
 
--- vim.opt.conceallevel = 2
+vim.opt.conceallevel = 2
 
 vim.opt.termguicolors = true
 
@@ -43,5 +43,12 @@ vim.diagnostic.config({
 vim.api.nvim_create_autocmd("FileType", {
     callback = function()
         vim.opt_local.formatoptions:remove({ 'r', 'o' })
+    end
+})
+
+vim.api.nvim_create_autocmd("FileType", {
+    pattern = "json",
+    callback = function()
+        vim.opt.conceallevel = 0
     end
 })

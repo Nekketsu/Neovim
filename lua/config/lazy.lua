@@ -23,6 +23,14 @@ vim.g.maplocalleader = " "
 
 -- Setup lazy.nvim
 require("lazy").setup({
+    ui = {
+        custom_keys = {
+            ["<localleader>l"] = {
+                function(plugin) Snacks.picker.git_log({ cwd = plugin.dir, title = "Git Log " .. plugin.name }) end,
+                desc = "Open Snacks git log",
+            }
+        }
+    },
     spec = {
         -- import your plugins
         { import = "plugins" },

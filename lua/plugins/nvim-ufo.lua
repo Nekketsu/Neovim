@@ -74,12 +74,17 @@ return {
         -- Using ufo provider need remap `zR` and `zM`. If Neovim is 0.6.1, remap yourself
         {'zR', function() require('ufo').openAllFolds() end},
         {'zM', function() require('ufo').closeAllFolds() end},
-        {'zK',
+        {'K',
             function()
                 local winid = require('ufo').peekFoldedLinesUnderCursor()
-                -- if not winid then
-                --     vim.lsp.buf.hover()
-                -- end
+                if not winid then
+                    if #vim.lsp.get_clients({ bufnr = 0 }) > 0 then
+                        vim.lsp.buf.hover()
+                    else
+                        -- vim.api.nvim_feedkeys("K", "n", false)
+                        vim.cmd("normal! K")
+                    end
+                end
             end,
         }
 
