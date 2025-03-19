@@ -16,8 +16,8 @@ return {
                 cron_enabled = false
             },
             org_startup_folded = "inherit",
-            org_agenda_files = '~/org/**/*',
-            org_default_notes_file = '~/org/refile.org',
+            org_agenda_files = '~/org/orgfiles/**/*',
+            org_default_notes_file = '~/org/orgfiles/refile.org',
             org_agenda_custom_commands = {
                 -- "c" is the shortcut that will be used in the prompt
                 c = {
@@ -76,22 +76,22 @@ return {
                 T = {
                     description = 'Todo',
                     template = '* TODO %?\n %u',
-                    target = '~/org/todo.org'
+                    target = '~/org/orgfiles/todo.org'
                 },
                 j = {
                     description = 'Journal',
                     template = '\n*** %<%Y-%m-%d> %<%A>\n**** %U\n\n%?',
-                    target = '~/org/journal.org'
+                    target = '~/org/orgfiles/journal.org'
                 },
                 J = {
                     description = 'Journal',
                     template = '\n*** %<%Y-%m-%d> %<%A>\n**** %U\n\n%?',
-                    target = '~/org/journal/%<%Y-%m>.org'
+                    target = '~/org/orgfiles/journal/%<%Y-%m>.org'
                 },
                 k = {
                     description = 'Journal',
                     template = '*  Dear journal: %n %?',
-                    target = '~/org/kournal.org',
+                    target = '~/org/orgfiles/kournal.org',
                     datetree = { "day" }
                 },
                 e = {
@@ -100,13 +100,13 @@ return {
                         r = {
                             description = 'recurring',
                             template = '** %?\n %T',
-                            target = '~/org/calendar.org',
+                            target = '~/org/orgfiles/calendar.org',
                             headline = 'recurring'
                         },
                         o = {
                             description = 'one-time',
                             template = '** %?\n %T',
-                            target = '~/org/calendar.org',
+                            target = '~/org/orgfiles/calendar.org',
                             headline = 'one-time'
                         },
                     },
@@ -120,15 +120,9 @@ return {
                 r = {
                     description = "Repo",
                     template = "* [[%x][%(return string.match('%x', '([^/]+)$'))]]%?",
-                    target = "~/org/repos.org",
+                    target = "~/org/orgfiles/repos.org",
                 }
             },
-
-            -- mappings = {
-            --     org = {
-            --         org_toggle_checkbox = "<Leader>."
-            --     }
-            -- }
         })
 
         vim.api.nvim_create_autocmd('FileType', {
@@ -174,13 +168,21 @@ return {
                 vim.keymap.set("n", "<leader>oR", require("telescope").extensions.orgmode.refile_heading, { desc = "Refile heading" })
                 vim.keymap.set("n", "<leader>oh", require("telescope").extensions.orgmode.search_headings, { desc = "Search headings" })
                 vim.keymap.set("n", "<leader>oL", require("telescope").extensions.orgmode.insert_link, { desc = "Insert link" })
-                vim.keymap.set("n", "<leader>of", function() require("telescope.builtin").find_files({ cwd = "~/org" }) end, { desc = "Find ORG files" })
+                vim.keymap.set("n", "<leader>of", function() Snacks.picker.files({ cwd = "~/org/orgfiles" }) end, { desc = "Find ORG files" })
+                vim.keymap.set("n", "<leader>os", function() Snacks.picker.grep({ cwd = "~/org/orgfiles" }) end, { desc = "Search ORG files" })
             end,
         },
         {
             "lukas-reineke/headlines.nvim",
             dependencies = "nvim-treesitter/nvim-treesitter",
             config = true, -- or `opts = {}`
+        },
+        {
+            "chipsenkbeil/org-roam.nvim",
+            opts = {
+                directory = "~/org/roam"
+            }
         }
+
     }
 }
