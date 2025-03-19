@@ -141,7 +141,7 @@ return {
         "neovim/nvim-lspconfig",
         config = function()
             require("mason").setup()
----@diagnostic disable-next-line: missing-fields
+            ---@diagnostic disable-next-line: missing-fields
             require("mason-lspconfig").setup({
                 ensure_installed = {
                     "asm_lsp", "clangd", "codelldb", "cpptools", "css-lsp", "csharpier", "debugpy", "gopls",
@@ -224,7 +224,7 @@ return {
                 return res
             end
 
----@diagnostic disable-next-line: missing-fields
+            ---@diagnostic disable-next-line: missing-fields
             require('symbol-usage').setup({
                 vt_position = "end_of_line",
                 references = { enabled = true, include_declaration = true },
@@ -321,8 +321,8 @@ return {
     {
         'kevinhwang91/nvim-bqf',
         dependencies = {
-                "junegunn/fzf",
-                build = function() vim.fn["fzf#install"]() end,
+            "junegunn/fzf",
+            build = function() vim.fn["fzf#install"]() end,
         },
         opts = {
             func_map = {
@@ -381,6 +381,20 @@ return {
         keys = {
             {'<leader>gd', '<cmd>DiffviewOpen<CR>', desc = "Git diffview"}
         }
+    },
+
+    {
+        'pwntester/octo.nvim',
+        requires = {
+            'nvim-lua/plenary.nvim',
+            'nvim-telescope/telescope.nvim',
+            -- OR 'ibhagwan/fzf-lua',
+            -- OR 'folke/snacks.nvim',
+            'nvim-tree/nvim-web-devicons',
+        },
+        config = function ()
+            require"octo".setup()
+        end
     },
 
     {
@@ -504,15 +518,15 @@ return {
             -- refer to the configuration section below
         },
         keys = {
-          {"cx", function() require("substitute.exchange").operator() end, desc = "Substitute operator"},
-          {"cxx", function() require("substitute.exchange").line() end, desc = "Substitute line"},
-          {"X", function() require("substitute.exchange").visual() end, mode = "x", desc = "Substitute visual"},
-          {"cxc", function() require("substitute.exchange").cancel() end, desc = "Substitute cancel"},
+            {"cx", function() require("substitute.exchange").operator() end, desc = "Substitute operator"},
+            {"cxx", function() require("substitute.exchange").line() end, desc = "Substitute line"},
+            {"X", function() require("substitute.exchange").visual() end, mode = "x", desc = "Substitute visual"},
+            {"cxc", function() require("substitute.exchange").cancel() end, desc = "Substitute cancel"},
 
-          {"<leader>cx", function() require("substitute").operator() end, desc = "Substitute operator"},
-          {"<leader>cxx", function() require("substitute").line() end, desc = "Substitute line"},
-          {"<leader>cX", function() require("substitute").cancel() end, desc = "Substitute cancel"},
-          {"<leader>X", function() require("substitute").visual() end, mode = "x", desc = "Substitute visual"},
+            {"<leader>cx", function() require("substitute").operator() end, desc = "Substitute operator"},
+            {"<leader>cxx", function() require("substitute").line() end, desc = "Substitute line"},
+            {"<leader>cX", function() require("substitute").cancel() end, desc = "Substitute cancel"},
+            {"<leader>X", function() require("substitute").visual() end, mode = "x", desc = "Substitute visual"},
         }
     },
 
@@ -551,7 +565,7 @@ return {
         end
     },
 
-"andersevenrud/nvim_context_vt",
+    "andersevenrud/nvim_context_vt",
 
     {
         "windwp/nvim-autopairs",
@@ -567,7 +581,7 @@ return {
         config = true
     },
 
-   {
+    {
         'rasulomaroff/reactive.nvim',
         config = function()
             require('reactive').setup {
@@ -627,7 +641,7 @@ return {
         dependencies = {
             "tris203/rzls.nvim",
             config = function()
----@diagnostic disable-next-line: missing-fields
+                ---@diagnostic disable-next-line: missing-fields
                 require("rzls").setup({})
             end
         }
@@ -685,9 +699,9 @@ return {
                     local options = vim.bo[buf].ft == "NvimTree" and "nvimtree" or "default"
                     if vim.bo[buf].ft == "NvimTree" then
                         options = "nvimtree"
-                    -- elseif vim.bo[buf].ft == "neo-tree" then
-                    --     options = "neotree"
-                    -- else
+                        -- elseif vim.bo[buf].ft == "neo-tree" then
+                        --     options = "neotree"
+                        -- else
                         -- options = "default"
                     end
 
