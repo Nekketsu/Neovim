@@ -47,21 +47,21 @@ return {
                 undo = {
                     -- telescope-undo.nvim config, see below
                 },
-                aerial = {
-                    -- Display symbols as <root>.<parent>.<symbol>
-                    show_nesting = {
-                        ['_'] = false, -- This key will be the default
-                        json = true,   -- You can set the option for specific filetypes
-                        yaml = true,
-                    }
-                }
+                -- aerial = {
+                --     -- Display symbols as <root>.<parent>.<symbol>
+                --     show_nesting = {
+                --         ['_'] = false, -- This key will be the default
+                --         json = true,   -- You can set the option for specific filetypes
+                --         yaml = true,
+                --     }
+                -- }
             }
         }
 
         -- telescope.load_extension("fzf")
         telescope.load_extension("ui-select")
         telescope.load_extension("undo")
-        telescope.load_extension("aerial")
+        -- telescope.load_extension("aerial")
         telescope.load_extension("dap")
         -- telescope.load_extension("REPLShow")
 
