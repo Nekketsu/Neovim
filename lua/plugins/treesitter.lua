@@ -50,21 +50,21 @@ return {
                         ["a@"] = "@loop.outer"
                     },
                 },
-                swap = {
-                    enable = true,
-                    swap_next = {
-                        ["<leader>sa"] = "@parameter.inner",
-                        ["<leader>sf"] = "@function.outer",
-                        ["<leader>sc"] = "@class.outer",
-                        -- ["<leader>ss"] = "@statement.outer"
-                    },
-                    swap_previous = {
-                        ["<leader>sA"] = "@parameter.inner",
-                        ["<leader>sF"] = "@function.outer",
-                        ["<leader>sC"] = "@class.outer",
-                        -- ["<leader>sS"] = "@statement.outer"
-                    },
-                },
+                -- swap = {
+                --     enable = true,
+                --     swap_next = {
+                --         ["<leader>sa"] = "@parameter.inner",
+                --         ["<leader>sf"] = "@function.outer",
+                --         ["<leader>sc"] = "@class.outer",
+                --         -- ["<leader>ss"] = "@statement.outer"
+                --     },
+                --     swap_previous = {
+                --         ["<leader>sA"] = "@parameter.inner",
+                --         ["<leader>sF"] = "@function.outer",
+                --         ["<leader>sC"] = "@class.outer",
+                --         -- ["<leader>sS"] = "@statement.outer"
+                --     },
+                -- },
                 move = {
                     enable = true,
                     set_jumps = true, -- whether to set jumps in the jumplist

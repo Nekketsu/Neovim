@@ -16,7 +16,7 @@ return {
                 cron_enabled = false
             },
             org_startup_folded = "inherit",
-            org_agenda_files = '~/org/orgfiles/**/*',
+            org_agenda_files = '~/org/**/*',
             org_default_notes_file = '~/org/orgfiles/refile.org',
             org_agenda_custom_commands = {
                 -- "c" is the shortcut that will be used in the prompt

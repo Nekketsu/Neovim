@@ -6,7 +6,7 @@ return {
         -- refer to the configuration section below
     },
     keys = {
-        { "<leader>fy", function() require("telescope").extensions.yank_history.yank_history({ }) end, desc = "Open Yank History" },
+        { "<leader>p", function() Snacks.picker.yanky() end, mode = { "n", "x" }, desc = "Open Yank History", },
 
         {"y", "<Plug>(YankyYank)", mode = { "n", "x" }, desc = "Yank text" },
 
@@ -36,7 +36,7 @@ return {
         require("telescope").load_extension("yank_history")
     end,
     dependencies = {
-        "nvim-telescope/telescope.nvim",
-        "tpope/vim-unimpaired"
+        "tpope/vim-unimpaired",
+        "folke/snacks.nvim"
     }
 }
