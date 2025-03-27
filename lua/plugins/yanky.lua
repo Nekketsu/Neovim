@@ -36,6 +36,7 @@ return {
         require("telescope").load_extension("yank_history")
     end,
     dependencies = {
+        "tpope/vim-fugitive",
         "tpope/vim-unimpaired",
         "folke/snacks.nvim"
     }
