@@ -90,10 +90,13 @@ return {
                     },
                     { function() return orgmode.statusline() end },
                     "overseer",
-                    'encoding', 'fileformat', 'filetype'
+                    'encoding', 'fileformat', 'filetype',
                 },
                 lualine_y = {'progress'},
-                lualine_z = {'location'}
+                lualine_z = {
+                    'location',
+                    { "datetime", style = "%Y-%m-%d | %H:%M:%S" }
+                }
             },
             inactive_sections = {
                 lualine_a = {},
