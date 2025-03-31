@@ -23,7 +23,7 @@ return {
     --     end
     -- end,
     keys = {
-        { "<leader>dv", function () require("dap-view").toggle() end }
+        { "<leader>dv", function () require("dap-view").toggle() end, desc = "Dap view" }
     },
     lazy = false
 }

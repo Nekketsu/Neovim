@@ -23,7 +23,7 @@ return {
         end
     end,
     keys = {
-        {'gK', "<cmd>lua require'dapui'.eval()<CR>", mode = {'n', 'v'}},
+        { 'gK', "<cmd>lua require'dapui'.eval()<CR>", mode = {'n', 'v'}, desc = "Dap UI" },
         { "<leader>du", function () require("dapui").toggle() end }
     },
     lazy = false

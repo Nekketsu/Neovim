@@ -2,8 +2,6 @@
 -- See `:help vim.diagnostic.*` for documentation on any of the below functions
 -- vim.keymap.set('n', '<space>q', vim.diagnostic.setloclist)
 
--- local capabilities = require('cmp_nvim_lsp').default_capabilities()
-
 -- Use LspAttach autocommand to only map the following keys
 -- after the language server attaches to the current buffer
 vim.api.nvim_create_autocmd('LspAttach', {
@@ -76,32 +74,34 @@ vim.api.nvim_create_autocmd('LspAttach', {
 
 local lspconfig = require("lspconfig")
 
+-- local capabilities = require("blink.cmp").get_lsp_capabilities()
 local handlers = {
     -- The first entry (without a key) will be the default handler
     -- and will be called for each installed server that doesn't have
     -- a dedicated handler.
     function(server_name) -- default handler (optional)
         lspconfig[server_name].setup {
+            -- capabilites = capabilities
             -- on_attach = on_attach,
             -- capabilities = capabilities
         }
     end,
     -- Next, you can provide targeted overrides for specific servers.
-    ["lua_ls"] = function()
-        lspconfig.lua_ls.setup {
-            settings = {
-                Lua = {
-                    diagnostics = {
-                        globals = { "vim" }
-                    },
-                    workspace = {
-                        checkThirdParty = false
-                    },
-                    hint = { enable = true }
-                }
-            },
-        }
-    end,
+    -- ["lua_ls"] = function()
+    --     lspconfig.lua_ls.setup {
+    --         settings = {
+    --             Lua = {
+    --                 diagnostics = {
+    --                     globals = { "vim" }
+    --                 },
+    --                 workspace = {
+    --                     checkThirdParty = false
+    --                 },
+    --                 hint = { enable = true }
+    --             }
+    --         },
+    --     }
+    -- end,
     -- ["omnisharp"] = function()
     --     lspconfig.omnisharp.setup({
     --         enable_roslyn_analyzers = true,

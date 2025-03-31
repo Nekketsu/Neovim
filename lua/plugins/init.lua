@@ -596,12 +596,6 @@ return {
     "romainl/vim-cool",
 
     {
-        'MoaidHathot/dotnet.nvim',
-        cmd = "DotnetUI",
-        opts = {},
-    },
-
-    {
         "chentoast/marks.nvim",
         event = "VeryLazy",
         opts = {}
@@ -609,6 +603,12 @@ return {
 
     {
         "sphamba/smear-cursor.nvim",
+        opts = {},
+    },
+
+    {
+        'MoaidHathot/dotnet.nvim',
+        cmd = "DotnetUI",
         opts = {},
     },
 
@@ -633,7 +633,8 @@ return {
             vim.filetype.add({
                 extension = {
                     razor = "razor",
-                    cshtml = "razor"
+                    cshtml = "razor",
+                    xaml = "xml"
                 }
             })
         end,
@@ -682,34 +683,35 @@ return {
         }
     },
 
-    {
-        "nvzone/menu",
-        lazy = true,
-        dependencies = { "nvzone/volt" , lazy = true },
-        keys = {
-            { "<C-T>", function() require("menu").open("default") end },
-            { "<RightMouse>",
-                function()
-                    require("menu.utils").delete_old_menus()
+    -- {
+    --     "nvzone/menu",
+    --     lazy = true,
+    --     dependencies = { "nvzone/volt" , lazy = true },
+    --     keys = {
+    --         { "<C-T>", function() require("menu").open("default") end },
+    --         { "<RightMouse>",
+    --             function()
+    --                 require("menu.utils").delete_old_menus()
+    --
+    --                 vim.cmd.exec '"normal! \\<RightMouse>"'
+    --
+    --                 local buf = vim.api.nvim_win_get_buf(vim.fn.getmousepos().winid)
+    --                 local options = vim.bo[buf].ft == "NvimTree" and "nvimtree" or "default"
+    --                 if vim.bo[buf].ft == "NvimTree" then
+    --                     options = "nvimtree"
+    --                     -- elseif vim.bo[buf].ft == "neo-tree" then
+    --                     --     options = "neotree"
+    --                     -- else
+    --                     -- options = "default"
+    --                 end
+    --
+    --
+    --                 require("menu").open(options, { mouse = true })
+    --             end,
+    --             mode = { "n", "v" } }
+    --     }
+    -- },
 
-                    vim.cmd.exec '"normal! \\<RightMouse>"'
-
-                    local buf = vim.api.nvim_win_get_buf(vim.fn.getmousepos().winid)
-                    local options = vim.bo[buf].ft == "NvimTree" and "nvimtree" or "default"
-                    if vim.bo[buf].ft == "NvimTree" then
-                        options = "nvimtree"
-                        -- elseif vim.bo[buf].ft == "neo-tree" then
-                        --     options = "neotree"
-                        -- else
-                        -- options = "default"
-                    end
-
-
-                    require("menu").open(options, { mouse = true })
-                end,
-                mode = { "n", "v" } }
-        }
-    },
     {
         "nvzone/minty",
         cmd = { "Shades", "Huefy" },
