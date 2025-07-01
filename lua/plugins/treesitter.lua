@@ -11,7 +11,7 @@ return {
         require'nvim-treesitter.configs'.setup {
             ensure_installed = {
                 "c", "c_sharp", "cpp", "css", "go", "html", "javascript", "lua",
-                "markdown", "markdown_inline", "norg",  "python","dap_repl", "regex", "rust", "scss", "typescript",
+                "markdown", "markdown_inline", "norg", "python", "dap_repl", "regex", "rust", "scss", "typescript",
                 "vim", "vimdoc", "query"
             },
             highlight = {

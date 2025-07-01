@@ -1,7 +1,9 @@
 return {
     "GustavEikaas/easy-dotnet.nvim",
-    dependencies = { "nvim-lua/plenary.nvim", 'nvim-telescope/telescope.nvim', },
+    dependencies = { "nvim-lua/plenary.nvim", 'folke/snacks.nvim', },
     config = function()
-        require("easy-dotnet").setup({})
+        require("easy-dotnet").setup({
+            picker = "snacks"
+        })
     end
 }

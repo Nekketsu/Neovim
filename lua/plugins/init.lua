@@ -134,24 +134,6 @@ return {
         }
     },
 
-    -- LSP and completion
-    {
-        "williamboman/mason.nvim",
-        "williamboman/mason-lspconfig.nvim",
-        "neovim/nvim-lspconfig",
-        config = function()
-            require("mason").setup()
-            ---@diagnostic disable-next-line: missing-fields
-            require("mason-lspconfig").setup({
-                ensure_installed = {
-                    "asm_lsp", "clangd", "codelldb", "cpptools", "css-lsp", "csharpier", "debugpy", "emmet-language-server",
-                    "gopls", "html-lsp", "json-lsp", "lua-language-server", "netcoredbg", "pyright",
-                    "roslyn", "rust-analyzer", "rzls", "typescript-language-server", "yaml"
-                }
-            })
-        end
-    },
-
     {
         'Wansmer/symbol-usage.nvim',
         event = 'BufReadPre', -- need run before LspAttach if you use nvim 0.9. On 0.10 use 'LspAttach'
@@ -645,11 +627,6 @@ return {
                 require("rzls").setup({})
             end
         }
-    },
-
-    {
-        "OXY2DEV/markview.nvim",
-        lazy = false
     },
 
     {

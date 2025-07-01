@@ -7,7 +7,7 @@ declare module vsda {
 		validate(arg: string): 'ok' | 'error';
 	}
 }
-const vsda_location = '[VSCODE_INSTALL_DIR]\\resources\\app\\node_modules.asar.unpacked\\vsda\\build\\Release\\vsda.node';
+const vsda_location = '[VSCODE_INSTALL_DIR]\\resources\\app\\node_modules\\vsda\\build\\Release\\vsda.node';
 const a: typeof vsda = require(vsda_location);
 const signer: vsda.signer = new a.signer();
 process.argv.forEach((value, index, array) => {

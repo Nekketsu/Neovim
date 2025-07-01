@@ -32,9 +32,6 @@ return {
         { "=p", "<Plug>(YankyPutAfterFilter)", desc = "Put after applying a filter" },
         { "=P", "<Plug>(YankyPutBeforeFilter)", desc = "Put before applying a filter" },
     },
-    init = function()
-        require("telescope").load_extension("yank_history")
-    end,
     dependencies = {
         "tpope/vim-fugitive",
         "tpope/vim-unimpaired",
