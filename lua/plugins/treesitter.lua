@@ -3,6 +3,7 @@ return {
     dependencies = {
         'nvim-treesitter/nvim-treesitter-textobjects',
         'tpope/vim-unimpaired',
+        'OXY2DEV/markview.nvim'
         -- 'JoosepAlviste/nvim-ts-context-commentstring',
     },
     build = ':TSUpdate',
