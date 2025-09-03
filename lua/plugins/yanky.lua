@@ -6,7 +6,7 @@ return {
         -- refer to the configuration section below
     },
     keys = {
-        { "<leader>p", function() Snacks.picker.yanky() end, mode = { "n", "x" }, desc = "Open Yank History", },
+        { "<leader>pp", function() Snacks.picker.yanky() end, mode = { "n", "x" }, desc = "Open Yank History", },
 
         {"y", "<Plug>(YankyYank)", mode = { "n", "x" }, desc = "Yank text" },
 

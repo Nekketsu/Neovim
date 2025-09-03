@@ -35,8 +35,8 @@ return {
                 -- vim.keymap.set('n', 'grr', vim.lsp.buf.references, bufopts)
                 -- vim.keymap.set('n', '<space>F', function() vim.lsp.buf.format { async = true } end, opts)
 
-                vim.keymap.set('n', '<space>ll', vim.lsp.codelens.refresh, opts)
-                vim.keymap.set('n', '<space>lr', vim.lsp.codelens.run, opts)
+                -- vim.keymap.set('n', '<space>ll', vim.lsp.codelens.refresh, opts)
+                -- vim.keymap.set('n', '<space>lr', vim.lsp.codelens.run, opts)
 
                 -- vim.lsp.codelens.refresh()
 

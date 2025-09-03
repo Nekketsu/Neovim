@@ -1,13 +1,13 @@
 vim.o.termguicolors = true
 -- vim.opt.background = "dark"
 
-vim.cmd [[colorscheme tokyonight]]
+-- vim.cmd [[colorscheme tokyonight]]
 -- vim.cmd [[colorscheme darkplus]]
 -- vim.cmd [[colorscheme vscode]]
 -- vim.cmd [[colorscheme catppuccin]]
 -- vim.cmd [[colorscheme lunar]]
--- vim.cmd [[colorscheme moonfly]]
--- vim.cmd [[colorscheme aura]]
+-- vim.cmd [[colorscheme nord]]
+-- vim.cmd [[colorscheme techbase]]
 
 local hl_groups = vim.api.nvim_get_hl(0, {})
 

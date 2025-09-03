@@ -39,6 +39,11 @@ return
                 nerd_font_variant = "mono"
             },
 
+            -- cmdline = {
+            --     keymap = { preset = 'super-tab' },
+            --     completion = { menu = { auto_show  = true }}
+            -- },
+
             -- Default list of enabled providers defined so that you can extend it
             -- elsewhere in your config, without redefining it, via `opts_extend`
             sources = {
@@ -49,7 +54,6 @@ return
                     sql = { 'snippets', 'dadbod', 'buffer' },
                 },
                 -- optionally disable cmdline completions
-                -- cmdline = {},
                 providers = {
                     lazydev = {
                         name = "LazyDev",

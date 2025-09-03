@@ -13,7 +13,10 @@ return {
 
         -- The color of the above highlight. Must be a valid vim highlight group.
         -- (see :h highlight-group for options)
-        highlight_group = "ColorColumn",
+        -- highlight_group = "ColorColumn",
+        highlight_group = "CursorLine",
+
+        -- select = true
     },
     keys = {
         { "<C-k>", "<cmd>Treewalker Up<cr>",                        mode = { "n", "v" } },

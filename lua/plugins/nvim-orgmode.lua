@@ -70,6 +70,14 @@ return {
                             org_agenda_tag_filter_preset = 'NOTES-REFACTOR' -- Show only headlines with NOTES tag that does not have a REFACTOR tag. Same value providad as when pressing `/` in the Agenda view
                         },
                     }
+                },
+                b = {
+                    description = "📖 Books",
+                    types = {
+                        type = "tags",
+                        org_agenda_overriding_header = "Books",
+                        org_agenda_files = { "~/org/orgfiles/books.org" }
+                    }
                 }
             },
             org_capture_templates = {
@@ -121,6 +129,11 @@ return {
                     description = "Repo",
                     template = "* [[%x][%(return string.match('%x', '([^/]+)$'))]]%?",
                     target = "~/org/orgfiles/repos.org",
+                },
+                b = {
+                    description = "Book",
+                    template = '* TODO %^{Title}\n  :PROPERTIES:\n  :AUTHOR:      %^{Author}\n  :STATUS:      %^{State|To read|Reading|Read|Abandoned}\n  :TAGS:        %^{Tags}\n  :PAGES:       %^{Pages}\n  :LAST_PAGE:   %^{Last page}\n  :ADDED:       %U\n  :END:\n  %^{Notes}',
+                    target = '~/org/orgfiles/books.org'
                 }
             },
         })

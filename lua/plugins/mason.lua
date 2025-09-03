@@ -5,7 +5,7 @@ return {
         -- ensure_installed = {
         --     "asm_lsp", "clangd", "codelldb", "cpptools", "css-lsp", "csharpier", "debugpy", "emmet-language-server",
         --     "gopls", "html-lsp", "json-lsp", "lua-language-server", "netcoredbg", "pyright",
-        --     "roslyn", "rust-analyzer", "rzls", "typescript-language-server", "yaml-language-server"
+        --     "roslyn", "rust-analyzer", "rzls", "typescript-language-server", "tinymist", "yaml-language-server"
         -- }
     },
     dependencies = {
