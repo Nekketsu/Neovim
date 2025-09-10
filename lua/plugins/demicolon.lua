@@ -1,43 +1,3 @@
----@param  forward boolean
-local function go_wrap(forward)
-    return function()
-        require("demicolon.jump").repeatably_do(function(opts)
-            local motion = opts.forward ~= false and 'gj' or 'gk'
-            vim.cmd(string.format('normal! %s%s', vim.v.count1, motion))
-        end, { forward = forward })
-    end
-end
-
-local function go_change_list(forward)
-    return function()
-        require("demicolon.jump").repeatably_do(function(opts)
-            local motion = opts.forward ~= false and 'g;' or 'g,'
-            vim.cmd(string.format('normal! %s%s', vim.v.count1, motion))
-        end, { forward = forward })
-    end
-end
-
--- return {
---     'mawkler/demicolon.nvim',
---     dependencies = {
---         'nvim-treesitter/nvim-treesitter',
---         'nvim-treesitter/nvim-treesitter-textobjects',
---         'jinh0/eyeliner.nvim'
---     },
---     opts = {
---         keymaps = {
---             repeat_motions = "stateful",
---             horizontal_motions = false,
---         }
---     },
---     keys = {
---         { "gj", go_wrap(true), desc = "Display lines downward" },
---         { "gk", go_wrap(false), desc = "Display lines upward" },
---         { "g;", go_change_list(true), desc = "Go to newer position in change list" },
---         { "g,", go_change_list(false), desc = "Go to older position in change list" },
---     }
--- }
-
 return {
     "mawkler/demicolon.nvim",
     branch = "repeated",
@@ -115,13 +75,36 @@ return {
             end
         end)
 
+        local function repeatably_do(next, prev)
+            return function(forward)
+                return function()
+                    require("demicolon.jump").repeatably_do(function(opts)
+                        local motion = opts.forward ~= false and next or prev
+                        vim.cmd(string.format('normal! %s%s', vim.v.count1, motion))
+                    end, { forward = forward })
+                end
+            end
+        end
+
+        local function map_repeatably_do(next, prev, next_desc, prev_desc)
+            local repeatably = repeatably_do(next, prev)
+            vim.keymap.set({ "n", "x", "o" }, next, repeatably(true), { desc = next_desc})
+            vim.keymap.set({ "n", "x", "o" }, prev, repeatably(false), { desc = prev_desc})
+        end
+
+        local go_wrap = repeatably_do('gj', 'gk');
+        local go_change_list = repeatably_do('g;', 'g,')
+
         vim.keymap.set({ "n", "x", "o" }, "f", flash_jump({ key = "f", forward = true }), { desc = "Flash f" })
         vim.keymap.set({ "n", "x", "o" }, "F", flash_jump({ key = "F", forward = false }), { desc = "Flash F" })
         vim.keymap.set({ "n", "x", "o" }, "t", flash_jump({ key = "t", forward = true }), { desc = "Flash t" })
         vim.keymap.set({ "n", "x", "o" }, "T", flash_jump({ key = "T", forward = false }), { desc = "Flash T" })
-        vim.keymap.set({ "n", "x", "o" }, "gj", go_wrap(true), { desc = "Display lines downward" })
-        vim.keymap.set({ "n", "x", "o" }, "gk", go_wrap(false), { desc = "Display lines upward" })
-        vim.keymap.set({ "n", "x", "o" }, "g;", go_change_list(true), { desc = "Go to newer position in change list" })
-        vim.keymap.set({ "n", "x", "o" }, "g,", go_change_list(false), { desc = "Go to older position in change list" })
+
+        map_repeatably_do("gj", "gk", "Display lines downward", "Display lines upward")
+        map_repeatably_do("g;", "g,", "Go to newer position in change list", "Go to older position in change list")
+        -- vim.keymap.set({ "n", "x", "o" }, "gj", go_wrap(true), { desc = "Display lines downward" })
+        -- vim.keymap.set({ "n", "x", "o" }, "gk", go_wrap(false), { desc = "Display lines upward" })
+        -- vim.keymap.set({ "n", "x", "o" }, "g;", go_change_list(true), { desc = "Go to newer position in change list" })
+        -- vim.keymap.set({ "n", "x", "o" }, "g,", go_change_list(false), { desc = "Go to older position in change list" })
     end,
 }
