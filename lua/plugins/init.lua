@@ -4,16 +4,41 @@ return {
         'folke/tokyonight.nvim',
         lazy = false,
         priority = 1000,
-        opts = {
-            style = "night",    -- The theme comes in three styles, `storm`, a darker variant `night` and `day`
-            transparent = true, -- Enable this to disable setting the background color
-            styles = {
-                -- Style to be applied to different syntax groups
-                -- Value is any valid attr-list value `:help attr-list`
-                comments = { italic = false },
-                keywords = { italic = false },
-            },
-        },
+        -- opts = {
+        --     style = "night",    -- The theme comes in three styles, `storm`, a darker variant `night` and `day`
+        --     transparent = true, -- Enable this to disable setting the background color
+        --     styles = {
+        --         -- Style to be applied to different syntax groups
+        --         -- Value is any valid attr-list value `:help attr-list`
+        --         comments = { italic = false },
+        --         keywords = { italic = false },
+        --     },
+        -- },
+        config = function()
+            require("tokyonight").setup({
+                style = "night",
+                transparent = true,
+                styles = {
+                    comments = { italic = false },
+                    keywords = { italic = false },
+                },
+                on_highlights = function(hl, c)
+                    hl.DiagnosticUnderlineInfo = {
+                        sp = "#1abc9c",
+                        -- sp = "#ffcc66"
+                        underdotted = true,
+                    }
+                    hl.DiagnosticUnderlineHint = {
+                        sp = "#0db9d7",
+                        -- sp = "#4bc1fe"
+                        underdotted = true,
+                    }
+                end
+            })
+
+            vim.o.termguicolors = true
+            vim.cmd([[colorscheme tokyonight]])
+        end
     },
     'mofiqul/vscode.nvim',
     'rebelot/kanagawa.nvim',
@@ -31,9 +56,9 @@ return {
     'shaunsingh/nord.nvim',
     {
         "mcauley-penney/techbase.nvim",
-        config = function(_, opts)
-            vim.cmd.colorscheme("techbase")
-        end,
+        -- config = function(_, opts)
+        --     vim.cmd.colorscheme("techbase")
+        -- end,
         priority = 1000
     },
 
@@ -323,28 +348,46 @@ return {
     -- 'tpope/vim-unimpaired',
     'tpope/vim-repeat',
     'tpope/vim-characterize',
-    'tpope/vim-rsi',
+    -- 'tpope/vim-rsi',
 
-    -- {
-    --     'assistcontrol/readline.nvim',
-    --     keys = {
-    --         { '<C-k>', function() require("readline").kill_line() end, mode = "!", desc = "Kill line" },
-    --         { '<C-u>', function() require("readline").backward_kill_line() end, mode = "!", desc = "Backdward kill line" },
-    --         { '<M-d>', function() require("readline").kill_word() end, mode = "!", desc = "Kill word" },
-    --         { '<M-BS>', function() require("readline").backward_kill_word() end, mode = "!", desc = "Backward kill word" },
-    --         { '<C-w>', function() require("readline").unix_word_rubout() end, mode = "!", desc = "Unix word rubout" },
-    --         { '<C-d>', '<Delete>' , mode = "!", desc = "Delete char" },
-    --         { '<C-h>', '<BS>', mode = "!", desc = "Backward delete char" },
-    --         { '<C-a>', function() require("readline").beginning_of_line() end, mode = "!", desc = "Beginning of line" },
-    --         { '<C-e>', function() require("readline").end_of_line() end, mode = "!", desc = "End of line" },
-    --         { '<M-f>', function() require("readline").forward_word() end, mode = "!", desc = "Forward word" },
-    --         { '<M-b>', function() require("readline").backward_word() end, mode = "!", desc = "Backward word" },
-    --         { '<C-f>', '<Right>', mode = "!", desc = "Forward char" },
-    --         { '<C-b>', '<Left>', mode = "!", desc = "Backward char" },
-    --         { '<C-n>', '<Down>', mode = "!", desc = "Next line" },
-    --         { '<C-p>', '<Up>', mode = "!", desc = "Previous line" },
-    --     }
-    -- },
+    {
+        "hiberabyss/readline.nvim",
+        config = function()
+            local readline = require 'readline'
+            vim.keymap.set('!', '<C-k>', readline.kill_line, { desc = "Kill line" })
+            vim.keymap.set('!', '<C-u>', readline.backward_kill_line, { desc = "Backward kill line" })
+            vim.keymap.set('!', '<M-d>', readline.kill_word, { desc = "Kill word" })
+            vim.keymap.set('!', '<M-BS>', readline.backward_kill_word, { desc = "Backward kill word" })
+            vim.keymap.set('!', '<C-w>', readline.unix_word_rubout, { desc = "Unix word rubout" })
+            vim.keymap.set('!', '<C-d>', '<Delete>', { desc = "Delete char" })
+            vim.keymap.set('!', '<C-h>', '<BS>', { desc = "Backward delete char" })
+            vim.keymap.set('!', '<C-a>', readline.beginning_of_line, { desc = "Beginning of line" })
+            vim.keymap.set('!', '<C-e>', readline.end_of_line, { desc = "End of line" })
+            vim.keymap.set('!', '<M-f>', readline.forward_word, { desc = "Forward word" })
+            vim.keymap.set('!', '<M-b>', readline.backward_word, { desc = "Backward word" })
+            vim.keymap.set('!', '<C-f>', '<Right>', { desc = "Forward char" })
+            vim.keymap.set('!', '<C-b>', '<Left>', { desc = "Backward char" })
+            vim.keymap.set('!', '<C-n>', '<Down>', { desc = "Next line" })
+            vim.keymap.set('!', '<C-p>', '<Up>', { desc = "Previous line" })
+        end,
+        -- keys = { --     keys = {
+        --     { '<C-k>', function() require("readline").kill_line() end, mode = "!", desc = "Kill line" },
+        --     { '<C-u>', function() require("readline").backward_kill_line() end, mode = "!", desc = "Backdward kill line" },
+        --     { '<M-d>', function() require("readline").kill_word() end, mode = "!", desc = "Kill word" },
+        --     { '<M-BS>', function() require("readline").backward_kill_word() end, mode = "!", desc = "Backward kill word" },
+        --     { '<C-w>', function() require("readline").unix_word_rubout() end, mode = "!", desc = "Unix word rubout" },
+        --     { '<C-d>', '<Delete>' , mode = "!", desc = "Delete char" },
+        --     { '<C-h>', '<BS>', mode = "!", desc = "Backward delete char" },
+        --     { '<C-a>', function() require("readline").beginning_of_line() end, mode = "!", desc = "Beginning of line" },
+        --     { '<C-e>', function() require("readline").end_of_line() end, mode = "!", desc = "End of line" },
+        --     { '<M-f>', function() require("readline").forward_word() end, mode = "!", desc = "Forward word" },
+        --     { '<M-b>', function() require("readline").backward_word() end, mode = "!", desc = "Backward word" },
+        --     { '<C-f>', '<Right>', mode = "!", desc = "Forward char" },
+        --     { '<C-b>', '<Left>', mode = "!", desc = "Backward char" },
+        --     { '<C-n>', '<Down>', mode = "!", desc = "Next line" },
+        --     { '<C-p>', '<Up>', mode = "!", desc = "Previous line" },
+        -- }
+    },
 
     -- {
     --     'numToStr/Comment.nvim',
@@ -581,8 +624,8 @@ return {
     },
 
     {
-          "sylvanfranklin/omni-preview.nvim",
-          opts = {},
+        "sylvanfranklin/omni-preview.nvim",
+        opts = {},
         keys = {
             { "<leader>po", "<cmd>OmniPreview start<CR>", desc = "OmniPreview Start" },
             { "<leader>pc", "<cmd>OmniPreview stop<CR>",  desc = "OmniPreview Stop" },

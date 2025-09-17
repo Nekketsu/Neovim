@@ -7,7 +7,7 @@ return {
     -- end,
     opts = {
         style = {
-            -- placement = "inline"
+            placement = "inline"
         }
     }
 }
