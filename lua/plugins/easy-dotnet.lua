@@ -3,7 +3,8 @@ return {
     dependencies = { "nvim-lua/plenary.nvim", 'folke/snacks.nvim', },
     config = function()
         require("easy-dotnet").setup({
-            picker = "snacks"
+            picker = "snacks",
+            lsp = { enabled = false }
         })
     end
 }

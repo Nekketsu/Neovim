@@ -220,13 +220,15 @@ return {
         opts = {
             on_attach = function(bufnr)
                 -- Jump forwards/backwards with '{' and '}'
-                local ts_repeat_move = require "nvim-treesitter.textobjects.repeatable_move"
-                local next_symbol_repeat, previous_symbol_repeat = ts_repeat_move.make_repeatable_move_pair(function() vim.cmd("AerialNext") end, function() vim.cmd("AerialPrev") end)
-                vim.keymap.set('n', ']<C-s>', next_symbol_repeat, { buffer = bufnr, desc = "Aerial next" })
-                vim.keymap.set('n', '[<C-s>', previous_symbol_repeat, { buffer = bufnr, desc = "Aerial previous" })
+                -- local ts_repeat_move = require "nvim-treesitter.textobjects.repeatable_move"
+                -- local next_symbol_repeat, previous_symbol_repeat = ts_repeat_move.make_repeatable_move_pair(function() vim.cmd("AerialNext") end, function() vim.cmd("AerialPrev") end)
+                -- vim.keymap.set('n', ']<C-s>', next_symbol_repeat, { buffer = bufnr, desc = "Aerial next" })
+                -- vim.keymap.set('n', '[<C-s>', previous_symbol_repeat, { buffer = bufnr, desc = "Aerial previous" })
 
                 -- vim.keymap.set('n', '{', '<cmd>AerialPrev<CR>', {buffer = bufnr})
                 -- vim.keymap.set('n', '}', '<cmd>AerialNext<CR>', {buffer = bufnr})
+                vim.keymap.set('n', '[<C-s>', '<cmd>AerialPrev<CR>', {buffer = bufnr, desc = "Aerial next"})
+                vim.keymap.set('n', ']<C-s>', '<cmd>AerialNext<CR>', {buffer = bufnr, desc = "Aerial previous"})
             end,
             backends = { "lsp", "treesitter", "markdown", "man" },
             filter_kind = false,

@@ -13,3 +13,5 @@ vim.keymap.set("n", "yoe", function()
 end)
 vim.keymap.set("n", "[oe", function() vim.diagnostic.config({ virtual_lines = { severity = { min = vim.diagnostic.severity.WARN }}, virtual_text = false, severity = { min = vim.diagnostic.severity.WARN}, signs = false }) end)
 vim.keymap.set("n", "]oe", function() vim.diagnostic.config({ virtual_lines = false, virtual_text = { severity = { min = vim.diagnostic.severity.WARN }}, severity = { min = vim.diagnostic.severity.WARN}, signs = false }) end)
+
+vim.keymap.set('x', '<Leader>/', '<Esc>/\\%V')
