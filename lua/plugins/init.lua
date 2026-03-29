@@ -62,25 +62,10 @@ return {
         priority = 1000
     },
 
-    -- {
-    --     'norcalli/nvim-colorizer.lua',
-    --     config = true
-    -- },
-
     {
-        "NvChad/nvim-colorizer.lua",
-        event = "BufReadPre",
-        opts = {
-            -- user_default_options = {
-            --     mode = "virtualtext"
-            -- }
-        }
+        'norcalli/nvim-colorizer.lua',
+        config = true
     },
-
-    -- {
-    --     "brenoprata10/nvim-highlight-colors",
-    --     config = true
-    -- },
 
     {
         'bekaboo/dropbar.nvim',
@@ -99,18 +84,6 @@ return {
         end
     },
 
-    {
-        'Chaitanyabsprip/fastaction.nvim',
-        ---@type FastActionConfig
-        opts = {},
-        keys = {
-            {
-                "<leader>ca",
-                function() require("fastaction").code_action() end,
-                desc = "Fast action",
-            },
-        },
-    },
 
     {
         "folke/which-key.nvim",
@@ -132,47 +105,10 @@ return {
     },
 
     {
-        "grapp-dev/nui-components.nvim",
-        dependencies = {
-            "MunifTanjim/nui.nvim"
-        }
-    },
-
-    {
-        "smjonas/live-command.nvim",
-        -- live-command supports semantic versioning via tags
-        -- tag = "1.*",
-        config = function()
-            require("live-command").setup {
-                commands = {
-                    Norm = { cmd = "norm" },
-                    S = { cmd = "Subvert" }
-                },
-            }
-        end
-    },
-
-    {
-        "mbbill/undotree",
-        config = function()
-        end,
-        keys = {
-            {'<leader><F5>', vim.cmd.UndotreeToggle}
-        }
-    },
-
-    {
         "soulis-1256/eagle.nvim",
         config = function()
             require("eagle").setup({})
         end
-    },
-
-    {
-        'LukasPietzschmann/boo.nvim',
-        opts = {
-            -- here goes your config :)
-        },
     },
 
     {
@@ -183,50 +119,16 @@ return {
             "nvim-treesitter/nvim-treesitter"
         }
     },
-    {
-        'nvim-telescope/telescope-dap.nvim',
-        dependencies = {
-            "mfussenegger/nvim-dap",
-            "nvim-telescope/telescope.nvim",
-            "nvim-treesitter/nvim-treesitter"
-        }
-    },
 
     {
         'leoluz/nvim-dap-go',
         config = true
     },
 
-    'rafamadriz/friendly-snippets',
-
-    -- use 'arkav/lualine-lsp-progress'
-
-    'onsails/lspkind-nvim',
-
-    {
-        "hedyhli/outline.nvim",
-        lazy = true,
-        cmd = { "Outline", "OutlineOpen" },
-        keys = { -- Example mapping to toggle outline
-            { "<leader>sO", "<cmd>Outline<CR>", desc = "Toggle outline" },
-        },
-        opts = {
-            -- Your setup opts here
-        },
-    },
-
     {
         'stevearc/aerial.nvim',
         opts = {
             on_attach = function(bufnr)
-                -- Jump forwards/backwards with '{' and '}'
-                -- local ts_repeat_move = require "nvim-treesitter.textobjects.repeatable_move"
-                -- local next_symbol_repeat, previous_symbol_repeat = ts_repeat_move.make_repeatable_move_pair(function() vim.cmd("AerialNext") end, function() vim.cmd("AerialPrev") end)
-                -- vim.keymap.set('n', ']<C-s>', next_symbol_repeat, { buffer = bufnr, desc = "Aerial next" })
-                -- vim.keymap.set('n', '[<C-s>', previous_symbol_repeat, { buffer = bufnr, desc = "Aerial previous" })
-
-                -- vim.keymap.set('n', '{', '<cmd>AerialPrev<CR>', {buffer = bufnr})
-                -- vim.keymap.set('n', '}', '<cmd>AerialNext<CR>', {buffer = bufnr})
                 vim.keymap.set('n', '[<C-s>', '<cmd>AerialPrev<CR>', {buffer = bufnr, desc = "Aerial next"})
                 vim.keymap.set('n', ']<C-s>', '<cmd>AerialNext<CR>', {buffer = bufnr, desc = "Aerial previous"})
             end,
@@ -247,6 +149,7 @@ return {
 
     {
         'kevinhwang91/nvim-bqf',
+        ft = "qf",
         dependencies = {
             "junegunn/fzf",
             build = function() vim.fn["fzf#install"]() end,
@@ -266,13 +169,24 @@ return {
         ---@type quicker.SetupOptions
         opts = {
             keys = {
-                { ">", "<cmd>lua require('quicker').expand()<CR>", desc = "Expand quickfix content" },
-                { "<", "<cmd>lua require('quicker').collapse()<CR>", desc = "Collapse quickfix content" },
+                { ">", function() require("quicker").expand({ before = 2, after = 2, add_to_existing = true }) end, desc = "Expand quickfix context" },
+                { "<", function() require("quicker").collapse() end, desc = "Collapse quickfix context" },
             },
             highlight = {
                 load_buffers = false
             }
         },
+        init = function()
+            vim.keymap.set("n",  "<leader>Q", function() require("quicker").toggle() end, { desc = "Toggle quickfix" })
+            vim.keymap.set("n",  "<leader>L", function() require("quicker").toggle({ loclist = true }) end, { desc = "Toggle loclist" })
+
+            vim.keymap.set("n",  "yoQ", function() require("quicker").toggle() end, { desc = "Toggle quickfix" })
+            vim.keymap.set("n",  "[oQ", function() require("quicker").open() end, { desc = "Open quickfix" })
+            vim.keymap.set("n",  "]oQ", function() require("quicker").close() end, { desc = "Close quickfix" })
+            vim.keymap.set("n",  "yoL", function() require("quicker").toggle({ loclist = true }) end, { desc = "Toggle loclist" })
+            vim.keymap.set("n",  "[oL", function() require("quicker").open({ loclist = true }) end, { desc = "Toggle loclist" })
+            vim.keymap.set("n",  "]oL", function() require("quicker").close({ loclist = true }) end, { desc = "Toggle loclist" })
+        end
     },
 
     -- Fugitive for Git
@@ -309,20 +223,54 @@ return {
             {'<leader>gd', '<cmd>DiffviewOpen<CR>', desc = "Git diffview"}
         }
     },
-
     {
-        'pwntester/octo.nvim',
-        requires = {
-            'nvim-lua/plenary.nvim',
-            'nvim-telescope/telescope.nvim',
-            -- OR 'ibhagwan/fzf-lua',
-            -- OR 'folke/snacks.nvim',
-            'nvim-tree/nvim-web-devicons',
+        "pwntester/octo.nvim",
+        cmd = "Octo",
+        opts = {
+            -- or "fzf-lua" or "snacks" or "default"
+            picker = "snacks",
+            -- bare Octo command opens picker of commands
+            enable_builtin = true,
         },
-        config = function ()
-            require"octo".setup()
-        end
+        keys = {
+            {
+                "<leader>Oi",
+                "<CMD>Octo issue list<CR>",
+                desc = "List GitHub Issues",
+            },
+            {
+                "<leader>Op",
+                "<CMD>Octo pr list<CR>",
+                desc = "List GitHub PullRequests",
+            },
+            {
+                "<leader>Od",
+                "<CMD>Octo discussion list<CR>",
+                desc = "List GitHub Discussions",
+            },
+            {
+                "<leader>On",
+                "<CMD>Octo notification list<CR>",
+                desc = "List GitHub Notifications",
+            },
+            {
+                "<leader>Os",
+                function()
+                    require("octo.utils").create_base_search_command { include_current_repo = true }
+                end,
+                desc = "Search GitHub",
+            },
+        },
+        dependencies = {
+            "nvim-lua/plenary.nvim",
+            -- "nvim-telescope/telescope.nvim",
+            -- OR "ibhagwan/fzf-lua",
+            -- OR "folke/snacks.nvim",
+            "folke/snacks.nvim",
+            "nvim-tree/nvim-web-devicons",
+        },
     },
+
 
     {
         "abccsss/nvim-gitstatus",
@@ -330,21 +278,21 @@ return {
         config = true,
     },
 
-    {
-        "refractalize/oil-git-status.nvim",
-
-        dependencies = {
-            "stevearc/oil.nvim",
-        },
-
-        config = true,
-    },
-
-    {
-        "JezerM/oil-lsp-diagnostics.nvim",
-        dependencies = { "stevearc/oil.nvim" },
-        opts = {}
-    },
+    -- {
+    --     "refractalize/oil-git-status.nvim",
+    --
+    --     dependencies = {
+    --         "stevearc/oil.nvim",
+    --     },
+    --
+    --     config = true,
+    -- },
+    --
+    -- {
+    --     "JezerM/oil-lsp-diagnostics.nvim",
+    --     dependencies = { "stevearc/oil.nvim" },
+    --     opts = {}
+    -- },
 
     'tpope/vim-abolish',
     -- 'tpope/vim-unimpaired',
@@ -353,14 +301,14 @@ return {
     -- 'tpope/vim-rsi',
 
     {
-        "hiberabyss/readline.nvim",
+        "assistcontrol/readline.nvim",
         config = function()
             local readline = require 'readline'
             vim.keymap.set('!', '<C-k>', readline.kill_line, { desc = "Kill line" })
             vim.keymap.set('!', '<C-u>', readline.backward_kill_line, { desc = "Backward kill line" })
             vim.keymap.set('!', '<M-d>', readline.kill_word, { desc = "Kill word" })
-            vim.keymap.set('!', '<M-BS>', readline.backward_kill_word, { desc = "Backward kill word" })
-            vim.keymap.set('!', '<C-w>', readline.unix_word_rubout, { desc = "Unix word rubout" })
+            vim.keymap.set('!', '<M-BS>', readline.unix_word_rubout, { desc = "Unix word rubout" })
+            vim.keymap.set('!', '<C-w>', readline.backward_kill_word, { desc = "Backward kill word" })
             vim.keymap.set('!', '<C-d>', '<Delete>', { desc = "Delete char" })
             vim.keymap.set('!', '<C-h>', '<BS>', { desc = "Backward delete char" })
             vim.keymap.set('!', '<C-a>', readline.beginning_of_line, { desc = "Beginning of line" })
@@ -372,35 +320,8 @@ return {
             vim.keymap.set('!', '<C-n>', '<Down>', { desc = "Next line" })
             vim.keymap.set('!', '<C-p>', '<Up>', { desc = "Previous line" })
         end,
-        -- keys = { --     keys = {
-        --     { '<C-k>', function() require("readline").kill_line() end, mode = "!", desc = "Kill line" },
-        --     { '<C-u>', function() require("readline").backward_kill_line() end, mode = "!", desc = "Backdward kill line" },
-        --     { '<M-d>', function() require("readline").kill_word() end, mode = "!", desc = "Kill word" },
-        --     { '<M-BS>', function() require("readline").backward_kill_word() end, mode = "!", desc = "Backward kill word" },
-        --     { '<C-w>', function() require("readline").unix_word_rubout() end, mode = "!", desc = "Unix word rubout" },
-        --     { '<C-d>', '<Delete>' , mode = "!", desc = "Delete char" },
-        --     { '<C-h>', '<BS>', mode = "!", desc = "Backward delete char" },
-        --     { '<C-a>', function() require("readline").beginning_of_line() end, mode = "!", desc = "Beginning of line" },
-        --     { '<C-e>', function() require("readline").end_of_line() end, mode = "!", desc = "End of line" },
-        --     { '<M-f>', function() require("readline").forward_word() end, mode = "!", desc = "Forward word" },
-        --     { '<M-b>', function() require("readline").backward_word() end, mode = "!", desc = "Backward word" },
-        --     { '<C-f>', '<Right>', mode = "!", desc = "Forward char" },
-        --     { '<C-b>', '<Left>', mode = "!", desc = "Backward char" },
-        --     { '<C-n>', '<Down>', mode = "!", desc = "Next line" },
-        --     { '<C-p>', '<Up>', mode = "!", desc = "Previous line" },
-        -- }
     },
 
-    -- {
-    --     'numToStr/Comment.nvim',
-    --     lazy = false,
-    --     config = function()
-    --         require('Comment').setup {
-    --             pre_hook = require('ts_context_commentstring.integrations.comment_nvim').create_pre_hook(),
-    --         }
-    --     end,
-    --     dependencies = "JoosepAlviste/nvim-ts-context-commentstring"
-    -- },
 
     {
         "kylechui/nvim-surround",
@@ -439,22 +360,6 @@ return {
         end,
     },
 
-    -- 'tommcdo/vim-exchange',
-    'tommcdo/vim-lion',
-
-    {
-        'junegunn/vim-easy-align',
-        init = function()
-            vim.cmd[[
-            " Start interactive EasyAlign in visual mode (e.g. vipga)
-            xmap ga <Plug>(EasyAlign)
-
-            " Start interactive EasyAlign for a motion/text object (e.g. gaip)
-            nmap ga <Plug>(EasyAlign)
-            ]]
-        end
-    },
-
     {
         "gbprod/substitute.nvim",
         opts = {
@@ -482,7 +387,7 @@ return {
             keymaps = {
                 useDefaults = true,
                 disabledDefaults = {
-                    "ai", "ii", "aI", "iI"
+                    "ai", "ii", "aI", "iI", "an", "in"
                 }
             }
         },
@@ -555,28 +460,12 @@ return {
     },
 
     {
-        'MoaidHathot/dotnet.nvim',
-        cmd = "DotnetUI",
-        opts = {},
-    },
-
-    {
         "seblyng/roslyn.nvim",
         ft = { "cs", "razor" },
-        -- opts = {
-        --     -- your configuration comes here; leave empty for default settings
-        --     config = {
-        --         handlers = require("rzls.roslyn_handlers")
-        --     }
-        -- },
-        config = function ()
-            require("roslyn").setup({
-                ---@diagnostic disable-next-line: missing-fields
-                config = {
-                    handlers = require("rzls.roslyn_handlers")
-                }
-            })
-        end,
+        lazy = false,
+        opts = {
+
+        },
         init = function()
             vim.filetype.add({
                 extension = {
@@ -585,14 +474,7 @@ return {
                     xaml = "xml"
                 }
             })
-        end,
-        dependencies = {
-            "tris203/rzls.nvim",
-            config = function()
-                ---@diagnostic disable-next-line: missing-fields
-                require("rzls").setup({})
-            end
-        }
+        end
     },
 
     -- {
@@ -648,55 +530,6 @@ return {
         }
     },
 
-    -- {
-    --     "nvzone/menu",
-    --     lazy = true,
-    --     dependencies = { "nvzone/volt" , lazy = true },
-    --     keys = {
-    --         { "<C-T>", function() require("menu").open("default") end },
-    --         { "<RightMouse>",
-    --             function()
-    --                 require("menu.utils").delete_old_menus()
-    --
-    --                 vim.cmd.exec '"normal! \\<RightMouse>"'
-    --
-    --                 local buf = vim.api.nvim_win_get_buf(vim.fn.getmousepos().winid)
-    --                 local options = vim.bo[buf].ft == "NvimTree" and "nvimtree" or "default"
-    --                 if vim.bo[buf].ft == "NvimTree" then
-    --                     options = "nvimtree"
-    --                     -- elseif vim.bo[buf].ft == "neo-tree" then
-    --                     --     options = "neotree"
-    --                     -- else
-    --                     -- options = "default"
-    --                 end
-    --
-    --
-    --                 require("menu").open(options, { mouse = true })
-    --             end,
-    --             mode = { "n", "v" } }
-    --     }
-    -- },
-
-    {
-        "nvzone/minty",
-        cmd = { "Shades", "Huefy" },
-        dependencies = { "nvzone/volt", lazy = true }
-    },
-
-    {
-        'stevearc/overseer.nvim',
-        -- opts = {
-        --     templates = {
-        --         { "builtin", "user.net_build" }
-        --     }
-        -- },
-        config = function()
-            require("overseer").setup({
-                templates = { "builtin", "user.net_build" },
-            })
-        end
-    },
-
     {
         'MagicDuck/grug-far.nvim',
         config = function()
@@ -715,11 +548,4 @@ return {
             },
         },
     },
-
-    {
-        "nvzone/typr",
-        dependencies = "nvzone/volt",
-        opts = {},
-        cmd = { "Typr", "TyprStats" },
-    }
 }

@@ -23,8 +23,16 @@ return {
         end
     end,
     keys = {
-        { 'gK', "<cmd>lua require'dapui'.eval()<CR>", mode = {'n', 'v'}, desc = "Dap UI" },
-        { "<leader>du", function () require("dapui").toggle() end }
+        { 'gK', function() require("dapui").eval() end, mode = {'n', 'v'}, desc = "Evaluate expression" },
+        { "<leader>du", function() require("dapui").toggle() end, desc = "Dap UI" },
+        { "<Leader>dw", function() require("dapui").elements.watches.add(vim.fn.expand('<cword>')) end, desc = "Add variable to watches" },
+        { "<Leader>dW", function()
+            local word = vim.fn.expand('<cword>')
+            word = vim.fn.input("Add watch: ", word)
+            if word ~= "" then
+                require("dapui").elements.watches.add(word)
+            end
+        end, desc = "Hover/eval a single value" },
     },
     lazy = false
 }

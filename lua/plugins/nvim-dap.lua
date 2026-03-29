@@ -1,11 +1,37 @@
 return {
     'mfussenegger/nvim-dap',
     dependencies = {
+        "tedkat/nvim-dap-dotnet",
         "GustavEikaas/easy-dotnet.nvim",
+        {
+            "jbyuki/one-small-step-for-vimkind",
+            keys = {
+                {
+                    '<leader>dL',
+                    function()
+                        require('osv').launch { port = 8086 }
+                    end,
+                    desc = 'Launch Lua adapter'
+                }
+            }
+        }
     },
     config = function()
         local dap = require("dap")
+        local dap_dotnet = require("nvim-dap-dotnet")
         local packages_dir = vim.fs.joinpath(vim.fn.stdpath("data"), "mason", "packages")
+
+        dap.adapters.nlua = function(callback, config)
+            callback { type = "server", host = config.host or '127.0.0.1', port = config.port or 8086 }
+        end
+
+        dap.configurations.lua = {
+            {
+                type = "nlua",
+                request = "attach",
+                name = "Attach to running Neovim instance"
+            }
+        }
 
         dap.adapters.codelldb = {
             type = 'server',
@@ -90,8 +116,6 @@ return {
             },
         }
 
-
-
         if not dap.adapters.netcoredbg then
             dap.adapters.netcoredbg = {
                 type = "executable",
@@ -102,51 +126,17 @@ return {
             }
         end
 
-        local dotnet = require("easy-dotnet")
-        local debug_dll = nil
-        local function ensure_dll()
-            if debug_dll ~= nil then
-                return debug_dll
-            end
-            local dll = dotnet.get_debug_dll()
-            debug_dll = dll
-            return dll
-        end
-
-        for _, lang in ipairs({ "cs", "fsharp", "vb" }) do
-            dap.configurations[lang] = {
-                {
-                    log_level = "DEBUG",
-                    -- type = "netcoredbg",
-                    type = "coreclr",
-                    justMyCode = false,
-                    stopAtEntry = false,
-                    name = "Default",
-                    request = "launch",
-                    env = function()
-                        local dll = ensure_dll()
-                        local vars = dotnet.get_environment_variables(dll.project_name, dll.relative_project_path)
-                        return vars or nil
-                    end,
-                    program = function()
-                        require("overseer").enable_dap()
-                        local dll = ensure_dll()
-                        return dll.relative_dll_path
-                    end,
-                    cwd = function()
-                        local dll = ensure_dll()
-                        return dll.relative_project_path
-                    end,
-                    preLaunchTask = "Build .NET App With Spinner",
-                    externalTerminal = true,
-                    externalConsole = true
-                },
-            }
-
-            dap.listeners.before["event_terminated"]["easy-dotnet"] = function()
-                debug_dll = nil
-            end
-        end
+        dap.configurations.cs = {
+            {
+                type = "coreclr",
+                -- type = "netcoredbg",
+                name = "launch - netcoredbg",
+                request = "launch",
+                program = function()
+                    return dap_dotnet.build_artifact_dll_path()
+                end,
+            },
+        }
 
 
         -- Define VSCode-like icons for breakpoints
@@ -155,7 +145,6 @@ return {
         -- vim.fn.sign_define('DapLogPoint', { text = '◉', texthl = 'DapLogPoint', linehl = '', numhl = '' }) -- Hollow circle (blue)
         -- vim.fn.sign_define('DapStopped', { text = '➔', texthl = 'DapStopped', linehl = 'Debug', numhl = '' }) -- Right arrow (blue)
         -- vim.fn.sign_define('DapBreakpointRejected', { text = '✖', texthl = 'DapBreakpointRejected', linehl = '', numhl = '' }) -- Cross (gray)
-
 
 
         -- Define signs with texthl pointing to the highlight groups
@@ -188,11 +177,11 @@ return {
         -- { '<Leader>bL', function() require('dap').set_breakpoint(nil, nil, vim.fn.input('Log point message: ')) end, { desc = "Log breakpoint" }},
         -- { '<Leader>dr', function() require('dap').repl.open() end},
         -- { '<Leader>dl', function() require('dap').run_last() end},
-        { '<leader>dw', desc = "+widgets" },
-        { '<Leader>dwh', function() require('dap.ui.widgets').hover() end, mode = {'n', 'v'}, desc = "Widgets: hover"},
-        { '<Leader>dwp', function() require('dap.ui.widgets').preview() end, mode = {'n', 'v'}, desc = "Widgets: preview"},
-        { '<Leader>dwf', function() local widgets = require('dap.ui.widgets') widgets.centered_float(widgets.frames) end, desc = "Widgets: frames" },
-        { '<Leader>dws', function() local widgets = require('dap.ui.widgets') widgets.centered_float(widgets.scopes) end, desc = "Widgets: scopes" },
+        -- { '<leader>dw', desc = "+widgets" },
+        -- { '<Leader>dwh', function() require('dap.ui.widgets').hover() end, mode = {'n', 'v'}, desc = "Widgets: hover"},
+        -- { '<Leader>dwp', function() require('dap.ui.widgets').preview() end, mode = {'n', 'v'}, desc = "Widgets: preview"},
+        -- { '<Leader>dwf', function() local widgets = require('dap.ui.widgets') widgets.centered_float(widgets.frames) end, desc = "Widgets: frames" },
+        -- { '<Leader>dws', function() local widgets = require('dap.ui.widgets') widgets.centered_float(widgets.scopes) end, desc = "Widgets: scopes" },
 
         {
             "<leader>dR",
@@ -321,12 +310,12 @@ return {
             end,
             desc = "Terminate",
         },
-        {
-            "<leader>dw",
-            function()
-                require("dap.ui.widgets").hover()
-            end,
-            desc = "Widgets",
-        },
+        -- {
+        --     "<leader>dw",
+        --     function()
+        --         require("dap.ui.widgets").hover()
+        --     end,
+        --     desc = "Widgets",
+        -- },
     }
 }

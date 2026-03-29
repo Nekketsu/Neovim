@@ -4,6 +4,8 @@ return
         -- optional: provides snippets for the snippet source
         dependencies = {
             "rafamadriz/friendly-snippets",
+            "marcoSven/blink-cmp-yanky",
+            "onsails/lspkind.nvim"
             -- "rcarriga/cmp-dap"
         },
 
@@ -28,6 +30,19 @@ return
             --
             -- See the full "keymap" documentation for information on defining your own keymap.
             keymap = { preset = "super-tab" },
+            completion = {
+                menu = {
+                    draw = {
+                        components = {
+                            kind_icon = {
+                                text = function(ctx)
+                                    return require("lspkind").symbol_map[ctx.kind] or ''
+                                end
+                            }
+                        }
+                    }
+                }
+            },
 
             appearance = {
                 -- Sets the fallback highlight groups to nvim-cmp's highlight groups
@@ -39,16 +54,16 @@ return
                 nerd_font_variant = "mono"
             },
 
-            -- cmdline = {
-            --     keymap = { preset = 'super-tab' },
-            --     completion = { menu = { auto_show  = true }}
-            -- },
+            cmdline = {
+                keymap = { preset = 'super-tab' },
+                completion = { menu = { auto_show  = true }}
+            },
 
             -- Default list of enabled providers defined so that you can extend it
             -- elsewhere in your config, without redefining it, via `opts_extend`
             sources = {
                 -- default = { "lazydev", "lsp", "path", "snippets", "buffer", "dadbod", "dap" },
-                default = { "lazydev", "lsp", "path", "snippets", "buffer", "markdown" },
+                default = { "lazydev", "lsp", "path", "snippets", "buffer", "markdown", "yank" },
                 per_filetype = {
                     org = { 'orgmode' },
                     sql = { 'snippets', 'dadbod', 'buffer' },
@@ -77,6 +92,16 @@ return
                     --     module = "blink.compat.source",
                     --     -- enabled = function() return vim.api.nvim_buf_get_option(0, "buftype") ~= "prompt" end
                     -- }
+                    yank = {
+                        name = "yank",
+                        module = "blink-yanky",
+                        opts = {
+                            minLength = 5,
+                            onlyCurrentFiletype = true,
+                            trigger_characters = { '"' },
+                            kind_icon = "󰅍",
+                        },
+                    },
                 },
             },
 

@@ -1,5 +1,0 @@
-require("config.hydras.scroll")
-require("config.hydras.git")
-require("config.hydras.telescope")
-require("config.hydras.options")
-require("config.hydras.windows")

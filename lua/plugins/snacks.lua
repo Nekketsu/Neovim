@@ -7,6 +7,7 @@ return {
     opts = {
         bigfile = { enabled = true },
         dashboard = {
+            enabled = false,
             sections = {
                 { section = "header" },
                 {
@@ -113,7 +114,7 @@ return {
         picker = {
             layout = {
                 preset = "ivy"
-            }
+            },
         },
         quickfile = { enabled = true },
         scope = { enabled = true },
@@ -150,7 +151,7 @@ return {
         { "<leader>/", function() Snacks.picker.grep() end, desc = "Grep" },
         { "<leader>:", function() Snacks.picker.command_history() end, desc = "Command History" },
         { "<leader>N", function() Snacks.picker.notifications() end, desc = "Notification History" },
-        { "<leader>e", function() Snacks.explorer() end, desc = "File Explorer" },       -- find
+        { "<leader>e", function() Snacks.explorer() end, desc = "File Explorer" },
         -- find
         { "<leader>fb", function() Snacks.picker.buffers() end, desc = "Buffers" },
         { "<leader>fc", function() Snacks.picker.files({ cwd = vim.fn.stdpath("config") }) end, desc = "Find Config File" },
@@ -163,8 +164,6 @@ return {
         { "<leader>fP", function() Snacks.picker.files({ cwd = vim.fs.joinpath(vim.fn.stdpath("data"), "lazy"), prompt = "Plugins source: "  }) end, desc = "Find plugins source" },
         { "<Leader>sP", function() Snacks.picker.grep({ cwd = vim.fs.joinpath(vim.fn.stdpath("data"), "lazy"), prompt = "Plugins source: "  }) end, desc = "Grep plugins source" },
 
-        { "<leader>fo", function() Snacks.picker.files({ cwd = "~/org" }) end, desc = "Find all ORG files" },
-        { "<Leader>so", function() Snacks.picker.grep({ cwd = "~/org" }) end, desc = "Search all ORG files" },
         -- git
         { "<leader>gb", function() Snacks.picker.git_branches() end, desc = "Git Branches" },
         { "<leader>gl", function() Snacks.picker.git_log() end, desc = "Git Log" },
@@ -173,6 +172,11 @@ return {
         { "<leader>gS", function() Snacks.picker.git_stash() end, desc = "Git Stash" },
         -- { "<leader>gd", function() Snacks.picker.git_diff() end, desc = "Git Diff (Hunks)" },
         { "<leader>gf", function() Snacks.picker.git_log_file() end, desc = "Git Log File" },
+        -- gh
+        { "<leader>gi", function() Snacks.picker.gh_issue() end, desc = "GitHub Issues (open)" },
+        { "<leader>gI", function() Snacks.picker.gh_issue({ state = "all" }) end, desc = "GitHub Issues (all)" },
+        { "<leader>gp", function() Snacks.picker.gh_pr() end, desc = "GitHub Pull Requests (open)" },
+        { "<leader>gP", function() Snacks.picker.gh_pr({ state = "all" }) end, desc = "GitHub Pull Requests (all)" },
         -- Grep
         { "<leader>sb", function() Snacks.picker.lines() end, desc = "Buffer Lines" },
         { "<leader>sB", function() Snacks.picker.grep_buffers() end, desc = "Grep Open Buffers" },

@@ -9,7 +9,7 @@ return {
             ui = {
                 input = {
                     use_vim_ui = true
-                }
+                },
             },
             notifications = {
                 enabled = true,
@@ -71,14 +71,6 @@ return {
                         },
                     }
                 },
-                b = {
-                    description = "📖 Books",
-                    types = {
-                        type = "tags",
-                        org_agenda_overriding_header = "Books",
-                        org_agenda_files = { "~/org/orgfiles/books.org" }
-                    }
-                }
             },
             org_capture_templates = {
                 T = {
@@ -130,13 +122,10 @@ return {
                     template = "* [[%x][%(return string.match('%x', '([^/]+)$'))]]%?",
                     target = "~/org/orgfiles/repos.org",
                 },
-                b = {
-                    description = "Book",
-                    template = '* TODO %^{Title}\n  :PROPERTIES:\n  :AUTHOR:      %^{Author}\n  :STATUS:      %^{State|To read|Reading|Read|Abandoned}\n  :TAGS:        %^{Tags}\n  :PAGES:       %^{Pages}\n  :LAST_PAGE:   %^{Last page}\n  :ADDED:       %U\n  :END:\n  %^{Notes}',
-                    target = '~/org/orgfiles/books.org'
-                }
             },
         })
+
+        vim.lsp.enable('org')
 
         vim.api.nvim_create_autocmd('FileType', {
             pattern = 'org',
@@ -173,14 +162,16 @@ return {
             "nvim-orgmode/telescope-orgmode.nvim",
             event = "VeryLazy",
             dependencies = {
-                "nvim-telescope/telescope.nvim",
+                "folke/snacks.nvim"
             },
             config = function()
-                require("telescope").load_extension("orgmode")
+                local tom = require("telescope-orgmode")
+                tom.setup({ adapter = "snacks" })
 
-                vim.keymap.set("n", "<leader>oR", require("telescope").extensions.orgmode.refile_heading, { desc = "Refile heading" })
-                vim.keymap.set("n", "<leader>oh", require("telescope").extensions.orgmode.search_headings, { desc = "Search headings" })
-                vim.keymap.set("n", "<leader>oL", require("telescope").extensions.orgmode.insert_link, { desc = "Insert link" })
+                vim.keymap.set("n", "<leader>oh", tom.search_headings, { desc = "Org headlines" })
+                vim.keymap.set("n", "<leader>ot", tom.search_tags, { desc = "Org tags" })
+                vim.keymap.set("n", "<leader>oR", tom.refile_heading, { desc = "Org refile" })
+                vim.keymap.set("n", "<leader>oL", tom.insert_link, { desc = "Org insert link" })
                 vim.keymap.set("n", "<leader>of", function() Snacks.picker.files({ cwd = "~/org/orgfiles" }) end, { desc = "Find ORG files" })
                 vim.keymap.set("n", "<leader>os", function() Snacks.picker.grep({ cwd = "~/org/orgfiles" }) end, { desc = "Search ORG files" })
             end,
@@ -195,7 +186,38 @@ return {
             opts = {
                 directory = "~/org/roam"
             }
-        }
-
+        },
+        "hugginsio/org-virtual-clocktime.nvim",
+        {
+            "andreadev-it/orgmode-multi-key",
+            config = true
+        },
+        {
+            "aaratha/org-cycle-lite.nvim",
+            config = function()
+                require("org-cycle-lite").setup({
+                    keymap = "<TAB>",  -- Optional: change keymap
+                })
+            end,
+        },
+        {
+            "hamidi-dev/org-list.nvim",
+            dependencies = {
+                "tpope/vim-repeat",  -- for repeatable actions with '.'
+            },
+            config = function()
+                require("org-list").setup({
+                    -- your config here (optional)
+                })
+            end
+        },
+        { 'celsobenedetti/orgmode-keymaps.nvim', config = true }
+        -- {
+        --     "chipsenkbeil/org-mouse.nvim",
+        --     dependencies = { "nvim-orgmode/orgmode" },
+        --     config = function()
+        --         require("org-mouse").setup()
+        --     end
+        -- }
     }
 }
