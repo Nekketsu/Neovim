@@ -65,7 +65,7 @@ return {
                 vim.keymap.set({ "x", "o" },"a@", function() require("nvim-treesitter-textobjects.select").select_textobject("@loop.outer", "textobjects") end)
             end,
         },
-        'tpope/vim-unimpaired',
+        -- 'tpope/vim-unimpaired',
         -- 'OXY2DEV/markview.nvim'
         -- 'JoosepAlviste/nvim-ts-context-commentstring',
     },

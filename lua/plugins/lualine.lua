@@ -70,27 +70,27 @@ return {
                 },
                 lualine_x = {
                     -- 'aerial',
-                    {
-                        require("noice").api.status.message.get_hl,
-                        cond = require("noice").api.status.message.has,
-                    },
-                    {
-                        require("noice").api.status.command.get,
-                        cond = require("noice").api.status.command.has,
-                        color = { fg = "#ff9e64" },
-                    },
-                    {
-                        require("noice").api.status.mode.get,
-                        cond = require("noice").api.status.mode.has,
-                        color = { fg = "#ff9e64" },
-                    },
-                    {
-                        require("noice").api.status.search.get,
-                        cond = require("noice").api.status.search.has,
-                        color = { fg = "#ff9e64" },
-                    },
-                    { function() return orgmode.statusline() end },
-                    "overseer",
+                    -- {
+                    --     require("noice").api.status.message.get_hl,
+                    --     cond = require("noice").api.status.message.has,
+                    -- },
+                    -- {
+                    --     require("noice").api.status.command.get,
+                    --     cond = require("noice").api.status.command.has,
+                    --     color = { fg = "#ff9e64" },
+                    -- },
+                    -- {
+                    --     require("noice").api.status.mode.get,
+                    --     cond = require("noice").api.status.mode.has,
+                    --     color = { fg = "#ff9e64" },
+                    -- },
+                    -- {
+                    --     require("noice").api.status.search.get,
+                    --     cond = require("noice").api.status.search.has,
+                    --     color = { fg = "#ff9e64" },
+                    -- },
+---@diagnostic disable-next-line: undefined-field
+                    { function() orgmode.statusline() end },
                     'encoding', 'fileformat', 'filetype',
                 },
                 lualine_y = {'progress'},
@@ -110,7 +110,9 @@ return {
             tabline = {},
             winbar = {},
             inactive_winbar = {},
-            extensions = {}
+            extensions = {
+                "aerial", "fugitive", "lazy", "mason", "nvim-dap-ui", "nvim-tree", "oil", "quickfix", "toggleterm", "trouble"
+            }
         }
     end,
     dependencies = { 'nvim-tree/nvim-web-devicons', opt = true }

@@ -34,7 +34,7 @@ return {
     },
     dependencies = {
         "tpope/vim-fugitive",
-        "tpope/vim-unimpaired",
+        -- "tpope/vim-unimpaired",
         "folke/snacks.nvim"
     }
 }

@@ -210,19 +210,13 @@ return {
     },
 
     {
-        'sindrets/diffview.nvim',
-        dependencies = 'nvim-lua/plenary.nvim',
-        opts = {
-            keymaps = {
-                file_panel = {
-                    ["q"] = "<cmd>DiffviewClose<cr>"
-                }
-            }
-        },
+        "esmuellert/codediff.nvim",
+        cmd = "CodeDiff",
         keys = {
-            {'<leader>gd', '<cmd>DiffviewOpen<CR>', desc = "Git diffview"}
+            { "<leader>gd", vim.cmd.CodeDiff, desc = "CodeDiff" } 
         }
     },
+
     {
         "pwntester/octo.nvim",
         cmd = "Octo",
@@ -242,6 +236,11 @@ return {
                 "<leader>Op",
                 "<CMD>Octo pr list<CR>",
                 desc = "List GitHub PullRequests",
+            },
+            {
+                "<leader>Omp",
+                "<CMD>Octo pr search author:@me is:open<CR>",
+                desc = "List GitHub PullRequests (mine open)",
             },
             {
                 "<leader>Od",
@@ -277,22 +276,6 @@ return {
         event = "VeryLazy",
         config = true,
     },
-
-    -- {
-    --     "refractalize/oil-git-status.nvim",
-    --
-    --     dependencies = {
-    --         "stevearc/oil.nvim",
-    --     },
-    --
-    --     config = true,
-    -- },
-    --
-    -- {
-    --     "JezerM/oil-lsp-diagnostics.nvim",
-    --     dependencies = { "stevearc/oil.nvim" },
-    --     opts = {}
-    -- },
 
     'tpope/vim-abolish',
     -- 'tpope/vim-unimpaired',

@@ -177,6 +177,7 @@ return {
         { "<leader>gI", function() Snacks.picker.gh_issue({ state = "all" }) end, desc = "GitHub Issues (all)" },
         { "<leader>gp", function() Snacks.picker.gh_pr() end, desc = "GitHub Pull Requests (open)" },
         { "<leader>gP", function() Snacks.picker.gh_pr({ state = "all" }) end, desc = "GitHub Pull Requests (all)" },
+        { "<leader>gmp", function() Snacks.picker.gh_pr({ search = "author:@me is:open " }) end, desc = "GitHub Pull Requests (Mine open)" },
         -- Grep
         { "<leader>sb", function() Snacks.picker.lines() end, desc = "Buffer Lines" },
         { "<leader>sB", function() Snacks.picker.grep_buffers() end, desc = "Grep Open Buffers" },
@@ -274,6 +275,69 @@ return {
             Snacks.toggle.inlay_hints():map("<leader>uh")
             Snacks.toggle.indent():map("<leader>ug")
             Snacks.toggle.dim():map("<leader>uD")
+
+            local function notify(state, opts)
+                Snacks.notify(
+                    (state and "Enabled" or "Disabled") .. " **" .. opts.name .. "**",
+                    { title = opts.name, level = state and vim.log.levels.INFO or vim.log.levels.WARN }
+                )
+            end
+
+            local function Map(map, option)
+                option:map("yo" .. map)
+                vim.keymap.set("n", "[o" .. map, function() option:set(true) notify(true, option.opts) end, { desc = "Enable " .. option.opts.name })
+                vim.keymap.set("n", "]o" .. map, function() option:set(false) notify(false, option.opts) end, { desc = "Disable " .. option.opts.name })
+            end
+
+            local diag_virtual_lines = Snacks.toggle.new({
+                id = "diag_virtual_lines",
+                name = "Diagnostics Virtual Lines",
+                get = function()
+                    return vim.diagnostic.config().virtual_lines ~= false
+                end,
+                set = function(state)
+                    if state then
+                        vim.diagnostic.config({ virtual_lines = { severity = { min = vim.diagnostic.severity.WARN }}, virtual_text = false, severity = { min = vim.diagnostic.severity.WARN, signs = false }})
+                    else
+                        vim.diagnostic.config({ virtual_lines = false, virtual_text = { severity = { min = vim.diagnostic.severity.WARN }}, signs = false})
+                    end
+                end
+            })
+
+            local cursor = Snacks.toggle.new({
+                id = "cursor",
+                name = "Cursor",
+                get = function()
+                    local cursorline = vim.api.nvim_get_option_value("cursorline", {})
+                    local cursorcolumn = vim.api.nvim_get_option_value("cursorcolumn", {})
+                    return cursorline and cursorcolumn
+                end,
+                set = function(state)
+                    vim.api.nvim_set_option_value("cursorline", state, {})
+                    vim.api.nvim_set_option_value("cursorcolumn", state, {})
+                end
+            })
+
+            Map("b", Snacks.toggle.option("background", { off = "light", on = "dark", name = "Dark Background" }))
+            Map("c", Snacks.toggle.option("cursorline", { name = "Cursor Line" }))
+            Map("C", Snacks.toggle.option("conceallevel", { off = 0, on = vim.o.conceallevel > 0 and vim.o.conceallevel or 2 }))
+            Map("d", Snacks.toggle.diagnostics())
+            Map("D", Snacks.toggle.dim())
+            Map("e", diag_virtual_lines)
+            Map("g", Snacks.toggle.indent())
+            Map("h", Snacks.toggle.option("hlsearch", { name = "Highlight Search" }))
+            Map("H", Snacks.toggle.inlay_hints())
+            Map("i", Snacks.toggle.option("ignorecase", { name = "Ignore Case" }))
+            Map("l", Snacks.toggle.option("list", { name = "List" }))
+            Map("n", Snacks.toggle.line_number())
+            Map("r", Snacks.toggle.option("relativenumber", { name = "Relative Number" }))
+            Map("s", Snacks.toggle.option("spell", { name = "Spelling" }))
+            Map("t", Snacks.toggle.option("colorcolumn", { name = "Color Column", on = vim.opt.colorcolumn, off = "+1" }))
+            Map("T", Snacks.toggle.treesitter())
+            Map("u", Snacks.toggle.option("cursorcolumn", { name = "Cursor Column" }))
+            Map("v", Snacks.toggle.option("virtualedit", { name = "Virtual Edit", on = "block,all", off = "block" }))
+            Map("w", Snacks.toggle.option("wrap", { name = "Wrap" }))
+            Map("x", cursor)
         end,
     })
     end,

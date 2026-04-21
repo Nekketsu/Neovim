@@ -1,12 +1,13 @@
 return {
     'hamidi-dev/org-super-agenda.nvim',
-    branch = "feat/windows_support",
+    -- branch = "feat/windows_support",
     dependencies = {
         'nvim-orgmode/orgmode', -- required
         { 'lukas-reineke/headlines.nvim', config = true }, -- optional nicety
     }, 
     config = function()
         require('org-super-agenda').setup({
+            -- bulk_action_prompt = 'select',
             -- Where to look for .org files
             -- org_files           = {},
             -- org_directories     = { "~/org" }, -- recurse for *.org

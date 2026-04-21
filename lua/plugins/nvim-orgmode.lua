@@ -183,9 +183,61 @@ return {
         },
         {
             "chipsenkbeil/org-roam.nvim",
+            dependencies = "mawkler/demicolon.nvim",
             opts = {
-                directory = "~/org/roam"
-            }
+                directory = "~/org/roam",
+                bindings = {
+                    goto_next_node = false,
+                    goto_prev_node = false,
+                },
+                extensions = {
+                    dailies = {
+                        bindings = {
+                            goto_next_date = false,
+                            goto_prev_date = false,
+                        },
+                    },
+                }
+            },
+            init = function()
+                vim.api.nvim_create_autocmd({ "FileType" }, {
+                    pattern = { "org" },
+                    callback = function()
+                        local roam = require("org-roam")
+
+                        ---@param options { forward?: boolean }
+                        function goto_node(options)
+                            return function()
+                                require("demicolon.jump").repeatably_do(function(opts)
+                                    if opts.forward then
+                                        roam.api.goto_next_node()
+                                    else
+                                        roam.api.goto_prev_node()
+                                    end
+                                end, options)
+                            end
+                        end
+
+                        ---@param options { forward?: boolean }
+                        function goto_date(options)
+                            return function()
+                                require("demicolon.jump").repeatably_do(function(opts)
+                                    if opts.forward then
+                                        roam.ext.dailies.goto_next_date()
+                                    else
+                                        roam.ext.dailies.goto_prev_date()
+                                    end
+                                end, options)
+                            end
+                        end
+
+                        vim.keymap.set("n", "<leader>nn", goto_node({ forward = true }), { desc = "Goes to the next node sequentially based on origin of the node under cursor" })
+                        vim.keymap.set("n", "<leader>np", goto_node({ forward = false }), { desc = "Goes to the previous node sequentially based on origin of the node under cursor" })
+                        vim.keymap.set("n", "<leader>ndf", goto_date({ forward = true }), { desc = "Navigate to the next available note" })
+                        vim.keymap.set("n", "<leader>ndb", goto_date({ forward = false }), { desc = "Navigate to the previous available note" })
+                    end
+                })
+            end
         },
         "hugginsio/org-virtual-clocktime.nvim",
         {
@@ -211,13 +263,14 @@ return {
                 })
             end
         },
-        { 'celsobenedetti/orgmode-keymaps.nvim', config = true }
-        -- {
-        --     "chipsenkbeil/org-mouse.nvim",
-        --     dependencies = { "nvim-orgmode/orgmode" },
-        --     config = function()
-        --         require("org-mouse").setup()
-        --     end
-        -- }
+        { 'celsobenedetti/orgmode-keymaps.nvim', config = true },
+        {
+            "chipsenkbeil/org-mouse.nvim",
+            commit = "eff382c",
+            dependencies = { "nvim-orgmode/orgmode" },
+            config = function()
+                require("org-mouse").setup()
+            end
+        }
     }
 }

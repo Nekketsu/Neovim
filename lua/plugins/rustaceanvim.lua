@@ -1,7 +1,7 @@
 return {
     'mrcjkb/rustaceanvim',
-    version = '^5', -- Recommended
-    ft = { 'rust' },
+    version = '^9', -- Recommended
+    ft = false
     -- config = function()
     --     vim.g.rustaceanvim = {
     --         server = {

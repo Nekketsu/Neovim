@@ -1,5 +1,4 @@
 local indent = 4
-
 -- vim.cmd [[syntax enable]]
 -- vim.cmd [[filetype plugin indent on]]
 
@@ -31,6 +30,9 @@ vim.opt.virtualedit = "block"
 vim.opt.inccommand = "split"
 
 vim.o.mousemoveevent = true
+
+-- vim.o.cmdheight = 0
+require('vim._core.ui2').enable({})
 
 vim.diagnostic.config({
     virtual_lines = false,
