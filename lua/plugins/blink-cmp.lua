@@ -1,24 +1,30 @@
-return 
-    {
-        "saghen/blink.cmp",
-        -- optional: provides snippets for the snippet source
-        dependencies = {
-            "rafamadriz/friendly-snippets",
-            "marcoSven/blink-cmp-yanky",
-            "onsails/lspkind.nvim"
-            -- "rcarriga/cmp-dap"
-        },
+local function get_typst_path()
+    local typst_path = require("lazy.core.config").plugins["typst-snippets"].dir
+    return typst_path
+end
+-- local lazy_path = require("lazy.core.config").defaults.root
 
-        -- use a release tag to download pre-built binaries
-        version = '*',
-        -- AND/OR build from source, requires nightly: https://rust-lang.github.io/rustup/concepts/channels.html#working-with-nightly-rust
-        -- build = 'cargo build --release',
-        -- If you use nix, you can build from source using latest nightly rust with:
-        -- build = 'nix run .#build-plugin',
+return {
+    "saghen/blink.cmp",
+    -- optional: provides snippets for the snippet source
+    dependencies = {
+        "rafamadriz/friendly-snippets",
+        "abhinandh-s/typst-snippets",
+        "marcoSven/blink-cmp-yanky",
+        "onsails/lspkind.nvim"
+        -- "rcarriga/cmp-dap"
+    },
+    -- use a release tag to download pre-built binaries
+    version = '*',
+    -- AND/OR build from source, requires nightly: https://rust-lang.github.io/rustup/concepts/channels.html#working-with-nightly-rust
+    -- build = 'cargo build --release',
+    -- If you use nix, you can build from source using latest nightly rust with:
+    -- build = 'nix run .#build-plugin',
 
-        ---@module "blink.cmp"
-        ---@type blink.cmp.Config
-        opts = {
+    config = function()
+    ---@module "blink.cmp"
+    ---@type blink.cmp.Config
+        require("blink-cmp").setup({
             -- 'default' for mappings similar to built-in completion
             -- 'super-tab' for mappings similar to vscode (tab to accept, arrow keys to navigate)
             -- 'enter' for mappings similar to 'super-tab' but with 'enter' to accept
@@ -56,7 +62,7 @@ return
 
             cmdline = {
                 keymap = { preset = 'super-tab' },
-                completion = { menu = { auto_show  = true }}
+                completion = { menu = { auto_show = true } }
             },
 
             -- Default list of enabled providers defined so that you can extend it
@@ -70,6 +76,11 @@ return
                 },
                 -- optionally disable cmdline completions
                 providers = {
+                    snippets = {
+                        opts = {
+                            search_paths = { get_typst_path() }
+                        }
+                    },
                     lazydev = {
                         name = "LazyDev",
                         module = "lazydev.integrations.blink",
@@ -113,6 +124,7 @@ return
             --
             -- See the fuzzy documentation for more information
             fuzzy = { implementation = "prefer_rust_with_warning" }
-        },
-        opts_extend = { "sources.default" }
-    }
+        })
+    end,
+    opts_extend = { "sources.default" }
+}

@@ -31,6 +31,8 @@ vim.opt.inccommand = "split"
 
 vim.o.mousemoveevent = true
 
+vim.o.showmode = false
+
 -- vim.o.cmdheight = 0
 require('vim._core.ui2').enable({})
 

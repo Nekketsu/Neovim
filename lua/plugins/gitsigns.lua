@@ -1,5 +1,6 @@
 return {
     'lewis6991/gitsigns.nvim',
+    dependencies = "nvim-tree/nvim-web-devicons",
     config = function()
         require('gitsigns').setup {
             on_attach = function(bufnr)
@@ -18,7 +19,7 @@ return {
                     else
                         gigsigns.nav_hunk('next')
                     end
-                end)
+                end, { desc = "Next hunk" })
 
                 map('n', '[c', function()
                     if vim.wo.diff then
@@ -26,7 +27,7 @@ return {
                     else
                         gigsigns.nav_hunk('prev')
                     end
-                end)
+                end, { desc = "Previous hunk" })
 
                 -- Actions
                 map('n', '<leader>hs', gigsigns.stage_hunk, { desc = "Stage hunk" })
@@ -40,6 +41,7 @@ return {
                 map('n', '<leader>hu', gigsigns.undo_stage_hunk, { desc = "Undo stage hunk" })
 
                 map('n', '<leader>hb', function() gigsigns.blame_line { full = true } end, { desc = "Blame line" })
+                map('n', '<leader>hB', function() gigsigns.blame { full = true } end, { desc = "Blame" })
 
                 map('n', '<leader>hd', gigsigns.diffthis, { desc = "Diff" })
                 map('n', '<leader>hD', function() gigsigns.diffthis('~') end, { desc = "Diff HEAD" })
@@ -47,16 +49,20 @@ return {
                 map('n', '<leader>hQ', function() gigsigns.setqflist('all') end, { desc = "Send all to quickfix" })
                 map('n', '<leader>hq', gigsigns.setqflist, { desc = "Send to quickfix" })
 
-                -- map('n', '<leader>td', gigsigns.toggle_deleted, { desc = "Toggle deleted" })
-                map('n', '<leader>hl', gigsigns.toggle_linehl, { desc = "Toggle line highlight" })
+                require("which-key").add({
+                    { "<leader>ht", group = "Toggles" }
+                })
+
+                map('n', '<leader>htd', gigsigns.toggle_deleted, { desc = "Toggle deleted" })
+                map('n', '<leader>htl', gigsigns.toggle_linehl, { desc = "Toggle line highlight" })
 
                 -- Toggles
-                map('n', '<leader>tb', gigsigns.toggle_current_line_blame, { desc = "Toggle current line blame" })
-                map('n', '<leader>tw', gigsigns.toggle_word_diff, { desc = "Toggle word diff" })
+                map('n', '<leader>htb', gigsigns.toggle_current_line_blame, { desc = "Toggle current line blame" })
+                map('n', '<leader>htw', gigsigns.toggle_word_diff, { desc = "Toggle word diff" })
 
                 -- Text object
                 map({'o', 'x'}, 'ih', gigsigns.select_hunk, { desc = "Select hunk" })
             end
         }
-    end
+    end,
 }

@@ -169,8 +169,8 @@ return {
         ---@type quicker.SetupOptions
         opts = {
             keys = {
-                { ">", function() require("quicker").expand({ before = 2, after = 2, add_to_existing = true }) end, desc = "Expand quickfix context" },
-                { "<", function() require("quicker").collapse() end, desc = "Collapse quickfix context" },
+                { ">>", function() require("quicker").expand({ before = 2, after = 2, add_to_existing = true }) end, desc = "Expand quickfix context" },
+                { "<<", function() require("quicker").collapse() end, desc = "Collapse quickfix context" },
             },
             highlight = {
                 load_buffers = false
@@ -404,7 +404,22 @@ return {
         "windwp/nvim-autopairs",
         opts = {
             fast_wrap = {}
-        }
+        },
+        init = function ()
+            local Rule = require('nvim-autopairs.rule')
+            local npairs = require('nvim-autopairs')
+
+            npairs.add_rules({
+                Rule("$", "$", "typst")
+                :with_pair(function(opts)
+                    return opts.line:sub(opts.col, opts.col) ~= "$"
+                end)
+                :with_move(function(opts)
+                    return opts.next_char == "$"
+                end)
+                :use_key("$")
+            })
+        end
     },
     {
         "windwp/nvim-ts-autotag",

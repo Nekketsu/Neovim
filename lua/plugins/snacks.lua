@@ -332,7 +332,7 @@ return {
             Map("n", Snacks.toggle.line_number())
             Map("r", Snacks.toggle.option("relativenumber", { name = "Relative Number" }))
             Map("s", Snacks.toggle.option("spell", { name = "Spelling" }))
-            Map("t", Snacks.toggle.option("colorcolumn", { name = "Color Column", on = vim.opt.colorcolumn, off = "+1" }))
+            Map("t", Snacks.toggle.option("colorcolumn", { name = "Color Column", on = "+1", off = "" }))
             Map("T", Snacks.toggle.treesitter())
             Map("u", Snacks.toggle.option("cursorcolumn", { name = "Cursor Column" }))
             Map("v", Snacks.toggle.option("virtualedit", { name = "Virtual Edit", on = "block,all", off = "block" }))

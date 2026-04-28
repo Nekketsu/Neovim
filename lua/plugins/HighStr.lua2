@@ -7,6 +7,18 @@ return {
     config = function()
         require("high-str.tools.tool-highlight.modules.colors").parse_colors()
 
+        local function highstr_with_color(color)
+            return function()
+                _G.HighStrOperator = function()
+                    vim.cmd("normal! `[v`]")
+                    vim.cmd("normal! :<C-u>HSHighlight " .. color .. "<CR>")
+                end
+
+                vim.o.operatorfunc = "v:lua.HighStrOperator"
+                return "g@"
+            end
+        end
+
         local wk = require("which-key")
         wk.add({
             { "<leader>hl", group = "Highlights" },
@@ -25,6 +37,18 @@ return {
 
             { '<leader>hld', ':<C-u>HSRmHighlight<CR>', mode = "v", desc = "Remove highlight", icon = "" },
             { '<leader>hlD', ':HSRmHighlight rm_all<CR>', desc = "Remove all highlights", icon = "" },
+
+            { '<leader>hll', highstr_with_color(1), mode = "n", expr = true, desc = " Pastel yellow", icon = { icon = " ", hl = "DMHGroup1" }},
+            { '<leader>hlc', highstr_with_color(0), mode = "n", expr = true, desc = " Cosmic charcoal", icon = { icon = " ", hl = "DMHGroup0" }},
+            { '<leader>hly', highstr_with_color(2), mode = "n", expr = true, desc = " Pastel yellow", icon = { icon = " ", hl = "DMHGroup1" }},
+            { '<leader>hla', highstr_with_color(3), mode = "n", expr = true, desc = " Aqua menthe", icon = { icon = " ", hl = "DMHGroup2" }},
+            { '<leader>hlv', highstr_with_color(3), mode = "n", expr = true, desc = " Proton purple", icon = { icon = " ", hl = "DMHGroup3" }},
+            { '<leader>hlr', highstr_with_color(4), mode = "n", expr = true, desc = " Orange red", icon = { icon = " ", hl = "DMHGroup4" }},
+            { '<leader>hlg', highstr_with_color(5), mode = "n", expr = true, desc = " Office green", icon = { icon = " ", hl = "DMHGroup5" }},
+            { '<leader>hlb', highstr_with_color(6), mode = "n", expr = true, desc = " Just blue", icon = { icon = " ", hl = "DMHGroup6" }},
+            { '<leader>hlp', highstr_with_color(7), mode = "n", expr = true, desc = " Blush pink", icon = { icon = " ", hl = "DMHGroup7" }},
+            { '<leader>hlw', highstr_with_color(8), mode = "n", expr = true, desc = " Cosmic latte", icon = { icon = " ", hl = "DMHGroup8" }},
+            { '<leader>hlf', highstr_with_color(9), mode = "n", expr = true, desc = " Fallow brown", icon = { icon = " ", hl = "DMHGroup9" }},
         })
     end,
 }
