@@ -1,35 +1,58 @@
+
+local function notify(state, opts)
+    Snacks.notify(
+        (state and "Enabled" or "Disabled") .. " **" .. opts.name .. "**",
+        { title = opts.name, level = state and vim.log.levels.INFO or vim.log.levels.WARN }
+    )
+end
+
 return {
     dir = vim.fn.stdpath("config") .. "/lua/hl.nvim",
+    dependencies = {
+        "folke/which-key.nvim",
+    },
+    opts = {
+        persist = true
+    },
     name = "hl",
     lazy = false,
-    opts = {
-        colors = {
-            [1] = "#60a5fa",     -- blue
-            [2] = "#34d399",     -- green
-            [3] = "#fbbf24",     -- yellow
-            [4] = "#f87171",     -- red
-        }
-    },
     keys = {
-        { "<leader>hl1",  function() require("hl").add_visual(1) end,    mode = "v",                             desc = "Highlight selection (blue)" },
-        { "<leader>hl2",  function() require("hl").add_visual(2) end,    mode = "v",                             desc = "Highlight selection (green)" },
-        { "<leader>hl3",  function() require("hl").add_visual(3) end,    mode = "v",                             desc = "Highlight selection (yellow)" },
-        { "<leader>hl4",  function() require("hl").add_visual(4) end,    mode = "v",                             desc = "Highlight selection (red)" },
+        { "<leader>hlC", function() require("hl").clear_buffer() end,  desc = "Clear buffer highlights" },
+        { "<leader>hlX", function() require("hl").clear_all() end,     desc = "Clear all highlights" },
 
-        { "<leader>hlt1", function() require("hl").toggle_visual(1) end, mode = "v",                             desc = "Toggle highlight (blue)" },
-        { "<leader>hlt2", function() require("hl").toggle_visual(2) end, mode = "v",                             desc = "Toggle highlight (green)" },
+        { "]h",          function() require("hl.nav").next() end,      desc = "Next highlight" },
+        { "[h",          function() require("hl.nav").prev() end,      desc = "Previous highlight" },
 
-        { "<leader>hlc1", function() require("hl").add_cursor(1) end,    desc = "Highlight under cursor (blue)" },
-        { "<leader>hlc2", function() require("hl").add_cursor(2) end,    desc = "Highlight under cursor (green)" },
+        { "<leader>hlu", function() require("hl").undo_last() end,     mode = "n",                      desc = "Undo last highlight", expr = true },
+        { "<leader>hlr", function() require("hl").redo_last() end,     mode = "n",                      desc = "Redo last highlight", expr = true },
 
-        { "<leader>hlC",  function() require("hl").clear_buffer() end,   desc = "Clear buffer highlights" },
-        { "<leader>hlX",  function() require("hl").clear_all() end,      desc = "Clear all highlights" },
+        { "<leader>hld", function() return require("hl").remove() end, mode = { "n", "x" },             desc = "Remove highlight",    expr = true, silent = true },
 
-        { "]h",           function() require("hl.nav").next() end,       desc = "Next highlight" },
-        { "[h",           function() require("hl.nav").prev() end,       desc = "Previous highlight" },
+        { "yop", function() local hl = require("hl") hl.toggle() notify(hl.is_enabled(), { name = "Highlights" }) end, desc = "Toggle Highlights" },
+        { "[op", function() local hl = require("hl") hl.enable() notify(hl.is_enabled(), { name = "Highlights" }) end, desc = "Enable Highlights" },
+        { "]op", function() local hl = require("hl") hl.disable() notify(hl.is_enabled(), { name = "Highlights" }) end, desc = "Disable Highlights" }
 
-        { "<leader>hl1", function() return require("hl").operator_start(1)() end, mode = "n", expr = true },
-        { "<leader>hl2", function() return require("hl").operator_start(2)() end, mode = "n", expr = true },
-        { "<leader>hl3", function() return require("hl").operator_start(3)() end, mode = "n", expr = true },
-    }
+    },
+    config = function(_, opts)
+        local hl = require("hl")
+        hl.setup(opts)
+
+        local hl_groups = hl.get_highlights()
+        local maps = {
+            { "<leader>hl", group = "Highlights" }
+        }
+        for i, hl in ipairs(hl_groups) do
+            table.insert(maps, {
+                "<leader>hl" .. i,
+                function() return require("hl").add(i) end,
+                mode = { "n", "x" },
+                desc = "Highlight",
+                expr = true,
+                icon = { icon = " ", hl = hl },
+            })
+        end
+
+        local wk = require("which-key")
+        wk.add(maps)
+    end
 }
