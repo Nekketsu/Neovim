@@ -1,3 +1,16 @@
+vim.lsp.enable("roslyn_ls")
+vim.lsp.config("roslyn_ls", {
+    filetypes = { "razor", "cs" },
+
+    settings = {
+        -- better performance
+        ["csharp|background_analysis"] = {
+            dotnet_analyzer_diagnostics_scope = "openFiles",
+            dotnet_compiler_diagnostics_scope = "openFiles"
+        }
+    }
+})
+
 return {
     "neovim/nvim-lspconfig",
     config = function()

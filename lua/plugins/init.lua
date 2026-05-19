@@ -392,9 +392,9 @@ return {
         --     { ']oc', '<Cmd>TSContextDisable<CR>', desc = "Disable TSContext" },
         -- }
         config = function()
-            vim.keymap.set("n", 'yoc', '<Cmd>TSContextToggle<CR>', { desc = "Toggle TSContext" })
-            vim.keymap.set("n", '[oc', '<Cmd>TSContextEnable<CR>', { desc = "Enable TSContext" })
-            vim.keymap.set("n", ']oc', '<Cmd>TSContextDisable<CR>', { desc = "Disable TSContext" })
+            vim.keymap.set("n", 'yoX', '<Cmd>TSContext toggle<CR>', { desc = "Toggle TSContext" })
+            vim.keymap.set("n", '[oX', '<Cmd>TSContext enable<CR>', { desc = "Enable TSContext" })
+            vim.keymap.set("n", ']oX', '<Cmd>TSContext disable<CR>', { desc = "Disable TSContext" })
         end
     },
 
@@ -457,23 +457,23 @@ return {
         opts = {},
     },
 
-    {
-        "seblyng/roslyn.nvim",
-        ft = { "cs", "razor" },
-        lazy = false,
-        opts = {
-
-        },
-        init = function()
-            vim.filetype.add({
-                extension = {
-                    razor = "razor",
-                    cshtml = "razor",
-                    xaml = "xml"
-                }
-            })
-        end
-    },
+    -- {
+    --     "seblyng/roslyn.nvim",
+    --     ft = { "cs", "razor" },
+    --     lazy = false,
+    --     opts = {
+    --
+    --     },
+    --     init = function()
+    --         vim.filetype.add({
+    --             extension = {
+    --                 razor = "razor",
+    --                 cshtml = "razor",
+    --                 xaml = "xml"
+    --             }
+    --         })
+    --     end
+    -- },
 
     -- {
     --     "iamcco/markdown-preview.nvim",

@@ -29,7 +29,7 @@ return {
             },
             sections = {
                 lualine_a = {
-                    { 'mode' }
+                    { 'mode' },
                 },
                 lualine_b = {
                     -- {'FugitiveHead', icon = ''},
@@ -65,7 +65,7 @@ return {
                 },
                 lualine_c = {
                     { 'filename', path = 3 },
-                    { symbols.get, cond = symbols.has }
+                    { symbols.get, cond = symbols.has },
                     -- { git_blame.get_current_blame_text, cond = git_blame.is_blame_text_available }
                 },
                 lualine_x = {
@@ -93,7 +93,10 @@ return {
                     { function() return orgmode.statusline() end },
                     'encoding', 'fileformat', 'filetype',
                 },
-                lualine_y = {'progress'},
+                lualine_y = {
+                    'lsp_status',
+                    'progress'
+                },
                 lualine_z = {
                     'location',
                     { "datetime", style = "%Y-%m-%d | %H:%M:%S" }

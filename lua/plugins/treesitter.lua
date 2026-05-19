@@ -79,17 +79,17 @@ return {
             "rust", "scss", "typescript", "vim", "vimdoc", "query"
         }) 
 
-        -- local installed = treesitter.get_installed()
-        -- local group = vim.api.nvim_create_augroup("TreeSitterConfig", { clear = true })
-        -- vim.api.nvim_create_autocmd("FileType", {
-        --     group = group,
-        --     callback = function(args)
-        --         if vim.list_contains(installed, vim.treesitter.language.get_lang(args.match)) then
-        --             vim.treesitter.start()
-        --             vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
-        --         end
-        --     end
-        -- })
+        local installed = treesitter.get_installed()
+        local group = vim.api.nvim_create_augroup("TreeSitterConfig", { clear = true })
+        vim.api.nvim_create_autocmd("FileType", {
+            group = group,
+            callback = function(args)
+                if vim.list_contains(installed, vim.treesitter.language.get_lang(args.match)) then
+                    vim.treesitter.start()
+                    vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+                end
+            end
+        })
 
     end
 }
