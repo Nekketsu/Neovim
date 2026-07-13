@@ -217,6 +217,10 @@ return {
         }
     },
 
+    "justinmk/guh.nvim",
+
+    "barrettruth/diffs.nvim",
+
     {
         "pwntester/octo.nvim",
         cmd = "Octo",
