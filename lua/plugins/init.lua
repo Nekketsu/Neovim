@@ -143,7 +143,7 @@ return {
             "nvim-tree/nvim-web-devicons",
         },
         keys = {
-            { "<leader>a", "<cmd>AerialToggle!<CR>", desc = "Aerial (Symbols)" },
+            { "<leader>A", "<cmd>AerialToggle!<CR>", desc = "Aerial (Symbols)" },
         },
     },
 
