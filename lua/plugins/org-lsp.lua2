@@ -1,0 +1,140 @@
+---@diagnostic disable: missing-fields
+return {
+    {
+        "kristijanhusak/org-lsp",
+        build = ":OrgLspDownload",
+        lazy = false,
+        -- event = 'VeryLazy',
+        -- ft = { "org" },
+        opts = {
+            settings = {
+                org_super_agenda_mode = true,
+                org_roam_enabled = true,
+                org_roam_directory = "~/org/roam/",
+                org_journal_enabled = true,
+                org_journal_dir = "~/org/journal/",
+                org_journal_follow_mode = true,
+                org_bullets_mode = true,
+                org_agenda_files = { '~/org/**/*' },
+                org_default_notes_file = '~/org/orgfiles/refile.org',
+                org_capture_templates = {
+                    {
+                        key = 'T',
+                        description = 'Todo',
+                        template = '* TODO %?\n %u',
+                        target = { 'file', '~/org/orgfiles/todo.org' }
+                    },
+                    {
+                        key = 'j',
+                        description = 'Journal',
+                        template = '\n*** %<%Y-%m-%d> %<%A>\n**** %U\n\n%?',
+                        target = { 'file', '~/org/orgfiles/journal.org' }
+                    },
+                    {
+                        key = 'J',
+                        description = 'Journal',
+                        template = '\n*** %<%Y-%m-%d> %<%A>\n**** %U\n\n%?',
+                        target = { 'file', '~/org/orgfiles/journal/%<%Y-%m>.org' }
+                    },
+                    {
+                        key = 'k',
+                        description = 'Journal',
+                        template = '*  Dear journal: %n %?',
+                        target = { 'file', '~/org/orgfiles/kournal.org' },
+                        datetree = { "day" }
+                    },
+                    {
+                        key = "e",
+                        description = "Event"
+                    },
+                    {
+                        key = 'er',
+                        description = 'Recurring',
+                        template = '** %?\n %T',
+                        target = { 'file+headline', '~/org/orgfiles/calendar.org', 'recurring' },
+                    },
+                    {
+                        key = 'eo',
+                        description = 'One-time',
+                        template = '** %?\n %T',
+                        target = { 'file+headline', '~/org/orgfiles/calendar.org', 'one-time' },
+                    },
+                    {
+                        key = 'o',
+                        description = 'Journal',
+                        template = '* %(return vim.fn.getreg "w")',
+                        -- get the content of register "w"
+                        target = { 'file', '~/org/journal.org' }
+                    },
+                    {
+                        key = 'r',
+                        description = "Repo",
+                        template = "* [[%x][%(return string.match('%x', '([^/]+)$'))]]%?",
+                        target = { 'file', '~/org/orgfiles/repos.org' }
+                    },
+                },
+                org_agenda_custom_commands = {
+                    {
+                        key = "n",
+                        description = "Next actions",
+                        type = "todo",
+                        match = "NEXT|WAIT"
+                    },
+                    {
+                        key = "w",
+                        description = "Work, open",
+                        type = "tags-todo",
+                        match = "work-email"
+                    },
+                    -- A prefix key: the menu then offers the commands under it.
+                    {
+                        key = "d",
+                        description = "Daily"
+                    },
+                    {
+                        key = "dd",
+                        description = "Today, then what is waiting",
+                        blocks = {
+                            { type = "agenda",    settings = { org_agenda_span = "day" } },
+                            { type = "tags-todo", match = "PRIORITY=\"A\"",              header = "Urgent" },
+                            { type = "todo",      match = "WAIT",                        header = "Waiting for" }
+                        }
+                    },
+                    -- Tomorrow's deadlines, the earliest first.
+                    {
+                        key = "D",
+                        description = "Due tomorrow",
+                        type = "tags-todo",
+                        match = 'DEADLINE>="<+1d>"&DEADLINE<"<+2d>"',
+                        settings = { org_agenda_sorting_strategy = { "deadline-up", "urgency-down" } }
+                    },
+                    -- Open TODO entries the agenda does not show yet: nothing scheduled, no
+                    -- deadline in its warning period.
+                    {
+                        key = "u",
+                        description = "Not planned",
+                        type = "alltodo",
+                        settings = { org_agenda_todo_ignore_scheduled = "all", org_agenda_todo_ignore_deadlines = "near" }
+                    }
+                },
+            },
+            mappings = {
+                global = {
+                    ["org.roam.capture"] = "<leader>nc",
+                    ["org.roam.dailies.capture.today"] = "<leader>ndn",
+                    ["org.roam.dailies.capture.date"] = "<leader>ndv"
+                }
+            }
+        },
+        init = function()
+            vim.keymap.set("n", "<leader>fo", function() Snacks.picker.files({ cwd = "~/org/orgfiles" }) end,
+                { desc = "Find ORG files" })
+            vim.keymap.set("n", "<leader>so", function() Snacks.picker.grep({ cwd = "~/org/orgfiles" }) end,
+                { desc = "Search ORG files" })
+            vim.keymap.set("n", "<leader>fn", function() Snacks.picker.files({ cwd = "~/org/roam" }) end,
+                { desc = "Find ROAM files" })
+            vim.keymap.set("n", "<leader>sn", function() Snacks.picker.grep({ cwd = "~/org/roam" }) end,
+                { desc = "Search ROAM files" })
+        end
+    }
+}

@@ -132,7 +132,7 @@ return {
                 vim.keymap.set('n', '[<C-s>', '<cmd>AerialPrev<CR>', {buffer = bufnr, desc = "Aerial next"})
                 vim.keymap.set('n', ']<C-s>', '<cmd>AerialNext<CR>', {buffer = bufnr, desc = "Aerial previous"})
             end,
-            backends = { "lsp", "treesitter", "markdown", "man" },
+            backends = { "lsp", "treesitter", "markdown", "man", "org" },
             filter_kind = false,
             preview = true,
             show_guides = true
@@ -151,8 +151,8 @@ return {
         'kevinhwang91/nvim-bqf',
         ft = "qf",
         dependencies = {
-            "junegunn/fzf",
-            build = function() vim.fn["fzf#install"]() end,
+            -- "junegunn/fzf",
+            -- build = function() vim.fn["fzf#install"]() end,
         },
         opts = {
             func_map = {
@@ -374,17 +374,10 @@ return {
             keymaps = {
                 useDefaults = true,
                 disabledDefaults = {
-                    "ai", "ii", "aI", "iI", "an", "in"
+                    "ai", "ii", "aI", "iI", "an", "in", "r", "R"
                 }
             }
         },
-    },
-
-    {
-        'kana/vim-textobj-entire',
-        dependencies = {
-            'kana/vim-textobj-user'
-        }
     },
 
     {

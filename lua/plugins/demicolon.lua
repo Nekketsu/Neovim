@@ -11,12 +11,13 @@ return {
         require("demicolon").setup({
             keymaps = {
                 horizontal_motions = false,
+                repeat_motions = "stateful",
                 disabled_keys = { 'p', 'I', 'A'--[[, 'f', 'i'--]] }
             },
         })
 
         local flash_char = require("flash.plugins.char")
-        ---@param options { key: string, fowrard: boolean }
+        ---@param options { key: string, forward: boolean }
         local function flash_jump(options)
             return function()
                 require("demicolon.jump").repeatably_do(function(o)
@@ -78,7 +79,8 @@ return {
                 return function()
                     require("demicolon.jump").repeatably_do(function(opts)
                         local motion = opts.forward ~= false and next or prev
-                        vim.cmd(string.format("normal! %s%s", vim.v.count, motion))
+                        -- vim.cmd(string.format("normal! %s%s", vim.v.count, motion))
+                        vim.cmd(string.format("normal! %s", motion))
                     end, { forward = forward })
                 end
             end
@@ -99,5 +101,7 @@ return {
         map_repeatably_do("gj", "gk", "Display lines downward", "Display lines upward")
         map_repeatably_do("g;", "g,", "Go to newer position in change list", "Go to older position in change list")
         map_repeatably_do("gt", "gT", "Go to the next tab page", "Go to the previous tab page")
+
+        map_repeatably_do("]s", "[s", "Next misspelled word", "Previous misspelled word")
     end,
 }

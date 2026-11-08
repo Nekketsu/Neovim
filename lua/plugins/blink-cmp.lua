@@ -71,7 +71,7 @@ return {
                 -- default = { "lazydev", "lsp", "path", "snippets", "buffer", "dadbod", "dap" },
                 default = { "lazydev", "lsp", "path", "snippets", "buffer", "markdown", "yank" },
                 per_filetype = {
-                    org = { 'orgmode' },
+                    org = { inherit_defaults = true, "org" },
                     sql = { 'snippets', 'dadbod', 'buffer' },
                 },
                 -- optionally disable cmdline completions
@@ -92,10 +92,9 @@ return {
                         module = "render-markdown.integ.blink",
                         fallbacks = { 'lsp' },
                     },
-                    orgmode = {
-                        name = 'Orgmode',
-                        module = 'orgmode.org.autocompletion.blink',
-                        fallbacks = { 'buffer' },
+                    org = {
+                        name = "Org",
+                        module = "org.completion.blink"
                     },
                     dadbod = { name = "Dadbod", module = "vim_dadbod_completion.blink" },
                     -- dap = {

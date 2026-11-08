@@ -27,7 +27,7 @@ return {
                 vim.keymap.set({ "n", "x", "o" }, "[m", function() require("nvim-treesitter-textobjects.move").goto_previous_start("@function.outer", "textobjects") end)
                 vim.keymap.set({ "n", "x", "o" }, "[[", function() require("nvim-treesitter-textobjects.move").goto_previous_start("@class.outer", "textobjects") end)
                 vim.keymap.set({ "n", "x", "o" }, "[a", function() require("nvim-treesitter-textobjects.move").goto_previous_start("@parameter.inner", "textobjects") end)
-                vim.keymap.set({ "n", "x", "o" }, "[s", function() require("nvim-treesitter-textobjects.move").goto_previous_start("@statement.outer", "textobjects") end)
+                -- vim.keymap.set({ "n", "x", "o" }, "[s", function() require("nvim-treesitter-textobjects.move").goto_previous_start("@statement.outer", "textobjects") end)
                 vim.keymap.set({ "n", "x", "o" }, "[/", function() require("nvim-treesitter-textobjects.move").goto_previous_start("@comment.outer", "textobjects") end)
 
 

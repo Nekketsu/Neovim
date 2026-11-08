@@ -33,13 +33,13 @@ return {
                     vim.keymap.set({"n", "v"}, "<C-h>", "<cmd>Treewalker Left<cr>", { buffer = args.buf })
                     vim.keymap.set("n", "<A-j>", "<cmd>Treewalker SwapDown<cr>", { buffer = args.buf })
                     vim.keymap.set("n", "<A-k>", "<cmd>Treewalker SwapUp<cr>", { buffer = args.buf })
-                    vim.keymap.set("n", "<A-l>", "<cmd>TSTextobjectSwapNext @parameter.inner<CR>", { buffer = args.buf })
-                    vim.keymap.set("n", "<A-h>", "<cmd>TSTextobjectSwapPrevious @parameter.inner<CR>", { buffer = args.buf })
+                    vim.keymap.set("n", "<A-l>", "<cmd>Treewalker SwapRight<CR>", { buffer = args.buf })
+                    vim.keymap.set("n", "<A-h>", "<cmd>Treewalker SwapLeft<CR>", { buffer = args.buf })
                 end
             end
         })
-    end,
-    -- keys = {
+    end
+    -- keys = {,
     --     { "<C-k>", "<cmd>Treewalker Up<cr>",                        mode = { "n", "v" } },
     --     { "<C-j>", "<cmd>Treewalker Down<cr>",                      mode = { "n", "v" } },
     --     { "<C-l>", "<cmd>Treewalker Right<cr>",                     mode = { "n", "v" } },

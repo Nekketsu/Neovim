@@ -90,7 +90,7 @@ return {
                     --     color = { fg = "#ff9e64" },
                     -- },
 ---@diagnostic disable-next-line: undefined-field
-                    { function() return orgmode.statusline() end },
+                    { function() return require("org").statusline() end },
                     'encoding', 'fileformat', 'filetype',
                 },
                 lualine_y = {

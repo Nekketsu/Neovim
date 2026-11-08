@@ -25,7 +25,7 @@ return {
     end,
     keys = {
         {'<leader>jt', ':TSJToggle<CR>'},
-        {'<leader>js', ':TSJSplit<CR>'},
+        {'<leader>jS', ':TSJSplit<CR>'},
         {'<leader>jj', ':TSJJoin<CR>'},
     }
 }
