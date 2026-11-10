@@ -1,129 +1,84 @@
-local function get_typst_path()
-    local typst_path = require("lazy.core.config").plugins["typst-snippets"].dir
-    return typst_path
-end
--- local lazy_path = require("lazy.core.config").defaults.root
-
 return {
-    "saghen/blink.cmp",
-    -- optional: provides snippets for the snippet source
+    'saghen/blink.cmp',
     dependencies = {
-        "rafamadriz/friendly-snippets",
-        "abhinandh-s/typst-snippets",
-        "marcoSven/blink-cmp-yanky",
-        "onsails/lspkind.nvim"
-        -- "rcarriga/cmp-dap"
+        'saghen/blink.lib',
+        -- optional: provides snippets for the snippet source
+        'rafamadriz/friendly-snippets',
     },
-    -- use a release tag to download pre-built binaries
-    version = '*',
-    -- AND/OR build from source, requires nightly: https://rust-lang.github.io/rustup/concepts/channels.html#working-with-nightly-rust
-    -- build = 'cargo build --release',
-    -- If you use nix, you can build from source using latest nightly rust with:
-    -- build = 'nix run .#build-plugin',
-
-    config = function()
-    ---@module "blink.cmp"
-    ---@type blink.cmp.Config
-        require("blink-cmp").setup({
-            -- 'default' for mappings similar to built-in completion
-            -- 'super-tab' for mappings similar to vscode (tab to accept, arrow keys to navigate)
-            -- 'enter' for mappings similar to 'super-tab' but with 'enter' to accept
-            --
-            -- All presets have the following mappings:
-            -- C-space: Open menu or open docs if already open
-            -- C-e: Hide menu
-            -- C-k: Toggle signature help
-            --
-            -- See the full "keymap" documentation for information on defining your own keymap.
-            keymap = { preset = "super-tab" },
-            completion = {
-                menu = {
-                    draw = {
-                        components = {
-                            kind_icon = {
-                                text = function(ctx)
-                                    return require("lspkind").symbol_map[ctx.kind] or ''
-                                end
-                            }
-                        }
-                    }
-                }
-            },
-
-            appearance = {
-                -- Sets the fallback highlight groups to nvim-cmp's highlight groups
-                -- Useful for when your theme doesn't support blink.cmp
-                -- will be removed in a future release
-                -- use_nvim_cmp_as_default = true,
-                -- Set to 'mono' for 'Nerd Font Mono' or 'normal' for 'Nerd Font'
-                -- Adjusts spacing to ensure icons are aligned
-                nerd_font_variant = "mono"
-            },
-
-            cmdline = {
-                keymap = { preset = 'super-tab' },
-                completion = { menu = { auto_show = true } }
-            },
-
-            -- Default list of enabled providers defined so that you can extend it
-            -- elsewhere in your config, without redefining it, via `opts_extend`
-            sources = {
-                -- default = { "lazydev", "lsp", "path", "snippets", "buffer", "dadbod", "dap" },
-                default = { "lazydev", "lsp", "path", "snippets", "buffer", "markdown", "yank" },
-                per_filetype = {
-                    org = { inherit_defaults = true, "org" },
-                    sql = { 'snippets', 'dadbod', 'buffer' },
-                },
-                -- optionally disable cmdline completions
-                providers = {
-                    snippets = {
-                        opts = {
-                            search_paths = { get_typst_path() }
-                        }
-                    },
-                    lazydev = {
-                        name = "LazyDev",
-                        module = "lazydev.integrations.blink",
-                        -- make lazydev completions top priority (see `:h blink.cmp`)
-                        score_offset = 100
-                    },
-                    markdown = {
-                        name = "RenderMarkdown",
-                        module = "render-markdown.integ.blink",
-                        fallbacks = { 'lsp' },
-                    },
-                    org = {
-                        name = "Org",
-                        module = "org.completion.blink"
-                    },
-                    dadbod = { name = "Dadbod", module = "vim_dadbod_completion.blink" },
-                    -- dap = {
-                    --     name = "dap",
-                    --     module = "blink.compat.source",
-                    --     -- enabled = function() return vim.api.nvim_buf_get_option(0, "buftype") ~= "prompt" end
-                    -- }
-                    yank = {
-                        name = "yank",
-                        module = "blink-yanky",
-                        opts = {
-                            minLength = 5,
-                            onlyCurrentFiletype = true,
-                            trigger_characters = { '"' },
-                            kind_icon = "󰅍",
-                        },
-                    },
-                },
-            },
-
-            -- signature = { enabled = true },
-
-            -- Blink.cmp uses a Rust fuzzy matcher by default for typo resistance and significantly better performance
-            -- You may use a lua implementation instead by using `implementation = "lua"` or fallback to the lua implementation,
-            -- when the Rust fuzzy matcher is not available, by using `implementation = "prefer_rust"`
-            --
-            -- See the fuzzy documentation for more information
-            fuzzy = { implementation = "prefer_rust_with_warning" }
-        })
+    build = function()
+        -- build the fuzzy matcher, optionally add a timeout to `pwait(timeout_ms)`
+        -- you can use `gb` in `:Lazy` to rebuild the plugin as needed
+        require('blink.cmp').build():pwait()
     end,
-    opts_extend = { "sources.default" }
+
+    ---@module 'blink.cmp'
+    ---@type blink.cmp.Config
+    opts = {
+        -- 'default' (recommended) for mappings similar to built-in completions (C-y to accept)
+        -- 'super-tab' for mappings similar to vscode (tab to accept)
+        -- 'enter' for enter to accept
+        -- 'none' for no mappings
+        --
+        -- All presets have the following mappings:
+        -- C-space: Open menu or open docs if already open
+        -- C-n/C-p or Up/Down: Select next/previous item
+        -- C-e: Hide menu
+        -- C-k: Toggle signature help (if signature.enabled = true)
+        --
+        -- See :h blink-cmp-config-keymap for defining your own keymap
+        keymap = {
+            preset = 'super-tab',
+            ["<Tab>"] = {
+                -- 1. Primero dejamos que blink intente hacer su lógica de super-tab nativa
+                function(cmp)
+                    return cmp.select_and_accept()
+                end,
+                -- 2. Si no hay menú de autocompletado abierto, salta o aplica la sugerencia de Sidekick
+                function()
+                    return require("sidekick").nes_jump_or_apply()
+                end,
+                "snippet_forward",
+                -- 4. Si nada de lo anterior se cumple, escribe un tabulador normal
+                "fallback",
+            },
+        },
+
+        -- (Default) Only show the documentation popup when manually triggered
+        completion = {
+            documentation = { auto_show = true }
+        },
+
+        signature = {
+            enabled = true,
+            window = {
+                show_documentation = true
+            }
+        },
+
+        -- (Default) list of enabled providers defined so that you can extend it
+        -- elsewhere in your config, without redefining it, due to `opts_extend`
+        -- sources = { default = { 'lsp', 'path', 'snippets', 'buffer' } },
+        sources = {
+            default = { 'lsp', 'path', 'snippets', 'buffer' },
+            per_filetype = {
+                lua = { 'lazydev', 'lsp', 'path', 'snippets', 'buffer' },
+                sql = { 'snippets', 'dadbod', 'buffer' },
+                org = { inherit_defaults = true, "org" }
+            },
+            providers = {
+                lazydev = {
+                    name = "LazyDev",
+                    module = "lazydev.integrations.blink",
+                    -- make lazydev completions top priority (see `:h blink.cmp`)
+                    score_offset = 100,
+                },
+                org = { name = "Org", module = "org.completion.blink" }
+            }
+        },
+
+        -- (Default) Rust fuzzy matcher for typo resistance and significantly better performance
+        -- You may use a lua implementation instead by using `implementation = "lua"`
+        -- See the fuzzy documentation for more information
+        fuzzy = { implementation = "rust" }
+    },
 }

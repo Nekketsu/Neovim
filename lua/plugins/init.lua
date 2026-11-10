@@ -129,8 +129,8 @@ return {
         'stevearc/aerial.nvim',
         opts = {
             on_attach = function(bufnr)
-                vim.keymap.set('n', '[<C-s>', '<cmd>AerialPrev<CR>', {buffer = bufnr, desc = "Aerial next"})
-                vim.keymap.set('n', ']<C-s>', '<cmd>AerialNext<CR>', {buffer = bufnr, desc = "Aerial previous"})
+                vim.keymap.set('n', '[<C-s>', '<cmd>AerialPrev<CR>', { buffer = bufnr, desc = "Aerial next" })
+                vim.keymap.set('n', ']<C-s>', '<cmd>AerialNext<CR>', { buffer = bufnr, desc = "Aerial previous" })
             end,
             backends = { "lsp", "treesitter", "markdown", "man", "org" },
             filter_kind = false,
@@ -170,22 +170,26 @@ return {
         opts = {
             keys = {
                 { ">>", function() require("quicker").expand({ before = 2, after = 2, add_to_existing = true }) end, desc = "Expand quickfix context" },
-                { "<<", function() require("quicker").collapse() end, desc = "Collapse quickfix context" },
+                { "<<", function() require("quicker").collapse() end,                                                desc = "Collapse quickfix context" },
             },
             highlight = {
                 load_buffers = false
             }
         },
         init = function()
-            vim.keymap.set("n",  "<leader>Q", function() require("quicker").toggle() end, { desc = "Toggle quickfix" })
-            vim.keymap.set("n",  "<leader>L", function() require("quicker").toggle({ loclist = true }) end, { desc = "Toggle loclist" })
+            vim.keymap.set("n", "<leader>Q", function() require("quicker").toggle() end, { desc = "Toggle quickfix" })
+            vim.keymap.set("n", "<leader>L", function() require("quicker").toggle({ loclist = true }) end,
+                { desc = "Toggle loclist" })
 
-            vim.keymap.set("n",  "yoQ", function() require("quicker").toggle() end, { desc = "Toggle quickfix" })
-            vim.keymap.set("n",  "[oQ", function() require("quicker").open() end, { desc = "Open quickfix" })
-            vim.keymap.set("n",  "]oQ", function() require("quicker").close() end, { desc = "Close quickfix" })
-            vim.keymap.set("n",  "yoL", function() require("quicker").toggle({ loclist = true }) end, { desc = "Toggle loclist" })
-            vim.keymap.set("n",  "[oL", function() require("quicker").open({ loclist = true }) end, { desc = "Toggle loclist" })
-            vim.keymap.set("n",  "]oL", function() require("quicker").close({ loclist = true }) end, { desc = "Toggle loclist" })
+            vim.keymap.set("n", "yoQ", function() require("quicker").toggle() end, { desc = "Toggle quickfix" })
+            vim.keymap.set("n", "[oQ", function() require("quicker").open() end, { desc = "Open quickfix" })
+            vim.keymap.set("n", "]oQ", function() require("quicker").close() end, { desc = "Close quickfix" })
+            vim.keymap.set("n", "yoL", function() require("quicker").toggle({ loclist = true }) end,
+                { desc = "Toggle loclist" })
+            vim.keymap.set("n", "[oL", function() require("quicker").open({ loclist = true }) end,
+                { desc = "Toggle loclist" })
+            vim.keymap.set("n", "]oL", function() require("quicker").close({ loclist = true }) end,
+                { desc = "Toggle loclist" })
         end
     },
 
@@ -193,7 +197,7 @@ return {
     {
         'tpope/vim-fugitive',
         keys = {
-            {'<Leader>gs', '<cmd>Git<CR>', desc = "Git status"},
+            { '<Leader>gs', '<cmd>Git<CR>', desc = "Git status" },
             -- {'<Leader>gl', '<cmd>Gclog<CR>', desc = "git log"}
         }
     },
@@ -210,14 +214,69 @@ return {
     },
 
     {
-        "esmuellert/codediff.nvim",
-        cmd = "CodeDiff",
+        "NeogitOrg/neogit",
+        lazy = true,
+        dependencies = {
+            -- Only one of these is needed.
+            -- "sindrets/diffview.nvim", -- optional
+            "esmuellert/codediff.nvim", -- optional
+
+            -- For a custom log pager
+            -- "m00qek/baleia.nvim", -- optional
+
+            "folke/snacks.nvim",     -- optional
+        },
+        cmd = "Neogit",
         keys = {
-            { "<leader>gd", vim.cmd.CodeDiff, desc = "CodeDiff" } 
+            { "<leader>gg", "<cmd>Neogit<cr>", desc = "Show Neogit UI" }
         }
     },
 
-    "justinmk/guh.nvim",
+    {
+        "esmuellert/codediff.nvim",
+        cmd = "CodeDiff",
+        opts = {
+            explorer = {
+                view_mode = "tree"
+            }
+        },
+        keys = {
+            { "<leader>gd", vim.cmd.CodeDiff, desc = "CodeDiff" }
+        }
+    },
+    {
+        'isakbm/gitgraph.nvim',
+        opts = {
+            hooks = {
+                -- Check diff of a commit
+                on_select_commit = function(commit)
+                    vim.notify('CodeDiff ' .. commit.hash)
+                    vim.cmd(':CodeDiff ' .. commit.hash .. '~ ' .. commit.hash)
+                end,
+                -- Check diff from commit a -> commit b
+                on_select_range_commit = function(from, to)
+                    vim.notify('CodeDiff ' .. from.hash .. ' ' .. to.hash)
+                    vim.cmd(':CodeDiff ' .. from.hash .. '~1 ' .. to.hash)
+                end,
+            },
+        },
+        keys = {
+            {
+                "<leader>gG",
+                function()
+                    require('gitgraph').draw({}, { all = true, max_count = 5000 })
+                end,
+                desc = "GitGraph - Draw",
+            },
+        },
+    },
+
+    {
+        "justinmk/guh.nvim",
+        keys = {
+            { "<leader>gh", "<Cmd>Guh<CR>", desc = "Guh" }
+        }
+    },
 
     "barrettruth/diffs.nvim",
 
@@ -324,7 +383,7 @@ return {
     {
         'kristijanhusak/vim-dadbod-ui',
         dependencies = {
-            { 'tpope/vim-dadbod', lazy = true },
+            { 'tpope/vim-dadbod',                     lazy = true },
             { 'kristijanhusak/vim-dadbod-completion', ft = { 'sql', 'mysql', 'plsql' }, lazy = true },
         },
         cmd = {
@@ -355,15 +414,15 @@ return {
             -- refer to the configuration section below
         },
         keys = {
-            {"cx", function() require("substitute.exchange").operator() end, desc = "Substitute operator"},
-            {"cxx", function() require("substitute.exchange").line() end, desc = "Substitute line"},
-            {"X", function() require("substitute.exchange").visual() end, mode = "x", desc = "Substitute visual"},
-            {"cxc", function() require("substitute.exchange").cancel() end, desc = "Substitute cancel"},
+            { "cx",          function() require("substitute.exchange").operator() end, desc = "Substitute operator" },
+            { "cxx",         function() require("substitute.exchange").line() end,     desc = "Substitute line" },
+            { "X",           function() require("substitute.exchange").visual() end,   mode = "x",                  desc = "Substitute visual" },
+            { "cxc",         function() require("substitute.exchange").cancel() end,   desc = "Substitute cancel" },
 
-            {"<leader>cx", function() require("substitute").operator() end, desc = "Substitute operator"},
-            {"<leader>cxx", function() require("substitute").line() end, desc = "Substitute line"},
-            {"<leader>cX", function() require("substitute").cancel() end, desc = "Substitute cancel"},
-            {"<leader>X", function() require("substitute").visual() end, mode = "x", desc = "Substitute visual"},
+            { "<leader>cx",  function() require("substitute").operator() end,          desc = "Substitute operator" },
+            { "<leader>cxx", function() require("substitute").line() end,              desc = "Substitute line" },
+            { "<leader>cX",  function() require("substitute").cancel() end,            desc = "Substitute cancel" },
+            { "<leader>X",   function() require("substitute").visual() end,            mode = "x",                  desc = "Substitute visual" },
         }
     },
 
@@ -402,19 +461,19 @@ return {
         opts = {
             fast_wrap = {}
         },
-        init = function ()
+        init = function()
             local Rule = require('nvim-autopairs.rule')
             local npairs = require('nvim-autopairs')
 
             npairs.add_rules({
                 Rule("$", "$", "typst")
-                :with_pair(function(opts)
-                    return opts.line:sub(opts.col, opts.col) ~= "$"
-                end)
-                :with_move(function(opts)
-                    return opts.next_char == "$"
-                end)
-                :use_key("$")
+                    :with_pair(function(opts)
+                        return opts.line:sub(opts.col, opts.col) ~= "$"
+                    end)
+                    :with_move(function(opts)
+                        return opts.next_char == "$"
+                    end)
+                    :use_key("$")
             })
         end
     },
@@ -499,7 +558,9 @@ return {
         dependencies = { 'nvim-treesitter/nvim-treesitter', 'nvim-tree/nvim-web-devicons' }, -- if you prefer nvim-web-devicons
         ---@module 'render-markdown'
         ---@type render.md.UserConfig
-        opts = {},
+        opts = {
+            completions = { lsp = { enabled = true } }
+        },
     },
 
     {
@@ -518,10 +579,10 @@ return {
             -- add any custom options here
         },
         keys = {
-            { "<leader>qs", function() require("persistence").load() end, desc = "Persistence load" },
-            { "<leader>qS", function() require("persistence").select() end, desc = "Persistence select" },
+            { "<leader>qs", function() require("persistence").load() end,                desc = "Persistence load" },
+            { "<leader>qS", function() require("persistence").select() end,              desc = "Persistence select" },
             { "<leader>ql", function() require("persistence").load({ last = true }) end, desc = "Persistence load last" },
-            { "<leader>qd", function() require("persistence").stop() end, desc = "Persistence stop" }
+            { "<leader>qd", function() require("persistence").stop() end,                desc = "Persistence stop" }
         }
     },
 

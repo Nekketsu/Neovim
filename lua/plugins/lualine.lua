@@ -1,19 +1,6 @@
 return {
     'nvim-lualine/lualine.nvim',
     config = function()
-        local trouble = require("trouble")
-        local symbols = trouble.statusline({
-            mode = "lsp_document_symbols",
-            groups = {},
-            title = false,
-            filter = { range = true },
-            format = "{kind_icon}{symbol.name:Normal}",
-            -- The following line is needed to fix the background color
-            -- Set it to the lualine section you want to use
-            hl_group = "lualine_c_normal",
-        })
-
-
         require('lualine').setup {
             options = {
                 icons_enabled = true,
@@ -21,8 +8,8 @@ return {
                 -- theme = 'vscode',
                 -- theme = 'lunar',
                 -- theme = 'nord',
-                component_separators = { left = '', right = ''},
-                section_separators = { left = '', right = ''},
+                component_separators = { left = '', right = '' },
+                section_separators = { left = '', right = '' },
                 disabled_filetypes = {},
                 always_divide_middle = true,
                 globalstatus = true
@@ -32,8 +19,6 @@ return {
                     { 'mode' },
                 },
                 lualine_b = {
-                    -- {'FugitiveHead', icon = ''},
-                    -- {'b:gitsigns_head', icon = ''},
                     {
                         "gitstatus",
                         sections = {
@@ -47,12 +32,13 @@ return {
                             { "conflicted", format = "!{}", hl = "GitSignsAdd" },
                             { "untracked", format = "?{}", hl = "GitSignsAdd" },
                             { "modified", format = "~{}", hl = "GitSignsChange" },
-                            { "deleted", format = "-{}" , hl = "GitSignsDelete" },
+                            { "deleted", format = "-{}", hl = "GitSignsDelete" },
                             { function(status) return (status.is_dirty and status.staged > 0) and "|" or "" end },
                             { function(status) return status.staged > 0 and "" or "" end },
                             { "staged_added", format = "+{}", hl = "GitSignsAdd" },
                             { "staged_modified_and_renamed", format = "~{}", hl = "GitSignsChange" },
-                            { function(status) return (status.staged_modified + status.renamed > 0) and "~" + (status.staged_modified + status.renamed) or "" end, hl = "GitSignsChange" },
+                            { function(status) return (status.staged_modified + status.renamed > 0) and
+                                "~" + (status.staged_modified + status.renamed) or "" end, hl = "GitSignsChange" },
                             { "staged_deleted", format = "-{}", hl = "GitSignsDelete" },
                             { "staged_renamed", format = "*{}", hl = "GitSignsChange" },
                             -- { "staged_modified", format = "~{}", hl = "SnacksPickerGitStatusModified" },
@@ -64,33 +50,41 @@ return {
                     'diagnostics'
                 },
                 lualine_c = {
-                    { 'filename', path = 3 },
-                    { symbols.get, cond = symbols.has },
+                    { 'filename',  path = 3 },
+                    -- { symbols.get, cond = symbols.has },
                     -- { git_blame.get_current_blame_text, cond = git_blame.is_blame_text_available }
                 },
                 lualine_x = {
                     -- 'aerial',
-                    -- {
-                    --     require("noice").api.status.message.get_hl,
-                    --     cond = require("noice").api.status.message.has,
-                    -- },
-                    -- {
-                    --     require("noice").api.status.command.get,
-                    --     cond = require("noice").api.status.command.has,
-                    --     color = { fg = "#ff9e64" },
-                    -- },
-                    -- {
-                    --     require("noice").api.status.mode.get,
-                    --     cond = require("noice").api.status.mode.has,
-                    --     color = { fg = "#ff9e64" },
-                    -- },
-                    -- {
-                    --     require("noice").api.status.search.get,
-                    --     cond = require("noice").api.status.search.has,
-                    --     color = { fg = "#ff9e64" },
-                    -- },
----@diagnostic disable-next-line: undefined-field
                     { function() return require("org").statusline() end },
+                    {
+                        function()
+                            return " "
+                        end,
+                        color = function()
+                            local status = require("sidekick.status").get()
+                            if status then
+                                return status.kind == "Error" and "DiagnosticError" or status.busy and "DiagnosticWarn" or
+                                    "Special"
+                            end
+                        end,
+                        cond = function()
+                            local status = require("sidekick.status")
+                            return status.get() ~= nil
+                        end,
+                    },
+                    {
+                        function()
+                            local status = require("sidekick.status").cli()
+                            return " " .. (#status > 1 and #status or "")
+                        end,
+                        cond = function()
+                            return #require("sidekick.status").cli() > 0
+                        end,
+                        color = function()
+                            return "Special"
+                        end
+                    },
                     'encoding', 'fileformat', 'filetype',
                 },
                 lualine_y = {
@@ -105,8 +99,8 @@ return {
             inactive_sections = {
                 lualine_a = {},
                 lualine_b = {},
-                lualine_c = {'filename'},
-                lualine_x = {'location'},
+                lualine_c = { 'filename' },
+                lualine_x = { 'location' },
                 lualine_y = {},
                 lualine_z = {}
             },

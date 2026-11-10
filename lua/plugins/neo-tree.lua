@@ -10,6 +10,12 @@ return {
             "alessandropietrobelli/dotnet-tree.nvim",
         },
         opts = function(_, opts)
+            opts.default_component_configs = vim.tbl_deep_extend("force", opts.default_component_configs or {}, {
+                indent = {
+                    with_expanders = true, -- Asegura que los expanders funcionen globalmente
+                },
+            })
+
             local cwd = vim.fn.getcwd()
             local has_sln = #vim.fn.globpath(cwd, "*.sln", false, true) > 0
                 or #vim.fn.globpath(cwd, "*.slnx", false, true) > 0
@@ -28,12 +34,12 @@ return {
             opts.source_selector.sources = {
                 { source = "dotnet-tree", display_name = " 󰘐 .NET" },
                 { source = "filesystem", display_name = "  Files" },
-                { "document_symbols" },
-                { "git_status" }
+                { source = "git_status", "Git Changes" }
             }
         end,
         keys = {
-            { "<leader>fd", "<cmd>Neotree dotnet-tree reveal<cr>", desc = "Dotnet solution explorer" },
+            -- { "<leader>fd", "<cmd>Neotree dotnet-tree reveal<cr>", desc = "Dotnet solution explorer" },
+            { "<leader>fd", "<cmd>Neotree reveal<cr>", desc = "Neotree" },
         }
     },
     {
